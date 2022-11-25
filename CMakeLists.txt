@@ -7,4 +7,4 @@ include_directories(.)
 
 add_executable(mvne_wet1
         Tree.cpp
-        Tree.h cmake-build-debug/PlayerRank.h PlayerRank.h)
+        Tree.h cmake-build-debug/PlayerRank.h PlayerRank.h Team.cpp PlayerRank.cpp)

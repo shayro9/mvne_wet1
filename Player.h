@@ -6,15 +6,18 @@
 #define MVNE_WET1_PLAYER_H
 
 
-struct Player {
+class Player {
     int m_playerId;
     int m_teamId;
     int m_gamesPlayed;
-    int gamesTeamPlayedBefore;
+    int m_gamesTeamPlayedBefore;
     int m_goals;
     int m_cards;
     bool m_goalKeeper;
-    int* gamesTeamPlayed;
+    int* m_gamesTeamPlayed;
+
+public:
+    Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
 };
 
 

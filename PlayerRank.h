@@ -7,6 +7,10 @@
 
 #endif //MVNE_WET1_PLAYERRANK_H
 
-struct PlayerRank{
-
+class PlayerRank{
+    int m_playerId;
+    int m_goals;
+    int m_cards;
+public:
+    PlayerRank(int playerid, int goals, int cards);
 };

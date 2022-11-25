@@ -15,10 +15,20 @@
 #ifndef WORLDCUP23A1_H_
 #define WORLDCUP23A1_H_
 
-#include "wet1util.h"
+#include "worldcup23a1.h"
+#include "Tree.h"
+#include "Player.h"
+#include "PlayerRank.h"
+#include "Team.h"
+
 
 class world_cup_t {
 private:
+    int numOfPlayers;
+    Tree<Team> teams;
+    Tree<Player> players;
+    Tree<PlayerRank> playersRank;
+
 	//
 	// Here you may add anything you want
 	//
