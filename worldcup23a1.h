@@ -20,15 +20,17 @@
 #include "Player.h"
 #include "PlayerRank.h"
 #include "Team.h"
+#include "CompleteTeam.h"
 
 
 class world_cup_t {
 private:
     int numOfPlayers;
     Tree<Team> teams;
-    Tree<Player> players;
+    //Tree<Player> players;
     Tree<PlayerRank> playersRank;
     Tree<PlayerId> playersId;
+    Tree<CompleteTeam> completeTeams;
 	//
 	// Here you may add anything you want
 	//

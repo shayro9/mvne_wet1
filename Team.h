@@ -7,6 +7,7 @@
 #include "Tree.h"
 #include "PlayerRank.h"
 #include "Player.h"
+#include "CompleteTeam.h"
 class Team {
 public:
     Team(int teamId, int points, int goals = 0, int cards = 0, int numOfPlayers = 0, int gamesPlayed = 0);
@@ -18,6 +19,8 @@ private:
     //ADD players Tree
     int m_numOfPlayers;
     int m_gamesPlayed;
+    int m_numOfGoalkeepers;
+    CompleteTeam* m_completeTeam;
     Tree<Player> m_players;
     Tree<PlayerRank> m_TeamPlayersRank;
 };
