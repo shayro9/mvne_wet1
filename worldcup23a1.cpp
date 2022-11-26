@@ -3,8 +3,9 @@
 #include "Player.h"
 #include "PlayerRank.h"
 #include "Team.h"
+#include "PlayerId.h"
 
-world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), players(Tree<Player>()), playersRank(Tree<PlayerRank>())
+world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), players(Tree<Player>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>)
 {
 
 	// TODO: Your code goes here
@@ -51,6 +52,7 @@ StatusType world_cup_t::remove_team(int teamId)
     }
     try
     {
+        //delete players trees in team
         teams.remove(*to_remove);
     }
     catch (const std::bad_alloc &)
@@ -80,9 +82,12 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
     try
     {
         Player new_player = Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper);
-        players.insert(new_player);\
-        PlayerRank new_playerRank = PlayerRank(playerId, goals, cards);
-        playersRank.insert(new_playerRank);
+        new_player.m_playerRank = new PlayerRank(playerId, goals, cards);
+        playersRank.insert(new_player.m_playerRank);
+        new_player.m_groupPlayerRank = new PlayerRank(playerId, goals, cards);
+        new_player.m_team->m_TeamPlayersRank.insert(*new_player.m_groupPlayerRank);
+        players.insert(new_player);
+        playersId.insert(new PlayerId(playerId, &new_player));
     }
     catch (const std::bad_alloc &)
     {
@@ -92,6 +97,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
     currTeam->m_numOfPlayers++;
     currTeam->m_goals += goals;
     currTeam->m_cards += cards;
+    numOfPlayers++;
 
 
 	return StatusType::SUCCESS;
@@ -100,6 +106,28 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 StatusType world_cup_t::remove_player(int playerId)
 {
 	// TODO: Your code goes here
+
+    if (playerId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+
+    if (playersId.find(playerId) == nullptr){
+        return StatusType::FAILURE;
+    }
+
+    try
+    {
+        PlayerId *currPlayer = playersId.find(playerId);
+        playersRank.remove(currPlayer->m_player->m_groupPlayerRank);
+        currPlayer->m_player->m_team->m_TeamPlayersRank.remove(currPlayer->m_player->m_groupPlayerRank);
+        currPlayer->m_player->m_team->m_players.remove(currPlayer->m_player);
+        playerId.remove(currPlayer);
+    }
+    catch (const std::bad_alloc &)
+    {
+        return StatusType::ALLOCATION_ERROR;
+    }
+
 	return StatusType::SUCCESS;
 }
 

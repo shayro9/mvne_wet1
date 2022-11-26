@@ -28,7 +28,7 @@ private:
     Tree<Team> teams;
     Tree<Player> players;
     Tree<PlayerRank> playersRank;
-
+    Tree<PlayerId> playersId;
 	//
 	// Here you may add anything you want
 	//
