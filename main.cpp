@@ -2,11 +2,10 @@
 int main()
 {
     Tree<int> test;
-    node<int>* root = nullptr;
-    root = test.insert(root,1);
-    root = test.insert(root,2);
-    root = test.insert(root,3);
-    root = test.insert(root,4);
-    root = test.insert(root,5);
+    test.insert(1);
+    test.insert(2);
+    test.insert(5);
+    test.insert(4);
+    test.insert(3);
     return 0;
 }

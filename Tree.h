@@ -16,19 +16,19 @@ struct node{
 template <class T>
 class Tree {
 private:
-    node<T>* root;
+    node<T>* m_root;
 
     int height(node<T>* n);
     int balanceFactor(node<T>* n);
-    node<T>* findNode(node<T>* n, const T& t);
-    node<T>* insertNode(node<T>* root, const T& t);
+    node<T>* find(node<T>* n, const T& t);
+    node<T>* insert(node<T>* root, const T& t);
     node<T>* RR_rotate(node<T>* root);
     node<T>* LL_rotate(node<T>* root);
     node<T>* RL_rotate(node<T>* root);
     node<T>* LR_rotate(node<T>* root);
 
 public:
-    Tree() = default;
+    Tree();
     Tree(const Tree& t) = default;
     ~Tree() = default;
     Tree& operator=(const Tree& q) = default;
@@ -39,6 +39,9 @@ public:
     
 
 };
+template <class T>
+Tree<T>::Tree() : m_root(nullptr)
+{}
 
 template <class T>
 int Tree<T>::height(node<T> *n) {
@@ -87,6 +90,21 @@ node<T> *Tree<T>::insert(node<T> *root, const T &t) {
     else if(t >= root->data)
         root->r = insert(root->r,t);
     return root;
+}
+
+template<class T>
+void Tree<T>::insert(const T &t) {
+    if(this->m_root == nullptr)
+    {
+        m_root = new node<T>();
+        m_root->data = t;
+        m_root->l = nullptr;
+        m_root->r = nullptr;
+    }
+    else if(t < m_root->data)
+        m_root->l = insert(m_root->l,t);
+    else if(t >= m_root->data)
+        m_root->r = insert(m_root->r,t);
 }
 
 template<class T>
