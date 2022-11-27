@@ -13,3 +13,6 @@ class CompleteTeam{
     int m_goals;
     int m_cards;
 };
+
+//add operator <, >, ==
+

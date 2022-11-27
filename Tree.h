@@ -10,24 +10,34 @@ struct node{
     T data;
     node* l;
     node* r;
+    node* f;
 };
 
 template <class T>
 class Tree {
+private:
+    node<T>* root;
+
+    int height(node<T>* n);
+    int balanceFactor(node<T>* n);
+    node<T>* findNode(node<T>* n, const T& t);
+    node<T>* insertNode(node<T>* root, const T& t);
+    node<T>* RR_rotate(node<T>* root);
+    node<T>* LL_rotate(node<T>* root);
+    node<T>* RL_rotate(node<T>* root);
+    node<T>* LR_rotate(node<T>* root);
+
 public:
     Tree() = default;
     Tree(const Tree& t) = default;
     ~Tree() = default;
     Tree& operator=(const Tree& q) = default;
-    int height(node<T>* n);
-    int balanceFactor(node<T>* n);
-    node<T>* find(node<T>* n, const T& t);
-    node<T>* insert(node<T>* root, const T& t);
-    node<T>* RR_rotate(node<T>* root);
-    node<T>* LL_rotate(node<T>* root);
-    node<T>* RL_rotate(node<T>* root);
-    node<T>* LR_rotate(node<T>* root);
+
     void remove(const T& t);
+    void insert(const T& t);
+    T* find(const T& t);
+    
+
 };
 
 template <class T>

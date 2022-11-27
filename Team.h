@@ -23,7 +23,9 @@ private:
     CompleteTeam* m_completeTeam;
     Tree<Player> m_players;
     Tree<PlayerRank> m_TeamPlayersRank;
+
 };
 
+//add operator <, >, ==
 
 #endif //MVNE_WET1_TEAM_H
