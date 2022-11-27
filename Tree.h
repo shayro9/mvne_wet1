@@ -19,13 +19,14 @@ private:
     node<T>* m_root;
 
     int height(node<T>* n);
-    int balanceFactor(node<T>* n);
+    int balanceFactor(node<T> *n);
     node<T>* find(node<T>* n, const T& t);
-    node<T>* insert(node<T>* root, const T& t);
-    node<T>* RR_rotate(node<T>* root);
-    node<T>* LL_rotate(node<T>* root);
-    node<T>* RL_rotate(node<T>* root);
-    node<T>* LR_rotate(node<T>* root);
+    node<T>* insert(node<T> *root, const T& t);
+    node<T>* balance(node<T> *bad_node);
+    node<T>* RR_rotate(node<T> *root);
+    node<T>* LL_rotate(node<T> *root);
+    node<T>* RL_rotate(node<T> *root);
+    node<T>* LR_rotate(node<T> *root);
 
 public:
     Tree();
@@ -65,6 +66,28 @@ int Tree<T>::balanceFactor(node<T> *n) {
 }
 
 template<class T>
+node<T>* Tree<T>::balance(node<T> *bad_node) {
+    int factor = balanceFactor(bad_node);
+    int son_factor;
+    switch (factor) {
+        case 2:
+            son_factor = balanceFactor(bad_node->l);
+            if( son_factor >= 0)
+                return LL_rotate(bad_node);
+            else
+                return LR_rotate(bad_node);
+        case -2:
+            son_factor = balanceFactor(bad_node->r);
+            if( son_factor <= 0)
+                return RR_rotate(bad_node);
+            else
+                return RL_rotate(bad_node);
+        default:
+            return bad_node;
+    }
+}
+
+template<class T>
 node<T>* Tree<T>::find(node<T>* n, const T &t) {
     if(n != nullptr) {
         if (t == n->data)
@@ -85,10 +108,14 @@ node<T> *Tree<T>::insert(node<T> *root, const T &t) {
         root->l = nullptr;
         root->r = nullptr;
     }
-    else if(t < root->data)
-        root->l = insert(root->l,t);
-    else if(t >= root->data)
-        root->r = insert(root->r,t);
+    else if(t < root->data) {
+        root->l = insert(root->l, t);
+        root = balance(root);
+    }
+    else if(t >= root->data) {
+        root->r = insert(root->r, t);
+        root = balance(root);
+    }
     return root;
 }
 
@@ -101,18 +128,43 @@ void Tree<T>::insert(const T &t) {
         m_root->l = nullptr;
         m_root->r = nullptr;
     }
-    else if(t < m_root->data)
-        m_root->l = insert(m_root->l,t);
-    else if(t >= m_root->data)
-        m_root->r = insert(m_root->r,t);
+    else if(t < m_root->data) {
+        m_root->l = insert(m_root->l, t);
+        m_root = balance(m_root);
+    }
+    else if(t >= m_root->data) {
+        m_root->r = insert(m_root->r, t);
+        m_root = balance(m_root);
+    }
 }
 
 template<class T>
-node<T> *Tree<T>::LL_rotate(node<T> *root) {
-    
+node<T>* Tree<T>::LL_rotate(node<T> *root) {
+    node<T> *temp = root->l;
+    root->l = temp->r;
+    temp->r = root;
+    return temp;
 }
 
+template<class T>
+node<T>*  Tree<T>::RR_rotate(node<T> *root) {
+    node<T> *temp = root->r;
+    root->r = temp->l;
+    temp->l = root;
+    return temp;
+}
 
+template<class T>
+node<T>*  Tree<T>::RL_rotate(node<T> *root) {
+    root->r = LL_rotate(root->r);
+    return RR_rotate(root);
+}
+
+template<class T>
+node<T>*  Tree<T>::LR_rotate(node<T> *root) {
+    root->l = RR_rotate(root->l);
+    return LL_rotate(root);
+}
 
 
 #endif //MVNE_WET1_TREE_H
