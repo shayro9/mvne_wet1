@@ -26,7 +26,12 @@ class Player {
 
 public:
     Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
+    ~Player() = default;
+    bool operator<(const Player& player) const;
+    bool operator==(const Player& player) const;
+
 };
 
+friend bool operator>(const Player& player1, const Player player2);
 
 #endif //MVNE_WET1_PLAYER_H

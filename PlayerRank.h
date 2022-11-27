@@ -13,4 +13,9 @@ class PlayerRank{
     int m_cards;
 public:
     PlayerRank(int playerid, int goals, int cards);
+    ~PlayerRank() = default;
+    bool operator<(const PlayerRank& playerRank) const;
+    bool operator==(const PlayerRank& playerRank) const;
 };
+
+friend bool operator>(const Player& player1, const Player player2);
