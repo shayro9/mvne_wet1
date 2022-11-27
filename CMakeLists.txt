@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(mvne_wet1
-        Tree.cpp
-        Tree.h cmake-build-debug/PlayerRank.h PlayerRank.h Team.cpp PlayerRank.cpp PlayerId.h CompleteTeam.h)
+        Tree.h main.cpp)
+
