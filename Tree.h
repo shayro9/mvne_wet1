@@ -22,7 +22,11 @@ public:
     int height(node<T>* n);
     int balanceFactor(node<T>* n);
     node<T>* find(node<T>* n, const T& t);
-    node<T>* insert(node<T>* n, const T& t);
+    node<T>* insert(node<T>* root, const T& t);
+    node<T>* RR_rotate(node<T>* root);
+    node<T>* LL_rotate(node<T>* root);
+    node<T>* RL_rotate(node<T>* root);
+    node<T>* LR_rotate(node<T>* root);
     void remove(const T& t);
 };
 
@@ -73,6 +77,11 @@ node<T> *Tree<T>::insert(node<T> *root, const T &t) {
     else if(t >= root->data)
         root->r = insert(root->r,t);
     return root;
+}
+
+template<class T>
+node<T> *Tree<T>::LL_rotate(node<T> *root) {
+    
 }
 
 
