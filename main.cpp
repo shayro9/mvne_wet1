@@ -20,12 +20,14 @@ int main()
     test.insert(8);
     test.insert(9);
     test.insert(10);
+
     test.inOrder(printN);
     std::cout<< "\n";
     test.preOrder(printN);
     std::cout<< "\n";
     test.postOrder(printN);
-    test.remove(5);
+
+    test.remove(8);
     std::cout<< "\n";
     test.inOrder(printN);
     return 0;
