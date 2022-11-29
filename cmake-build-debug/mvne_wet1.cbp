@@ -82,6 +82,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/shayr/Documents/GitHub/mvne_wet1/LinkedList.h">
+			<Option target="mvne_wet1"/>
+		</Unit>
 		<Unit filename="C:/Users/shayr/Documents/GitHub/mvne_wet1/Tree.h">
 			<Option target="mvne_wet1"/>
 		</Unit>
