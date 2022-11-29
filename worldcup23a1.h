@@ -21,7 +21,7 @@
 #include "PlayerRank.h"
 #include "Team.h"
 #include "CompleteTeam.h"
-
+#include "LinkedList.h"
 
 class world_cup_t {
 private:
@@ -31,6 +31,7 @@ private:
     Tree<PlayerRank> playersRank;
     Tree<PlayerId> playersId;
     Tree<CompleteTeam> completeTeams;
+    LinkedListNode<PlayerRank*> playersRankList;
 	//
 	// Here you may add anything you want
 	//

@@ -1,4 +1,40 @@
-"C:\Program Files\JetBrains\CLion 2021.2.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - NMake Makefiles" -S C:\Users\shayr\Documents\GitHub\mvne_wet1 -B C:\Users\shayr\Documents\GitHub\mvne_wet1\cmake-build-debug
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/shayr/Documents/GitHub/mvne_wet1/cmake-build-debug
+"C:\Program Files\JetBrains\CLion 2022.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S C:\Users\amida\OneDrive\מסמכים\GitHub\mvne_wet1 -B C:\Users\amida\OneDrive\מסמכים\GitHub\mvne_wet1\cmake-build-debug
+-- The C compiler identification is GNU 11.2.0
+-- The CXX compiler identification is GNU 11.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - failed
+-- Check for working C compiler: C:/Program Files/JetBrains/CLion 2022.1/bin/mingw/bin/gcc.exe
+-- Check for working C compiler: C:/Program Files/JetBrains/CLion 2022.1/bin/mingw/bin/gcc.exe - broken
+CMake Error at C:/Program Files/JetBrains/CLion 2022.1/bin/cmake/win/share/cmake-3.22/Modules/CMakeTestCCompiler.cmake:69 (message):
+  The C compiler
+
+    "C:/Program Files/JetBrains/CLion 2022.1/bin/mingw/bin/gcc.exe"
+
+  is not able to compile a simple test program.
+
+  It fails with the following output:
+
+    Change Dir: C:/Users/amida/OneDrive/מסמכים/GitHub/mvne_wet1/cmake-build-debug/CMakeFiles/CMakeTmp
+    
+    Run Build Command(s):C:/PROGRA~1/JETBRA~1/CLION2~1.1/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_f38e0/fast && C:/PROGRA~1/JETBRA~1/CLION2~1.1/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\cmTC_f38e0.dir\build.make CMakeFiles/cmTC_f38e0.dir/build
+    mingw32-make[1]: Entering directory 'C:/Users/amida/OneDrive/??????/GitHub/mvne_wet1/cmake-build-debug/CMakeFiles/CMakeTmp'
+    Building C object CMakeFiles/cmTC_f38e0.dir/testCCompiler.c.obj
+    C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\gcc.exe    -o CMakeFiles\cmTC_f38e0.dir\testCCompiler.c.obj -c C:\Users\amida\OneDrive\Î×ÎíÎ×ÎøÎÖÎØ\GitHub\mvne_wet1\cmake-build-debug\CMakeFiles\CMakeTmp\testCCompiler.c
+    cc1.exe: fatal error: C:\Users\amida\OneDrive\Î×ÎíÎ×ÎøÎÖÎØ\GitHub\mvne_wet1\cmake-build-debug\CMakeFiles\CMakeTmp\testCCompiler.c: No such file or directory
+    compilation terminated.
+    mingw32-make[1]: *** [CMakeFiles\cmTC_f38e0.dir\build.make:77: CMakeFiles/cmTC_f38e0.dir/testCCompiler.c.obj] Error 1
+    mingw32-make[1]: Leaving directory 'C:/Users/amida/OneDrive/??????/GitHub/mvne_wet1/cmake-build-debug/CMakeFiles/CMakeTmp'
+    mingw32-make: *** [Makefile:126: cmTC_f38e0/fast] Error 2
+    
+    
+
+  
+
+  CMake will not be able to correctly generate this project.
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (project)
+
+
+-- Configuring incomplete, errors occurred!
+See also "C:/Users/amida/OneDrive/מסמכים/GitHub/mvne_wet1/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "C:/Users/amida/OneDrive/מסמכים/GitHub/mvne_wet1/cmake-build-debug/CMakeFiles/CMakeError.log".

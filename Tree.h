@@ -47,7 +47,8 @@ public:
     Tree& operator=(const Tree& q)=default;
 
     node<T>* find(const T& t);
-    T getMax();
+    node<T>* getMax();
+
     void insert(const T& t);
     void remove(const T& t);
 
@@ -64,7 +65,7 @@ Tree<T>::Tree() : m_root(nullptr), m_max(nullptr)
 {}
 
 template <class T>
-T Tree<T>::getMax() {
+node<T>* Tree<T>::getMax() {
     return m_max->data;
 }
 
