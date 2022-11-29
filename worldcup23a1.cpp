@@ -5,10 +5,9 @@
 #include "Team.h"
 #include "PlayerId.h"
 #include "CompleteTeam.h"
-#include "LinkedList.h"
 
 world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>),
-                             completeTeams(Tree<CompleteTeam>()), playersRankList(LinkedList<PlayerRank*>())
+                             completeTeams(Tree<CompleteTeam>())
 {
 
 	// TODO: Your code goes here
@@ -91,10 +90,6 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         Player new_player = Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper); // add games team played before
         new_player.m_playerRank = new PlayerRank(playerId, goals, cards);
         playersRank.insert(new_player.m_playerRank);
-        node<PlayerRank*> curr = playersRank.find(new_player.m_playerRank);
-        node<PlayerRank*> prevPlayerRank = curr.findPrev();
-        //node<PlayerRank>* nextPlayerRank = curr.findNext();
-        playersRankList.insertAfter(prevPlayerRank);
         new_player.m_groupPlayerRank = new PlayerRank(playerId, goals, cards);
         new_player.m_team->m_TeamPlayersRank.insert(*new_player.m_groupPlayerRank);
         players.insert(new_player);
@@ -144,7 +139,6 @@ StatusType world_cup_t::remove_player(int playerId)
     int currCards = currPlayer->m_player->m_cards;
     try
     {
-        playersRankList.remove(currPlayer->m_player->m_playerRank->m_playerRankNode);
         playersRank.remove(currPlayer->m_player->m_playerRank);
         currPlayer->m_player->m_team->m_TeamPlayersRank.remove(currPlayer->m_player->m_groupPlayerRank);
         currPlayer->m_player->m_team->m_players.remove(currPlayer->m_player);
@@ -191,7 +185,6 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
     currPlayer->m_groupPlayerRank = new_teamPlayerRank;
 
     //add exceptions
-    // linbked list!
 
     return StatusType::SUCCESS;
 }
@@ -378,9 +371,7 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
             return StatusType::FAILURE;
         }
         else{
-
-            int prevId = currPlayer->m_playerRank->m_playerRankNode
-
+            if ()
         }
     }
 

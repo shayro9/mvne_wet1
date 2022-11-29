@@ -15,9 +15,10 @@
 #ifndef WORLDCUP23A1_H_
 #define WORLDCUP23A1_H_
 
-#include "worldcup23a1.h"
+#include "wet1util.h"
 #include "Tree.h"
 #include "Player.h"
+#include "PlayerId.h"
 #include "PlayerRank.h"
 #include "Team.h"
 #include "CompleteTeam.h"
