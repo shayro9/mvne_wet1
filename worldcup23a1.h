@@ -33,9 +33,6 @@ private:
     Tree<PlayerId> playersId;
     Tree<CompleteTeam> completeTeams;
     LinkedListNode<PlayerRank*> playersRankList;
-	//
-	// Here you may add anything you want
-	//
 	
 public:
 	// <DO-NOT-MODIFY> {

@@ -7,31 +7,47 @@ PlayerRank::PlayerRank(int playerId, int goals, int cards) : m_playerId(playerId
     m_playerRankNode = new LinkedListNode<int>(playerId);
 }
 
-bool PlayerRank::operator<(const PlayerRank &playerRank) const {
-    if (m_goals < playerRank.m_goals){
+bool operator<(const PlayerRank &pr1, const PlayerRank &pr2) {
+    if (pr1.m_goals < pr2.m_goals){
         return true;
-    }
-    if (m_goals > playerRank.m_goals){
+    } else if (pr1.m_goals > pr2.m_goals){
         return false;
-    }
-    else{
-        if(m_cards > playerRank.m_cards) {
+    } else{
+        if(pr1.m_cards > pr2.m_cards) {
             return true;
-        }
-        if(m_cards < playerRank.m_cards){
+        }else if(pr1.m_cards < pr2.m_cards){
             return false;
-        }
-        else{
-            if(m_playerId < playerRank.m_playerId){
+        }else{
+            if(pr1.m_playerId < pr2.m_playerId){
                 return true;
             }
-            if((m_playerId > playerRank.m_playerId) || (m_playerId == playerRank.m_playerId)){
+            else
                 return false;
-            }
         }
     }
-PlayerRank::getId(){
-        return m_playerId;
-    }
+}
 
+bool operator==(const PlayerRank &pr1, const PlayerRank &pr2){
+    if(pr1.m_playerId == pr2.m_playerId)
+        return true;
+    return false;
+}
+
+bool operator> (const PlayerRank &pr1, const PlayerRank &pr2){
+    return pr2 < pr1;
+}
+
+bool operator!= (const PlayerRank &pr1, const PlayerRank &pr2)
+{
+    return !(pr1==pr2);
+}
+
+bool operator<= (const PlayerRank &pr1, const PlayerRank &pr2)
+{
+    return pr1 < pr2 || pr1 == pr2;
+}
+
+bool operator>=(const PlayerRank &pr1, const PlayerRank &pr2)
+{
+    return pr2 <= pr1;
 }

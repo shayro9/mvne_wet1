@@ -9,16 +9,22 @@
 #include "LinkedList.h"
 
 class PlayerRank{
+public:
+    explicit PlayerRank(int playerId, int goals, int cards);
+    ~PlayerRank() = default;
+    PlayerRank();
+    friend bool operator== (const PlayerRank&, const PlayerRank&);
+    friend bool operator< (const PlayerRank&, const PlayerRank&);
+  //  int getId() const;
+
+private:
     int m_playerId;
     int m_goals;
     int m_cards;
     LinkedListNode<int>* m_playerRankNode;
-public:
-    PlayerRank(int playerId, int goals, int cards, LinkedListNode<int>* playerRankNode);
-    ~PlayerRank() = default;
- //   bool operator<(const PlayerRank& playerRank) const;
-  //  bool operator==(const PlayerRank& playerRank) const;
-  //  int getId() const;
 };
 
-friend bool operator>(const Player& player1, const Player player2);
+bool operator!= (const PlayerRank&, const PlayerRank&);
+bool operator> (const PlayerRank&, const PlayerRank&);
+bool operator<= (const PlayerRank&, const PlayerRank&);
+bool operator>= (const PlayerRank&, const PlayerRank&);

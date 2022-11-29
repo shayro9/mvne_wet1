@@ -6,7 +6,7 @@
 #include "PlayerId.h"
 #include "CompleteTeam.h"
 
-world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>),
+world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>()),
                              completeTeams(Tree<CompleteTeam>())
 {
 
@@ -25,11 +25,11 @@ StatusType world_cup_t::add_team(int teamId, int points)
         return StatusType::INVALID_INPUT;
     }
     if (teams.find(teamId) != nullptr){
-        return StatusType::FALIURE;
+        return StatusType::FAILURE;
     }
     try
     {
-        Team* new_team = new Team(teamId, points);
+        Team new_team = Team(teamId, points);
         teams.insert(new_team);
     }
     catch (const std::bad_alloc &)
@@ -48,18 +48,20 @@ StatusType world_cup_t::remove_team(int teamId)
         return StatusType::INVALID_INPUT;
     }
 
-    Team* to_remove = teams.find(teamId);
+    node<Team>* to_remove = teams.find(teamId);
     if ((to_remove == nullptr) || (to_remove->m_numOfPlayers != 0)){
         return StatusType::FAILURE;
     }
     try
     {
         //delete players trees in team
+        /*
         if (completeTeams.find(teamId) != nullptr){
-            CompleteTeam* complete_to_remove = completeTeams.find(teamId);
-            completeTeams.remove(*complete_to_remove);
+            node<CompleteTeam>* complete_to_remove = completeTeams.find(teamId);
+            completeTeams.remove(complete_to_remove);
         }
-        teams.remove(*to_remove);
+        */
+        teams.remove(to_remove->data);
     }
     catch (const std::bad_alloc &)
     {
@@ -81,38 +83,31 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         return StatusType::INVALID_INPUT;
     }
 
-    if (players.find(playerId) != nullptr || teams.find(teamId) == nullptr){
+    if (playersId.find(playerId) != nullptr || teams.find(teamId) == nullptr){
         return StatusType::FAILURE;
     }
 
     try
     {
         Player new_player = Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper); // add games team played before
-        new_player.m_playerRank = new PlayerRank(playerId, goals, cards);
-        playersRank.insert(new_player.m_playerRank);
-        new_player.m_groupPlayerRank = new PlayerRank(playerId, goals, cards);
-        new_player.m_team->m_TeamPlayersRank.insert(*new_player.m_groupPlayerRank);
-        players.insert(new_player);
-        playersId.insert(new PlayerId(playerId, &new_player));
+        playersRank.insert(*new_player.getPlayerRank());
+        new_player.getTeam()->addPlayer(new_player);
+        playersId.insert(new_player);
     }
     catch (const std::bad_alloc &)
     {
         return StatusType::ALLOCATION_ERROR;
     }
-    Team* currTeam = teams.find(teamId);
-    currTeam->m_numOfPlayers++;
-    currTeam->m_goals += goals;
-    currTeam->m_cards += cards;
+
     numOfPlayers++;
-    if (goalKeeper){
-        currTeam->m_numOfGoalkeepers++;
-    }
-    if ((currTeam->m_numOfPlayers >= 11) && (currTeam->m_numOfGoalkeepers >= 1) && (completeTeams.find(currTeam) ==
-            nullptr)){
-        CompleteTeam* new_completeTeam = new CompleteTeam(currTeam->m_teamId, currTeam->m_points, currTeam->m_goals, currTeam->m_cards);
-        currTeam->m_completeTeam = new_completeTeam;
+
+    /*
+    Team curr_team = teams.find(teamId)->data;
+    if (curr_team.isComplete() && (completeTeams.find(teamId) == nullptr)){
+        CompleteTeam* new_completeTeam = new CompleteTeam(curr_team.getId(),curr_team.getPoints(),curr_team.getGoals(),curr_team.getCards());
+        curr_team.setCompleteTeam(new_completeTeam);
         completeTeams.insert(new_completeTeam);
-    }
+    }*/
 
 	return StatusType::SUCCESS;
 }

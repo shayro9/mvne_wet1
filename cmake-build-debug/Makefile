@@ -118,6 +118,78 @@ mvne_wet1\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\build
 .PHONY : mvne_wet1\fast
 
+Player.obj: Player.cpp.obj
+.PHONY : Player.obj
+
+# target to build an object file
+Player.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\Player.cpp.obj
+.PHONY : Player.cpp.obj
+
+Player.i: Player.cpp.i
+.PHONY : Player.i
+
+# target to preprocess a source file
+Player.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\Player.cpp.i
+.PHONY : Player.cpp.i
+
+Player.s: Player.cpp.s
+.PHONY : Player.s
+
+# target to generate assembly for a file
+Player.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\Player.cpp.s
+.PHONY : Player.cpp.s
+
+PlayerId.obj: PlayerId.cpp.obj
+.PHONY : PlayerId.obj
+
+# target to build an object file
+PlayerId.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\PlayerId.cpp.obj
+.PHONY : PlayerId.cpp.obj
+
+PlayerId.i: PlayerId.cpp.i
+.PHONY : PlayerId.i
+
+# target to preprocess a source file
+PlayerId.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\PlayerId.cpp.i
+.PHONY : PlayerId.cpp.i
+
+PlayerId.s: PlayerId.cpp.s
+.PHONY : PlayerId.s
+
+# target to generate assembly for a file
+PlayerId.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\PlayerId.cpp.s
+.PHONY : PlayerId.cpp.s
+
+Team.obj: Team.cpp.obj
+.PHONY : Team.obj
+
+# target to build an object file
+Team.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\Team.cpp.obj
+.PHONY : Team.cpp.obj
+
+Team.i: Team.cpp.i
+.PHONY : Team.i
+
+# target to preprocess a source file
+Team.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\Team.cpp.i
+.PHONY : Team.cpp.i
+
+Team.s: Team.cpp.s
+.PHONY : Team.s
+
+# target to generate assembly for a file
+Team.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\Team.cpp.s
+.PHONY : Team.cpp.s
+
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
@@ -142,6 +214,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\main.cpp.s
 .PHONY : main.cpp.s
 
+worldcup23a1.obj: worldcup23a1.cpp.obj
+.PHONY : worldcup23a1.obj
+
+# target to build an object file
+worldcup23a1.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\worldcup23a1.cpp.obj
+.PHONY : worldcup23a1.cpp.obj
+
+worldcup23a1.i: worldcup23a1.cpp.i
+.PHONY : worldcup23a1.i
+
+# target to preprocess a source file
+worldcup23a1.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\worldcup23a1.cpp.i
+.PHONY : worldcup23a1.cpp.i
+
+worldcup23a1.s: worldcup23a1.cpp.s
+.PHONY : worldcup23a1.s
+
+# target to generate assembly for a file
+worldcup23a1.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\worldcup23a1.cpp.s
+.PHONY : worldcup23a1.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -151,9 +247,21 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... mvne_wet1
+	@echo ... Player.obj
+	@echo ... Player.i
+	@echo ... Player.s
+	@echo ... PlayerId.obj
+	@echo ... PlayerId.i
+	@echo ... PlayerId.s
+	@echo ... Team.obj
+	@echo ... Team.i
+	@echo ... Team.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... worldcup23a1.obj
+	@echo ... worldcup23a1.i
+	@echo ... worldcup23a1.s
 .PHONY : help
 
 

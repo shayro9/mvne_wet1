@@ -1,15 +1,25 @@
-//
-// Created by shayr on 23/11/2022.
-//
-
 #ifndef MVNE_WET1_PLAYER_H
 #define MVNE_WET1_PLAYER_H
-//#include "Tree.h"
-//#include "Team.h"
+
+#include "Team.h"
 #include "PlayerRank.h"
-//#include "worldcup23a1.h"
 
 class Player {
+public:
+    Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
+    ~Player() = default;
+
+    int getId() const;
+    int getGoals() const;
+    int getCards() const;
+    bool isGoalKeeper() const;
+
+    PlayerRank* getPlayerRank();
+    PlayerRank* getGroupPlayerRank();
+    Team* getTeam();
+   // bool operator<(const Player& player) const;
+  //  bool operator==(const Player& player) const;
+private:
     int m_playerId;
     int m_teamId;
     int m_gamesPlayed;
@@ -21,15 +31,6 @@ class Player {
     PlayerRank* m_playerRank;
     PlayerRank* m_groupPlayerRank;
     Team* m_team;
-
-
-
-public:
-    Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
-    ~Player() = default;
-   // bool operator<(const Player& player) const;
-  //  bool operator==(const Player& player) const;
-
 };
 
 friend bool operator>(const Player& player1, const Player player2);
