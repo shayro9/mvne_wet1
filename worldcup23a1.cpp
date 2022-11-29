@@ -273,9 +273,31 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 output_t<int> world_cup_t::get_top_scorer(int teamId)
 {
 	// TODO: Your code goes here
+    if (teamId == 0){
+        return StatusType::INVALID_INPUT;
+    }
+    if (teamId < 0) {
+        if (numOfPlayers == 0) {
+            return StatusType::FAILURE;
+        }
+        else {
+            PlayerRank *maxPlayer = playersRank.getMax();
+            return maxPlayer->m_playerId;
+        }
+    }
+    if (teamId > 0){
+        Team* currTeam = teams.find(teamId);
+        if (currTeam == nullptr){
+            return StatusType::FAILURE;
+        }
+        else if (currTeam->m_numOfPlayers == 0){
+            return StatusType::FAILURE;
+        }
+        else{
+            PlayerRank* maxPlayer = currTeam->m_TeamPlayersRank.getMax();
+            return maxPlayer->m_playerId;
+        }
 
-    if (teamId < 0){
-        
     }
 
 	return 2008;
@@ -325,14 +347,36 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 
 
 
-    output[0] = 4001;
-    output[1] = 4002;
-	return StatusType::SUCCESS;
+  //  output[0] = 4001;
+  //  output[1] = 4002;
+//	return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
 	// TODO: Your code goes here
+    if ((teamId <= 0) || (playerId <= 0)){
+        return StatusType::INVALID_INPUT;
+    }
+    if (numOfPlayers == 1){
+        return StatusType::FAILURE;
+    }
+    Team* currTeam = teams.find(teamId);
+    if (currTeam == nullptr){
+        return StatusType::FAILURE;
+    }
+    else {
+        Player *currPlayer = currTeam->m_players.find(playerId);
+        if (currPlayer == nullptr) {
+            return StatusType::FAILURE;
+        }
+        else{
+            if ()
+        }
+    }
+
+
+
 	return 1006;
 }
 

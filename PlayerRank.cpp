@@ -3,7 +3,7 @@
 //
 #include "PlayerRank.h"
 
-PlayerRank::PlayerRank(int playerid, int goals, int cards) : m_playerId(playerid), m_goals(goals), m_cards(cards){}
+PlayerRank::PlayerRank(int playerId, int goals, int cards) : m_playerId(playerId), m_goals(goals), m_cards(cards){}
 
 bool PlayerRank::operator<(const PlayerRank &playerRank) const {
     if (m_goals < playerRank.m_goals){

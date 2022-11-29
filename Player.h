@@ -4,10 +4,10 @@
 
 #ifndef MVNE_WET1_PLAYER_H
 #define MVNE_WET1_PLAYER_H
-#include "Tree.h"
-#include "Team.h"
-#include "PlayerRank.h"
-#include "worldcup23a1.h"
+//#include "Tree.h"
+//#include "Team.h"
+//#include "PlayerRank.h"
+//#include "worldcup23a1.h"
 
 class Player {
     int m_playerId;
@@ -27,8 +27,8 @@ class Player {
 public:
     Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
     ~Player() = default;
-    bool operator<(const Player& player) const;
-    bool operator==(const Player& player) const;
+   // bool operator<(const Player& player) const;
+  //  bool operator==(const Player& player) const;
 
 };
 

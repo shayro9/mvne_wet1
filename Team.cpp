@@ -5,3 +5,4 @@ Team::Team(int teamId, int points, int goals, int cards, int numOfPlayers, int g
                                         m_cards(cards), m_numOfPlayers(numOfPlayers), m_gamesPlayed(gamesPlayed), m_players(Tree<Player>()),m_TeamPlayersRank(Tree<PlayerRank>()){
 
 }
+
