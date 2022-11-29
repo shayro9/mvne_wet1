@@ -45,6 +45,7 @@ public:
 
     node<T>* find(const T& t);
     node<T>* getMax();
+
     void insert(const T& t);
     void remove(const T& t);
 

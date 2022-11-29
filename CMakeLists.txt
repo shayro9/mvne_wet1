@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(mvne_wet1
-        Tree.h main.cpp)
+        Tree.h main.cpp LinkedList.h)
 
