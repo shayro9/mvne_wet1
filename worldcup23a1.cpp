@@ -6,7 +6,7 @@
 #include "PlayerId.h"
 #include "CompleteTeam.h"
 
-world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), players(Tree<Player>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>),
+world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>),
                              completeTeams(Tree<CompleteTeam>())
 {
 
@@ -243,7 +243,8 @@ output_t<int> world_cup_t::get_num_played_games(int playerId)
         return StatusType::FAILURE;
     }
 
-    Player* currPlayer = playersId.find(playerId);
+    PlayerId* currId = playersId.find(playerId);
+    Player* currPlayer = currId->m_player;
 
 
 	return currPlayer->m_gamesPlayed + currPlayer->m_team->m_gamesPlayed - currPlayer->m_gamesTeamPlayedBefore;
@@ -283,13 +284,47 @@ output_t<int> world_cup_t::get_top_scorer(int teamId)
 output_t<int> world_cup_t::get_all_players_count(int teamId)
 {
 	// TODO: Your code goes here
-    static int i = 0;
-    return (i++==0) ? 11 : 2;
+    if (teamId == 0){
+        return StatusType::INVALID_INPUT;
+    }
+    if (teamId < 0){
+        return numOfPlayers;
+    }
+
+    Team* team = teams.find(teamId);
+    if (team == nullptr){
+        return StatusType::FAILURE;
+    }
+    //return success
+    return team->m_numOfPlayers;
+
+    //static int i = 0;
+    //return (i++==0) ? 11 : 2;
+
 }
 
 StatusType world_cup_t::get_all_players(int teamId, int *const output)
 {
 	// TODO: Your code goes here
+    if ((output == nullptr) || (teamId == 0)){
+        return StatusType::INVALID_INPUT;
+    }
+
+    if (teamId > 0){
+        Team* currTeam = teams.find(teamId);
+        if (currTeam == nullptr){
+            return StatusType::FAILURE;
+        }
+        else if (currTeam->m_numOfPlayers == 0){
+            return StatusType::FAILURE;
+        }
+        playersRank.inOrder(output, 0);
+
+
+    }
+
+
+
     output[0] = 4001;
     output[1] = 4002;
 	return StatusType::SUCCESS;

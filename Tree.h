@@ -17,10 +17,11 @@ template <class T>
 class Tree {
 private:
     node<T>* m_root;
+    node<T>* m_max;
 
     int balanceFactor(node<T> *n);
-    node<T>* find(node<T> *root, const T& t);
-    node<T>* insert(node<T> *root, const T& t);
+    node<T>* findNode(node<T> *root, const T& t);
+    node<T>* insertNode(node<T> *root, const T& t);
     node<T>* removeNode(node<T> *root, const T& t);
     node<T>* minValueNode(node<T> *root);
     node<T>* balance(node<T> *bad_node);
@@ -52,7 +53,7 @@ public:
 };
 
 template <class T>
-Tree<T>::Tree() : m_root(nullptr)
+Tree<T>::Tree() : m_root(nullptr), m_max(nullptr);
 {}
 
 template <class T>
@@ -99,28 +100,33 @@ node<T>* Tree<T>::balance(node<T> *bad_node) {
 }
 
 template<class T>
-node<T> *Tree<T>::insert(node<T> *root, const T &t) {
+node<T> *Tree<T>::insertNode(node<T> *root, const T &t) {
     if(root == nullptr)
     {
         root = new node<T>();
         root->data = t;
         root->l = nullptr;
         root->r = nullptr;
+        m_max = root;
     }
     else if(t < root->data) {
-        root->l = insert(root->l, t);
+        root->l = insertNode(root->l, t);
         root = balance(root);
+
     }
     else if(t >= root->data) {
-        root->r = insert(root->r, t);
+        root->r = insertNode(root->r, t);
         root = balance(root);
+        if (t > m_max->data){
+            m_max = root;
+        }
     }
     return root;
 }
 
 template<class T>
 void Tree<T>::insert(const T &t) {
-    m_root = insert(m_root,t);
+    m_root = insertNode(m_root,t);
 }
 
 template<class T>
@@ -152,21 +158,21 @@ node<T>*  Tree<T>::LR_rotate(node<T> *root) {
 }
 
 template<class T>
-node<T>* Tree<T>::find(node<T>* root, const T &t) {
+node<T>* Tree<T>::findNode(node<T>* root, const T &t) {
     if(root != nullptr) {
         if (t == root->data)
             return root;
         if (t < root->data)
-            return find(root->l, t);
+            return findNode(root->l, t);
         else
-            return find(root->r, t);
+            return findNode(root->r, t);
     }
     return nullptr;
 }
 
 template<class T>
 node<T>* Tree<T>::find(const T &t) {
-    return find(m_root,t);
+    return findNode(m_root,t);
 }
 
 template<class T>
@@ -182,6 +188,15 @@ node<T> *Tree<T>::minValueNode(node<T> *root) {
 
 template<class T>
 node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
+    if (t == m_max){
+        if (m_max->r == nullptr){
+            m_max = m_max->parent;
+        }
+        else{
+            m_max = m_max->r;
+        }
+    }
+
     if(root == nullptr)
         return root;
 
@@ -208,7 +223,7 @@ node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
             return temp;
         }
 
-        node<T>* temp = minValueNode(root->r);
+        node<T>* temp = minValueNode(root->r); //complexity issue
         root->data = temp->data;
         root->r = removeNode(root->r,temp->data);
     }
@@ -227,7 +242,7 @@ void Tree<T>::remove(const T &t) {
 }
 
 template<class T>
-void Tree<T>::inOrder(node<T>* root, void (*func)(node<T> *)) {
+void Tree<T>::inOrder(node<T>* root, void (*func)(node<T> *), * const output) {
     if(root == nullptr)
         return;
 
@@ -237,8 +252,8 @@ void Tree<T>::inOrder(node<T>* root, void (*func)(node<T> *)) {
 }
 
 template<class T>
-void Tree<T>::inOrder(void (*func)(node<T> *)) {
-    inOrder(m_root,func);
+void Tree<T>::inOrder(void (*func)(node<T> *), * const output) {
+    inOrder();
 }
 
 template<class T>

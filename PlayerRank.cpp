@@ -28,6 +28,8 @@ bool PlayerRank::operator<(const PlayerRank &playerRank) const {
             }
         }
     }
-
+PlayerRank::getId(){
+        return m_playerId;
+    }
 
 }
