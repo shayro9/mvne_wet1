@@ -9,26 +9,19 @@ void printN(node<int>* node)
 int main()
 {
     Tree<int> test;
+    Tree<int> test2;
 
     test.insert(4);
     test.insert(2);
     test.insert(1);
     test.insert(6);
     test.insert(5);
-    test.insert(3);
-    test.insert(7);
-    test.insert(8);
-    test.insert(9);
-    test.insert(10);
+    test2.insert(3);
+    test2.insert(7);
+    test2.insert(8);
+    test2.insert(9);
+    test2.insert(10);
 
-    test.inOrder(printN);
-    std::cout<< "\n";
-    test.preOrder(printN);
-    std::cout<< "\n";
-    test.postOrder(printN);
-
-    test.remove(8);
-    std::cout<< "\n";
-    test.inOrder(printN);
+    test.merge(test2,5,5);
     return 0;
 }
