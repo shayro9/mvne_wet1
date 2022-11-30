@@ -5,8 +5,6 @@
 #ifndef MVNE_WET1_LINKEDLIST_H
 #define MVNE_WET1_LINKEDLIST_H
 
-#endif //MVNE_WET1_LINKEDLIST_H
-
 template <class T>
 struct LinkedListNode
 {
@@ -97,3 +95,5 @@ LinkedListNode<T> *LinkedList<T>::insert(const T &data) {
     tail = (*to_allocate);
     return (*to_allocate);
 }
+
+#endif //MVNE_WET1_LINKEDLIST_H

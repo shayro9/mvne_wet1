@@ -8,11 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/shayr/Documents/GitHub/mvne_wet1/Player.cpp" "CMakeFiles/mvne_wet1.dir/Player.cpp.obj" "msvc" "CMakeFiles/mvne_wet1.dir/Player.cpp.obj.d"
   "C:/Users/shayr/Documents/GitHub/mvne_wet1/PlayerId.cpp" "CMakeFiles/mvne_wet1.dir/PlayerId.cpp.obj" "msvc" "CMakeFiles/mvne_wet1.dir/PlayerId.cpp.obj.d"
   "C:/Users/shayr/Documents/GitHub/mvne_wet1/Team.cpp" "CMakeFiles/mvne_wet1.dir/Team.cpp.obj" "msvc" "CMakeFiles/mvne_wet1.dir/Team.cpp.obj.d"
-  "C:/Users/shayr/Documents/GitHub/mvne_wet1/main.cpp" "CMakeFiles/mvne_wet1.dir/main.cpp.obj" "msvc" "CMakeFiles/mvne_wet1.dir/main.cpp.obj.d"
-  "C:/Users/shayr/Documents/GitHub/mvne_wet1/worldcup23a1.cpp" "CMakeFiles/mvne_wet1.dir/worldcup23a1.cpp.obj" "msvc" "CMakeFiles/mvne_wet1.dir/worldcup23a1.cpp.obj.d"
   )
 
 # Targets to which this target links.

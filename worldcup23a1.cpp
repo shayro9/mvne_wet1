@@ -9,7 +9,6 @@
 world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>()),
                              completeTeams(Tree<CompleteTeam>())
 {
-
 	// TODO: Your code goes here
 }
 

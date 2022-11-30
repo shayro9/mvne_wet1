@@ -10,7 +10,6 @@ struct node{
     T data;
     node* l;
     node* r;
-    node* parent;
 };
 
 template <class T>
@@ -25,6 +24,7 @@ private:
     node<T>* removeNode(node<T> *root, const T& t);
     node<T>* minValueNode(node<T> *root);
     node<T>* balance(node<T> *bad_node);
+
     node<T>* RR_rotate(node<T> *root);
     node<T>* LL_rotate(node<T> *root);
     node<T>* RL_rotate(node<T> *root);
