@@ -29,8 +29,8 @@ private:
     void preOrder(node<T>* root, void (*func)(node<T>*));
     void inOrder(node<T>* root, void (*func)(node<T>*,int),int num);
     void postOrder(node<T>* root, void (*func)(node<T>*));
-    int tree2ArrayInOrder_rec(node<T>* root, T *output, int index);
-    int tree2IdArrayInOrder_rec(node<T> *root, int *output, int index);
+    int tree2ArrayInOrder_rec(node<T>* root, T *output, int index, bool (*cond)(node<T>*));
+    int tree2IDArrayInOrder_rec(node<T> *root, int *output, int index);
     node<T>* sortedArray2Tree( T *input,int start, int end);
 
 
@@ -51,8 +51,8 @@ public:
 
     void merge(Tree<T>& t, int n, int m);
 
-    void tree2ArrayInOrder(T * output);
-    void tree2IdArrayInOrder(int * output);
+    void tree2ArrayInOrder(T * output, bool (*cond)(node<T>*) =true);
+    void tree2IDArrayInOrder(int * output);
     void preOrder(void (*func)(node<T>*));
     void inOrder(void (*func)(node<T>*,int),int num);
     void postOrder(void (*func)(node<T>*));
@@ -294,35 +294,36 @@ void Tree<T>::postOrder(void (*func)(node<T> *)) {
 }
 
 template<class T>
-void Tree<T>::tree2IdArrayInOrder(int *output) {
-    tree2IdArrayInOrder_rec(m_root,output,0);
+void Tree<T>::tree2IDArrayInOrder(int *output) {
+    tree2IDArrayInOrder_rec(m_root, output, 0);
 }
 
 template<class T>
-int Tree<T>::tree2IdArrayInOrder_rec(node<T> *root, int *output, int index) {
+int Tree<T>::tree2IDArrayInOrder_rec(node<T> *root, int *output, int index) {
     if(root == nullptr)
         return index;
 
-    index = tree2IdArrayInOrder_rec(root->l,output,index);
+    index = tree2IDArrayInOrder_rec(root->l, output, index);
     output[index++] = (int)root->data;
-    return tree2IdArrayInOrder_rec(root->r,output,index);
+    return tree2IDArrayInOrder_rec(root->r, output, index);
 
 }
 
 template<class T>
-void Tree<T>::tree2ArrayInOrder(T * output) {
-    tree2ArrayInOrder_rec(m_root,output,0);
+void Tree<T>::tree2ArrayInOrder(T * output, bool (*cond)(node<T>*)) {
+    tree2ArrayInOrder_rec(m_root,output,0,cond);
 }
 
 
 template<class T>
-int Tree<T>::tree2ArrayInOrder_rec(node<T> *root, T *output, int index) {
+int Tree<T>::tree2ArrayInOrder_rec(node<T> *root, T *output, int index, bool (*cond)(node<T>*)) {
     if(root == nullptr)
         return index;
 
-    index = tree2ArrayInOrder_rec(root->l,output,index);
-    output[index++] = root->data;
-    return tree2ArrayInOrder_rec(root->r,output,index);
+    index = tree2ArrayInOrder_rec(root->l,output,index,cond);
+    if(cond(root))
+        output[index++] = root->data;
+    return tree2ArrayInOrder_rec(root->r,output,index, cond);
 
 }
 

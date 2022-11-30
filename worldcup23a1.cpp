@@ -351,10 +351,10 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
         if (currTeam == nullptr || currTeam->getPlayersNum() == 0){
             return StatusType::FAILURE;
         }
-        currTeam->getPlayersRank().tree2IdArrayInOrder(output);
+        currTeam->getPlayersRank().tree2IDArrayInOrder(output);
     }
     else{
-        playersRank.tree2IdArrayInOrder(output);
+        playersRank.tree2IDArrayInOrder(output);
     }
 
 	return StatusType::SUCCESS;
@@ -382,6 +382,14 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
 	// TODO: Your code goes here
+
+    Team *competing_teams {};
+    teams.tree2ArrayInOrder(competing_teams,isComplete);
 	return 2;
+}
+
+bool isComplete(node<Team>* t)
+{
+    return t->data.isComplete();
 }
 

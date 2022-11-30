@@ -73,4 +73,6 @@ public:
 	// } </DO-NOT-MODIFY>
 };
 
+bool isComplete(node<Team>* t);
+
 #endif // WORLDCUP23A1_H_
