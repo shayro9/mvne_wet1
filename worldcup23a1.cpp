@@ -57,12 +57,11 @@ StatusType world_cup_t::remove_team(int teamId)
     try
     {
         //delete players trees in team
-        /* TODO: ...
-        if (completeTeams.find(teamId) != nullptr){
-            node<CompleteTeam>* complete_to_remove = completeTeams.find(teamId);
-            completeTeams.remove(complete_to_remove);
+        CompleteTeam *com_to_remove = &completeTeams.find(teamId)->data;
+        if (com_to_remove != nullptr){
+            completeTeams.remove(*com_to_remove);
         }
-        */
+
         teams.remove(*to_remove);
     }
     catch (const std::bad_alloc &)
@@ -103,13 +102,12 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
     numOfPlayers++;
 
-    /* TODO: ...
     Team curr_team = teams.find(teamId)->data;
     if (curr_team.isComplete() && (completeTeams.find(teamId) == nullptr)){
         CompleteTeam* new_completeTeam = new CompleteTeam(curr_team.getId(),curr_team.getPoints(),curr_team.getGoals(),curr_team.getCards());
-        curr_team.setCompleteTeam(new_completeTeam);
-        completeTeams.insert(new_completeTeam);
-    }*/
+        //curr_team.setCompleteTeam(new_completeTeam); //connect Team Pointer to Complete Team
+        completeTeams.insert(*new_completeTeam);
+    }
 
 	return StatusType::SUCCESS;
 }

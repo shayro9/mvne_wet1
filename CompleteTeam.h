@@ -6,6 +6,7 @@
 class CompleteTeam {
 public:
     CompleteTeam(int teamId, int points=0, int goals=0, int cards=0);
+    CompleteTeam() = default;
 
     friend bool operator== (const CompleteTeam&, const CompleteTeam&);
     friend bool operator< (const CompleteTeam&, const CompleteTeam&);
