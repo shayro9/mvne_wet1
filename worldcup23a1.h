@@ -32,7 +32,7 @@ private:
     Tree<PlayerRank> playersRank;
     Tree<PlayerId> playersId;
     Tree<CompleteTeam> completeTeams;
-    LinkedListNode<PlayerRank*> playersRankList;
+    //LinkedListNode<PlayerRank*> playersRankList;
 	
 public:
 	// <DO-NOT-MODIFY> {

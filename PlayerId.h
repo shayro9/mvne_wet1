@@ -6,7 +6,9 @@
  public:
     PlayerId(Player &player);
     PlayerId(int id);
-    PlayerId();
+    PlayerId() = default;
+
+    Player* getPlayer();
 
     friend bool operator== (const PlayerId&, const PlayerId&);
     friend bool operator< (const PlayerId&, const PlayerId&);

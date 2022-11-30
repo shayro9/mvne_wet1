@@ -1,9 +1,4 @@
-//
-// Created by shayr on 23/11/2022.
-//
-
 #include "Player.h"
-#include "Team.h"
 
 Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper) :
     m_playerId(playerId),
@@ -16,22 +11,39 @@ Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, 
     m_playerRank = new PlayerRank(playerId, goals, cards);
     m_groupPlayerRank = new PlayerRank(playerId, goals, cards);
 
+    /*
     m_team = teams.find(teamId);
     m_gamesTeamPlayedBefore = m_team->m_gamesPlayed;
     m_gamesTeamPlayed = &m_team->m_gamesPlayed;
-    playersRank.insert
-
+    playersRank.insert;
+    */
 }
 
-bool Player::operator<(const Player& player) const {
-    if (m_playerId < player.m_playerId){
+bool operator<(const Player& p1, const Player& p2) {
+    if (p1.m_playerId < p2.m_playerId){
         return true;
     }
     return false;
 }
 
-bool Player::operator==(const Player &player) const {
-    return m_playerId == player.m_playerId;
+bool operator==(const Player &p1, const Player& p2) {
+    return p1.m_playerId == p2.m_playerId;
+}
+
+bool operator> (const Player &p1, const Player& p2){
+    return p2 < p1;
+}
+
+bool operator!= (const Player &p1, const Player& p2){
+    return !(p1==p2);
+}
+
+bool operator<=(const Player &p1, const Player& p2){
+    return p1 < p2 || p1 == p2;
+}
+
+bool operator>=(const Player &p1, const Player& p2){
+    return p2 <= p1;
 }
 
 int Player::getId() const{
@@ -60,4 +72,22 @@ Team *Player::getTeam() {
 
 bool Player::isGoalKeeper() const {
     return m_goalKeeper;
+}
+
+void Player::updateStats(int games, int goals, int cards) {
+    m_gamesPlayed += games;
+    m_goals += goals;
+    m_cards += cards;
+}
+
+int Player::getGamesPlayed() const {
+    return m_gamesPlayed;
+}
+
+int Player::getGamesTeamPlayedBefore() const {
+    return m_gamesTeamPlayedBefore;
+}
+
+void Player::setGamesTeamPlayedBefore(int games) {
+    m_gamesTeamPlayedBefore = games;
 }

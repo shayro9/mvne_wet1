@@ -3,8 +3,9 @@
 //
 #include "PlayerRank.h"
 
-PlayerRank::PlayerRank(int playerId, int goals, int cards) : m_playerId(playerId), m_goals(goals), m_cards(cards){
-    m_playerRankNode = new LinkedListNode<int>(playerId);
+PlayerRank::PlayerRank(int playerId, int goals, int cards) : m_playerId(playerId), m_goals(goals), m_cards(cards)
+{
+    //m_playerRankNode = new LinkedListNode<int>(playerId);
 }
 
 bool operator<(const PlayerRank &pr1, const PlayerRank &pr2) {
@@ -31,6 +32,14 @@ bool operator==(const PlayerRank &pr1, const PlayerRank &pr2){
     if(pr1.m_playerId == pr2.m_playerId)
         return true;
     return false;
+}
+
+int PlayerRank::getId() const {
+    return m_playerId;
+}
+
+PlayerRank::operator int() const {
+    return m_playerId;
 }
 
 bool operator> (const PlayerRank &pr1, const PlayerRank &pr2){

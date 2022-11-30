@@ -1,25 +1,28 @@
-//
-// Created by amida on 25/11/2022.
-//
+
 
 #ifndef MVNE_WET1_PLAYERRANK_H
 #define MVNE_WET1_PLAYERRANK_H
-#include "LinkedList.h"
+//#include "LinkedList.h"
 
 class PlayerRank{
 public:
-    explicit PlayerRank(int playerId, int goals, int cards);
+    PlayerRank(int playerId, int goals=0, int cards=0);
     ~PlayerRank() = default;
-    PlayerRank();
+    PlayerRank() = default;
+
+    int getId() const;
+
     friend bool operator== (const PlayerRank&, const PlayerRank&);
     friend bool operator< (const PlayerRank&, const PlayerRank&);
+
+    operator int() const;
   //  int getId() const;
 
 private:
     int m_playerId;
     int m_goals;
     int m_cards;
-    LinkedListNode<int>* m_playerRankNode;
+    //LinkedListNode<int>* m_playerRankNode;
 };
 
 bool operator!= (const PlayerRank&, const PlayerRank&);

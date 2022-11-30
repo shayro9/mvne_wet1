@@ -1,24 +1,33 @@
 #ifndef MVNE_WET1_PLAYER_H
 #define MVNE_WET1_PLAYER_H
 
-#include "Team.h"
 #include "PlayerRank.h"
+class Team;
 
 class Player {
 public:
     Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
     ~Player() = default;
+    Player() = default;
 
     int getId() const;
     int getGoals() const;
     int getCards() const;
     bool isGoalKeeper() const;
+    int getGamesPlayed() const;
+    int getGamesTeamPlayedBefore() const;
+
+    void setGamesTeamPlayedBefore(int games);
 
     PlayerRank* getPlayerRank();
     PlayerRank* getGroupPlayerRank();
     Team* getTeam();
-   // bool operator<(const Player& player) const;
-  //  bool operator==(const Player& player) const;
+
+    void updateStats(int games, int goals, int cards);
+
+    friend bool operator<(const Player&, const Player&);
+    friend bool operator==(const Player&, const Player&);
+
 private:
     int m_playerId;
     int m_teamId;
@@ -33,6 +42,9 @@ private:
     Team* m_team;
 };
 
-friend bool operator>(const Player& player1, const Player player2);
+bool operator!= (const Player&, const Player&);
+bool operator>= (const Player&, const Player&);
+bool operator> (const Player&, const Player&);
+bool operator<= (const Player&, const Player&);
 
 #endif //MVNE_WET1_PLAYER_H

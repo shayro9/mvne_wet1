@@ -1,7 +1,3 @@
-//
-// Created by shayr on 23/11/2022.
-//
-
 #ifndef MVNE_WET1_TREE_H
 #define MVNE_WET1_TREE_H
 
@@ -31,9 +27,10 @@ private:
     node<T>* LR_rotate(node<T> *root);
 
     void preOrder(node<T>* root, void (*func)(node<T>*));
-    void inOrder(node<T>* root, void (*func)(node<T>*));
+    void inOrder(node<T>* root, void (*func)(node<T>*,int),int num);
     void postOrder(node<T>* root, void (*func)(node<T>*));
-    int tree2ArrayInOrder(node<T>* root, T *output, int index);
+    int tree2ArrayInOrder_rec(node<T>* root, T *output, int index);
+    int tree2IdArrayInOrder_rec(node<T> *root, int *output, int index);
     node<T>* sortedArray2Tree( T *input,int start, int end);
 
 
@@ -54,9 +51,10 @@ public:
 
     void merge(Tree<T>& t, int n, int m);
 
-    void tree2ArrayInOrder(T *output);
+    void tree2ArrayInOrder(T * output);
+    void tree2IdArrayInOrder(int * output);
     void preOrder(void (*func)(node<T>*));
-    void inOrder(void (*func)(node<T>*));
+    void inOrder(void (*func)(node<T>*,int),int num);
     void postOrder(void (*func)(node<T>*));
 };
 
@@ -66,7 +64,7 @@ Tree<T>::Tree() : m_root(nullptr), m_max(nullptr)
 
 template <class T>
 node<T>* Tree<T>::getMax() {
-    return m_max->data;
+    return m_max;
 }
 
 template <class T>
@@ -251,18 +249,18 @@ void Tree<T>::remove(const T &t) {
 }
 
 template<class T>
-void Tree<T>::inOrder(node<T>* root, void (*func)(node<T> *)) {
+void Tree<T>::inOrder(node<T>* root, void (*func)(node<T> *,int), int num) {
     if(root == nullptr)
         return;
 
-    inOrder(root->l,func);
-    func(root);
-    inOrder(root->r,func);
+    inOrder(root->l,func, num);
+    func(root,num);
+    inOrder(root->r,func, num);
 }
 
 template<class T>
-void Tree<T>::inOrder(void (*func)(node<T> *)) {
-    inOrder(m_root,func);
+void Tree<T>::inOrder(void (*func)(node<T> *,int), int num) {
+    inOrder(m_root,func,num);
 }
 
 template<class T>
@@ -296,18 +294,35 @@ void Tree<T>::postOrder(void (*func)(node<T> *)) {
 }
 
 template<class T>
-void Tree<T>::tree2ArrayInOrder(T *output) {
-    tree2ArrayInOrder(m_root,output,0);
+void Tree<T>::tree2IdArrayInOrder(int *output) {
+    tree2IdArrayInOrder_rec(m_root,output,0);
 }
 
 template<class T>
-int Tree<T>::tree2ArrayInOrder(node<T> *root, T *output, int index) {
+int Tree<T>::tree2IdArrayInOrder_rec(node<T> *root, int *output, int index) {
     if(root == nullptr)
         return index;
 
-    index = tree2ArrayInOrder(root->l,output,index);
+    index = tree2IdArrayInOrder_rec(root->l,output,index);
+    output[index++] = (int)root->data;
+    return tree2IdArrayInOrder_rec(root->r,output,index);
+
+}
+
+template<class T>
+void Tree<T>::tree2ArrayInOrder(T * output) {
+    tree2ArrayInOrder_rec(m_root,output,0);
+}
+
+
+template<class T>
+int Tree<T>::tree2ArrayInOrder_rec(node<T> *root, T *output, int index) {
+    if(root == nullptr)
+        return index;
+
+    index = tree2ArrayInOrder_rec(root->l,output,index);
     output[index++] = root->data;
-    return tree2ArrayInOrder(root->r,output,index);
+    return tree2ArrayInOrder_rec(root->r,output,index);
 
 }
 

@@ -8,6 +8,14 @@ include_directories(.)
 add_executable(mvne_wet1
         Team.h
         Team.cpp
+        Player.h
+        Player.cpp
+        PlayerRank.h
+        PlayerRank.cpp
         PlayerId.h
-        PlayerId.cpp)
+        PlayerId.cpp
+        Tree.h
+        worldcup23a1.h
+        worldcup23a1.cpp
+        main.cpp)
 
