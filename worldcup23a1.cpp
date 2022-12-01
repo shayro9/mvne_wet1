@@ -11,7 +11,7 @@
 #define LOSS 0
 
 world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>()),
-                             completeTeams(Tree<CompleteTeam>())
+                             completeTeams(Tree<CompleteTeam>()), playerRankList(List<PlayerRank*>())
 {
 	// TODO: Your code goes here
 }
@@ -114,6 +114,14 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         playersRank.insert(*new_player->getPlayerRank());
         new_player->getTeam()->addPlayer(new_player);
         playersId.insert(*new_player);
+        LNode<PlayerRank*>* prevInList = playersRank.findMaxSmaller(*new_player->getPlayerRank())->data.getPlayerNode();
+        if (prevInList != nullptr){
+            playerRankList.insertAfter(prevInList, new_player->getPlayerRank());
+        }
+        else{
+            playerRankList.insertFront(new_player->getPlayerRank());
+        }
+
     }
     catch (const std::bad_alloc &)
     {
@@ -152,20 +160,27 @@ StatusType world_cup_t::remove_player(int playerId)
 
     try
     {
+        playerRankList.remove(currPlayer->getPlayer()->getPlayerRank()->getPlayerNode());
         playersRank.remove(*currPlayer->getPlayer()->getPlayerRank());
         currPlayer->getPlayer()->getTeam()->removePlayer(currPlayer->getPlayer());
         playersId.remove(*currPlayer);
+        currTeam->updateStats(-currGoals, -currCards, -1);
+        if (is_goalkeeper){
+            currTeam->updateGoalkeepersNum(-1);
+        }
+
     }
     catch (const std::bad_alloc &)
     {
         return StatusType::ALLOCATION_ERROR;
     }
 
-    /* TODO: ...
-    if ((currTeam->m_numOfPlayers < 11) || (currTeam->m_numOfGoalkeepers < 1) || (currTeam->m_completeTeam != nullptr)){
-        CompleteTeam* currComplete = currTeam->m_completeTeam;
-        completeTeams.remove(currComplete);
-    }*/
+
+    if ((currTeam->getPlayersNum() < 11) || (currTeam->getGoalKeepersNum() < 1) || (currTeam->getCompleteTeamPointer() != nullptr)){
+        CompleteTeam* currComplete = currTeam->getCompleteTeamPointer();
+        completeTeams.remove(*currTeam->getCompleteTeamPointer());
+        currTeam->setCompleteTeamPointer(nullptr);
+    }
 
 	return StatusType::SUCCESS;
 }

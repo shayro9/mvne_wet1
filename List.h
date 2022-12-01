@@ -23,7 +23,7 @@ private:
 public:
     List();
     ~List();
-    List(const List<T>& l) = delete;
+    //List(const List<T>& l) = delete;
     List<T>& operator=(const List<T>& l) = delete;
 
     void insertAfter(LNode<T>* prevNode, T data);

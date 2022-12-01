@@ -3,6 +3,7 @@
 #ifndef MVNE_WET1_PLAYERRANK_H
 #define MVNE_WET1_PLAYERRANK_H
 //#include "LinkedList.h"
+#include "List.h"
 
 class PlayerRank{
 public:
@@ -11,6 +12,8 @@ public:
     PlayerRank() = default;
 
     int getId() const;
+    LNode<PlayerRank*>* getPlayerNode() const;
+
 
     friend bool operator== (const PlayerRank&, const PlayerRank&);
     friend bool operator< (const PlayerRank&, const PlayerRank&);
@@ -22,6 +25,8 @@ private:
     int m_playerId;
     int m_goals;
     int m_cards;
+    LNode<PlayerRank*>* m_playerNode;
+
     //LinkedListNode<int>* m_playerRankNode;
 };
 

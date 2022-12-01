@@ -4,6 +4,7 @@
 #include "Tree.h"
 #include "PlayerRank.h"
 #include "Player.h"
+#include "CompleteTeam.h"
 
 class Team {
 public:
@@ -22,11 +23,15 @@ public:
     int getGamesPlayed() const;
     int* getGamesPlayedPoint();
     int getGoalKeepersNum() const;
+    CompleteTeam* getCompleteTeamPointer() const;
+    void setCompleteTeamPointer(CompleteTeam* ptr) ;
+
 
     Tree<Player>& getPlayers();
     Tree<PlayerRank>& getPlayersRank();
 
-    void updateStats(int goals, int cards);
+    void updateStats(int goals, int cards, int players;
+    void updateGoalkeepersNum(int n);
     void addPoints(int amount);
     void mergeWith(Team &t,int new_Id);
 
@@ -44,7 +49,7 @@ private:
     int m_gamesPlayed;
     int m_numOfGoalkeepers;
 
-    //CompleteTeam* m_completeTeam;
+    CompleteTeam* m_completeTeam;
 
     Tree<Player> m_players;
     Tree<PlayerRank> m_TeamPlayersRank;

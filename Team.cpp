@@ -86,10 +86,15 @@ void Team::removePlayer(Player *player) {
     m_numOfGoalkeepers -= player->isGoalKeeper();
 }
 
-void Team::updateStats(int goals, int cards) {
+void Team::updateStats(int goals, int cards, int players) {
     m_goals += goals;
     m_cards += cards;
+    m_numOfPlayers += players;
 }
+void Team::updateGoalkeepersNum(int n){
+    m_numOfGoalkeepers += n;
+}
+
 
 void Team::addPoints(int amount) {
     m_points += amount;
@@ -135,6 +140,14 @@ Tree<PlayerRank> &Team::getPlayersRank() {
 
 int *Team::getGamesPlayedPoint() {
     return &m_gamesPlayed;
+}
+
+CompleteTeam *Team::getCompleteTeamPointer() const {
+    return m_completeTeam;
+}
+
+void Team::setCompleteTeamPointer(CompleteTeam* ptr)  {
+    m_completeTeam = ptr;
 }
 
 void UpdateGames(node<Player>* p, int gamePlayedBefore)

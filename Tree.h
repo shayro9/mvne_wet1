@@ -6,6 +6,7 @@ struct node{
     T data;
     node* l;
     node* r;
+    node* parent;
 };
 
 template <class T>
@@ -21,6 +22,8 @@ public:
     void remove(const T& t);
 
     node<T>* getMax();
+    node<T>* findMaxSmaller(const T& t);
+
     void merge(Tree<T>& t, int n, int m);
 
     void tree2ArrayInOrder(T * output, bool (*cond)(node<T>*));
@@ -37,9 +40,11 @@ private:
 
     int balanceFactor(node<T> *n);
     node<T>* findNode(node<T> *root, const T& t);
+    node<T>* findMaxSmallerNode(node<T>* root, const T& t);
     node<T>* insertNode(node<T> *root, const T& t);
     node<T>* removeNode(node<T> *root, const T& t);
     node<T>* minValueNode(node<T> *root);
+    node<T>* maxValueNode(node<T> *root);
     node<T>* balance(node<T> *bad_node);
 
     node<T>* RR_rotate(node<T> *root);
@@ -55,6 +60,33 @@ private:
     node<T>* sortedArray2Tree( T *input,int start, int end);
     int height(node<T>* n);
 };
+
+template<class T>
+node<T>* Tree<T>::findMaxSmaller(const T &t) {
+    return findMaxSmallerNode(m_root, t);
+}
+
+template<class T>
+node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
+    node<T>* currNode = find(t);
+    if (currNode->l == nullptr){
+        return currNode->parent;
+    }
+    else{
+        return maxValueNode(currNode->l);
+    }
+}
+
+template<class T>
+node<T> *Tree<T>::maxValueNode(node<T> *root){
+    if(root == nullptr)
+        return nullptr;
+    if (root->r == nullptr){
+        return root;
+    }
+    return maxValueNode(root->r);
+}
+
 
 template <class T>
 Tree<T>::Tree() : m_root(nullptr), m_max(nullptr)

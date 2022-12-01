@@ -60,3 +60,7 @@ bool operator>=(const PlayerRank &pr1, const PlayerRank &pr2)
 {
     return pr2 <= pr1;
 }
+
+LNode<PlayerRank *> *PlayerRank::getPlayerNode() const {
+    return m_playerNode;
+}
