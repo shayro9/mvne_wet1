@@ -42,18 +42,6 @@ private:
     PlayerRank* m_playerRank;
     PlayerRank* m_groupPlayerRank;
     Team* m_team;
-<<<<<<< HEAD
-
-
-
-public:
-    Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper, int* gamesTeamPlayed, );
-    ~Player() = default;
-   // bool operator<(const Player& player) const;
-  //  bool operator==(const Player& player) const;
-
-=======
->>>>>>> acf01eaccbadcaa739718bec82a278eb66e6964b
 };
 
 bool operator!= (const Player&, const Player&);
