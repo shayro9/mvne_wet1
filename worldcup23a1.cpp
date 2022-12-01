@@ -88,6 +88,13 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
     try
     {
+
+        Player new_player = Player(playerId, teamId, gamesPlayed,goals, cards, goalKeeper);
+
+
+
+
+        /*
         Player new_player = Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper); // add games team played before
         new_player.m_playerRank = new PlayerRank(playerId, goals, cards);
         playersRank.insert(new_player.m_playerRank);
@@ -99,6 +106,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         new_player.m_team->m_TeamPlayersRank.insert(*new_player.m_groupPlayerRank);
         players.insert(new_player);
         playersId.insert(new PlayerId(playerId, &new_player));
+        */
+
+
     }
     catch (const std::bad_alloc &)
     {

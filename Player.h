@@ -25,7 +25,7 @@ class Player {
 
 
 public:
-    Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
+    Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper, int* gamesTeamPlayed, );
     ~Player() = default;
    // bool operator<(const Player& player) const;
   //  bool operator==(const Player& player) const;
