@@ -21,4 +21,3 @@ add_executable(mvne_wet1
         CompleteTeam.h
         CompleteTeam.cpp
         List.h)
-
