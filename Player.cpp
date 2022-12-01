@@ -19,6 +19,11 @@ Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, 
     */
 }
 
+Player::~Player() {
+    delete(m_playerRank);
+    delete(m_groupPlayerRank);
+}
+
 bool operator<(const Player& p1, const Player& p2) {
     if (p1.m_playerId < p2.m_playerId){
         return true;
@@ -90,4 +95,10 @@ int Player::getGamesTeamPlayedBefore() const {
 
 void Player::setGamesTeamPlayedBefore(int games) {
     m_gamesTeamPlayedBefore = games;
+}
+
+void Player::setTeam(Team *t, int gamesPlayed, int* games) {
+    m_team = t;
+    m_gamesTeamPlayedBefore = gamesPlayed;
+    m_gamesTeamPlayed = games;
 }

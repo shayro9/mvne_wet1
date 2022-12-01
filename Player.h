@@ -7,7 +7,7 @@ class Team;
 class Player {
 public:
     Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
-    ~Player() = default;
+    ~Player();
     Player() = default;
 
     int getId() const;
@@ -22,6 +22,7 @@ public:
     PlayerRank* getPlayerRank();
     PlayerRank* getGroupPlayerRank();
     Team* getTeam();
+    void setTeam(Team* t, int gamesPlayed, int *games);
 
     void updateStats(int games, int goals, int cards);
 
@@ -36,6 +37,7 @@ private:
     int m_goals;
     int m_cards;
     bool m_goalKeeper;
+
     int* m_gamesTeamPlayed;
     PlayerRank* m_playerRank;
     PlayerRank* m_groupPlayerRank;

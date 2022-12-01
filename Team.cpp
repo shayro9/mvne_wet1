@@ -133,6 +133,10 @@ Tree<PlayerRank> &Team::getPlayersRank() {
     return m_TeamPlayersRank;
 }
 
+int *Team::getGamesPlayedPoint() {
+    return &m_gamesPlayed;
+}
+
 void UpdateGames(node<Player>* p, int gamePlayedBefore)
 {
 

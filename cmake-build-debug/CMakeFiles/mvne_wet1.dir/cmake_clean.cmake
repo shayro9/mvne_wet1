@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/mvne_wet1.dir/CompleteTeam.cpp.obj"
+  "CMakeFiles/mvne_wet1.dir/CompleteTeam.cpp.obj.d"
   "CMakeFiles/mvne_wet1.dir/Player.cpp.obj"
   "CMakeFiles/mvne_wet1.dir/Player.cpp.obj.d"
   "CMakeFiles/mvne_wet1.dir/PlayerId.cpp.obj"

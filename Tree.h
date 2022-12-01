@@ -10,6 +10,27 @@ struct node{
 
 template <class T>
 class Tree {
+public:
+    Tree();
+    ~Tree() = default;
+    Tree(const Tree& t)=default;
+    Tree& operator=(const Tree& q)=default;
+
+    node<T>* find(const T& t);
+    void insert(const T& t);
+    void remove(const T& t);
+
+    node<T>* getMax();
+    void merge(Tree<T>& t, int n, int m);
+
+    void tree2ArrayInOrder(T * output, bool (*cond)(node<T>*));
+
+    void tree2ArrayInOrder(T * output);
+    void tree2IDArrayInOrder(int * output);
+    void preOrder(void (*func)(node<T>*));
+    void inOrder(void (*func)(node<T>*,int),int num);
+    void postOrder(void (*func)(node<T>*));
+
 private:
     node<T>* m_root;
     node<T>* m_max;
@@ -32,30 +53,7 @@ private:
     int tree2ArrayInOrder_rec(node<T>* root, T *output, int index, bool (*cond)(node<T>*));
     int tree2IDArrayInOrder_rec(node<T> *root, int *output, int index);
     node<T>* sortedArray2Tree( T *input,int start, int end);
-
-
-protected:
     int height(node<T>* n);
-
-public:
-    Tree();
-    Tree(const Tree& t)=default;
-    ~Tree()=default;
-    Tree& operator=(const Tree& q)=default;
-
-    node<T>* find(const T& t);
-    node<T>* getMax();
-
-    void insert(const T& t);
-    void remove(const T& t);
-
-    void merge(Tree<T>& t, int n, int m);
-
-    void tree2ArrayInOrder(T * output, bool (*cond)(node<T>*) =true);
-    void tree2IDArrayInOrder(int * output);
-    void preOrder(void (*func)(node<T>*));
-    void inOrder(void (*func)(node<T>*,int),int num);
-    void postOrder(void (*func)(node<T>*));
 };
 
 template <class T>
@@ -314,6 +312,16 @@ void Tree<T>::tree2ArrayInOrder(T * output, bool (*cond)(node<T>*)) {
     tree2ArrayInOrder_rec(m_root,output,0,cond);
 }
 
+template <class T>
+bool cond_all(node<T>*)
+{
+    return true;
+}
+
+template<class T>
+void Tree<T>::tree2ArrayInOrder(T *output) {
+    tree2ArrayInOrder_rec(m_root,output, 0, cond_all);
+}
 
 template<class T>
 int Tree<T>::tree2ArrayInOrder_rec(node<T> *root, T *output, int index, bool (*cond)(node<T>*)) {

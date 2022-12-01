@@ -20,6 +20,7 @@ public:
     int getCards() const;
     int getPlayersNum() const;
     int getGamesPlayed() const;
+    int* getGamesPlayedPoint();
     int getGoalKeepersNum() const;
 
     Tree<Player>& getPlayers();

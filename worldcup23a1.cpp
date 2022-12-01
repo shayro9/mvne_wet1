@@ -24,6 +24,7 @@ world_cup_t::~world_cup_t()
 
 StatusType world_cup_t::add_team(int teamId, int points)
 {
+    // TODO: Your code goes here
     if ((teamId <= 0) || points < 0 ){
         return StatusType::INVALID_INPUT;
     }
@@ -39,7 +40,7 @@ StatusType world_cup_t::add_team(int teamId, int points)
     {  //is it allowed?
         return StatusType::ALLOCATION_ERROR;
     }
-	// TODO: Your code goes here
+
 	return StatusType::SUCCESS;
 }
 
@@ -91,6 +92,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
     try
     {
         Player* new_player = new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper); // add games team played before
+        Team* new_player_team = &teams.find(teamId)->data;
+        new_player->setTeam(new_player_team,new_player_team->getGamesPlayed(),new_player_team->getGamesPlayedPoint());
+
         playersRank.insert(*new_player->getPlayerRank());
         new_player->getTeam()->addPlayer(new_player);
         playersId.insert(*new_player);

@@ -7,11 +7,26 @@ CompleteTeam::CompleteTeam(int teamId, int points, int goals, int cards) :
     m_points(points)
 {}
 
-/*
-CompleteTeam::CompleteTeam(const Team &team)
-{
-    m_teamId = team.getId();
-    m_points = team.getPoints();
-    m_goals = team.getGoals();
-    m_cards = team.getCards();
-}*/
+bool operator==(const CompleteTeam &ct1, const CompleteTeam &ct2) {
+    return ct1.m_teamId == ct2.m_teamId;
+}
+
+bool operator<(const CompleteTeam &ct1, const CompleteTeam &ct2) {
+    return ct1.m_teamId < ct2.m_teamId;
+}
+
+bool operator> (const CompleteTeam &ct1, const CompleteTeam &ct2){
+    return ct2 < ct1;
+}
+
+bool operator!= (const CompleteTeam &ct1, const CompleteTeam &ct2){
+    return !(ct1==ct2);
+}
+
+bool operator<=(const CompleteTeam &ct1, const CompleteTeam &ct2){
+    return ct1 < ct2 || ct1 == ct2;
+}
+
+bool operator>=(const CompleteTeam &ct1, const CompleteTeam &ct2){
+    return ct2 <= ct1;
+}

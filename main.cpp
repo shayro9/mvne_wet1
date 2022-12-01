@@ -1,27 +1,17 @@
 #include "Tree.h"
-#include "iostream"
-
-void printN(node<int>* node)
-{
-    std::cout << node->data << " ";
-}
+#include "worldcup23a1.h"
 
 int main()
 {
-    Tree<int> test;
-    Tree<int> test2;
+    StatusType status;
+    world_cup_t* worldCup = new world_cup_t();
+    for (int i = 1; i < 11; ++i) {
+        status = worldCup->add_team(i,10*i/3);
+    }
+    status = worldCup->remove_team(11);
 
-    test.insert(4);
-    test.insert(2);
-    test.insert(1);
-    test.insert(6);
-    test.insert(5);
-    test2.insert(3);
-    test2.insert(7);
-    test2.insert(8);
-    test2.insert(9);
-    test2.insert(10);
-
-    test.merge(test2,5,5);
+    for (int i = 0; i < 200; ++i) {
+        status = worldCup->add_player(i,i%10 + 1,i%3,i%5,i%4,i%2);
+    }
     return 0;
 }

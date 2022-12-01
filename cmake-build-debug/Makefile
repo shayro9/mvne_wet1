@@ -118,6 +118,30 @@ mvne_wet1\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\build
 .PHONY : mvne_wet1\fast
 
+CompleteTeam.obj: CompleteTeam.cpp.obj
+.PHONY : CompleteTeam.obj
+
+# target to build an object file
+CompleteTeam.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\CompleteTeam.cpp.obj
+.PHONY : CompleteTeam.cpp.obj
+
+CompleteTeam.i: CompleteTeam.cpp.i
+.PHONY : CompleteTeam.i
+
+# target to preprocess a source file
+CompleteTeam.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\CompleteTeam.cpp.i
+.PHONY : CompleteTeam.cpp.i
+
+CompleteTeam.s: CompleteTeam.cpp.s
+.PHONY : CompleteTeam.s
+
+# target to generate assembly for a file
+CompleteTeam.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\mvne_wet1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\mvne_wet1.dir\CompleteTeam.cpp.s
+.PHONY : CompleteTeam.cpp.s
+
 Player.obj: Player.cpp.obj
 .PHONY : Player.obj
 
@@ -271,6 +295,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... mvne_wet1
+	@echo ... CompleteTeam.obj
+	@echo ... CompleteTeam.i
+	@echo ... CompleteTeam.s
 	@echo ... Player.obj
 	@echo ... Player.i
 	@echo ... Player.s
