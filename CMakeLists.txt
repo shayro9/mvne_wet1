@@ -6,5 +6,19 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(mvne_wet1
-        Tree.h main.cpp LinkedList.h)
+        Team.h
+        Team.cpp
+        Player.h
+        Player.cpp
+        PlayerRank.h
+        PlayerRank.cpp
+        PlayerId.h
+        PlayerId.cpp
+        Tree.h
+        worldcup23a1.h
+        worldcup23a1.cpp
+        main.cpp
+        CompleteTeam.h
+        CompleteTeam.cpp
+        List.h)
 
