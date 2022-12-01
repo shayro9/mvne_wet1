@@ -11,7 +11,7 @@
 #define LOSS 0
 
 world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>()),
-                             completeTeams(Tree<CompleteTeam>()), playerRankList(List<PlayerRank*>())
+                             completeTeams(Tree<CompleteTeam>()), playerRankList(List<PlayerRank*>()), completeTeamList(List<CompleteTeam*>())
 {
 	// TODO: Your code goes here
 }
@@ -60,6 +60,7 @@ StatusType world_cup_t::remove_team(int teamId)
         //delete players trees in team
         CompleteTeam *com_to_remove = &completeTeams.find(teamId)->data;
         if (com_to_remove != nullptr){
+            completeTeamList.remove(com_to_remove->getCompleteNode());
             completeTeams.remove(*com_to_remove);
         }
 
@@ -129,10 +130,16 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
     }
 
     numOfPlayers++;
-
+    // should be in try catch
     Team curr_team = teams.find(teamId)->data;
     if (curr_team.isComplete() && (completeTeams.find(teamId) == nullptr)){
         CompleteTeam* new_completeTeam = new CompleteTeam(curr_team.getId(),curr_team.getPoints(),curr_team.getGoals(),curr_team.getCards());
+        LNode<CompleteTeam*>* prevConInList = completeTeams.findMaxSmaller(*new_completeTeam)->data.getCompleteNode();
+        if (prevConInList != nullptr) {
+            completeTeamList.insertAfter(prevConInList, new_completeTeam);
+        } else{
+            completeTeamList.insertFront(new_completeTeam);
+        }
         //curr_team.setCompleteTeam(new_completeTeam); //connect Team Pointer to Complete Team
         completeTeams.insert(*new_completeTeam);
     }
@@ -178,9 +185,12 @@ StatusType world_cup_t::remove_player(int playerId)
 
     if ((currTeam->getPlayersNum() < 11) || (currTeam->getGoalKeepersNum() < 1) || (currTeam->getCompleteTeamPointer() != nullptr)){
         CompleteTeam* currComplete = currTeam->getCompleteTeamPointer();
+        completeTeamList.remove(currComplete->getCompleteNode());
         completeTeams.remove(*currTeam->getCompleteTeamPointer());
         currTeam->setCompleteTeamPointer(nullptr);
     }
+
+
 
 	return StatusType::SUCCESS;
 }

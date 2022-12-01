@@ -15,6 +15,10 @@ bool operator<(const CompleteTeam &ct1, const CompleteTeam &ct2) {
     return ct1.m_teamId < ct2.m_teamId;
 }
 
+LNode<CompleteTeam *> *CompleteTeam::getCompleteNode() const {
+    return m_completeNode;
+}
+
 bool operator> (const CompleteTeam &ct1, const CompleteTeam &ct2){
     return ct2 < ct1;
 }

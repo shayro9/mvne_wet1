@@ -2,6 +2,8 @@
 #define MVNE_WET1_PLAYER_H
 
 #include "PlayerRank.h"
+//#include "Team.h"
+
 class Team;
 
 class Player {

@@ -32,6 +32,7 @@ private:
     Tree<PlayerId> playersId;
     Tree<CompleteTeam> completeTeams;
     List<PlayerRank*> playerRankList;
+    List<CompleteTeam*> completeTeamList;
 
 
 public:

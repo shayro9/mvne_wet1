@@ -2,6 +2,8 @@
 #define MVNE_WET1_COMPLETETEAM_H
 
 //#include "Team.h"
+//#include "List.h"
+#include "PlayerRank.h"
 
 class CompleteTeam {
 public:
@@ -11,6 +13,7 @@ public:
     ~CompleteTeam() = default;
     CompleteTeam(const CompleteTeam& t)=default;
     CompleteTeam& operator=(const CompleteTeam& t)=default;
+    LNode<CompleteTeam*>* getCompleteNode() const;
 
     friend bool operator== (const CompleteTeam&, const CompleteTeam&);
     friend bool operator< (const CompleteTeam&, const CompleteTeam&);
@@ -20,6 +23,8 @@ private:
     int m_points;
     int m_goals;
     int m_cards;
+    LNode<CompleteTeam*>* m_completeNode;
+
 };
 
 bool operator!= (const CompleteTeam&, const CompleteTeam&);
