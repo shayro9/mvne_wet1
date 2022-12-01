@@ -102,3 +102,13 @@ void Player::setTeam(Team *t, int gamesPlayed, int* games) {
     m_gamesTeamPlayedBefore = gamesPlayed;
     m_gamesTeamPlayed = games;
 }
+
+void Player::updatePlayerRank(PlayerRank *ptr) {
+    m_playerRank = ptr;
+
+}
+
+void Player::updateTeamPlayerRank(PlayerRank *ptr) {
+    m_groupPlayerRank = ptr;
+
+}

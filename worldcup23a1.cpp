@@ -195,7 +195,8 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
     Player* currPlayer = (playersId.find(playerId)->data.getPlayer());
 
     currPlayer->updateStats(gamesPlayed,scoredGoals,cardsReceived);
-    currPlayer->getTeam()->updateStats(scoredGoals,cardsReceived);
+    currPlayer->getTeam()->updateStats(scoredGoals,cardsReceived, 0);
+
 
     /*
     PlayerRank* currPlayerRank = currPlayer->m_playerRank;
@@ -211,6 +212,33 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
     currPlayer->m_groupPlayerRank = new_teamPlayerRank;
     */
     //add exceptions
+
+
+    //Player* currPlayer = playersId.find(playerId)->data.getPlayer();
+    PlayerRank* currPlayerRank = currPlayer->getPlayerRank();
+    playerRankList.remove(currPlayerRank->getPlayerNode());
+    playersRank.remove(*currPlayerRank);
+
+    PlayerRank* newPlayerRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
+    playersRank.insert(*newPlayerRank);
+    LNode<PlayerRank*>* prevInList = playersRank.findMaxSmaller(*newPlayerRank)->data.getPlayerNode();
+    if (prevInList != nullptr){
+        playerRankList.insertAfter(prevInList, newPlayerRank);
+    }
+    else{
+        playerRankList.insertFront(newPlayerRank);
+    }
+
+    Team* currTeam = currPlayer->getTeam();
+    PlayerRank* currTeamPlayerRank = currPlayer->getGroupPlayerRank();
+    currTeam->getPlayersRank().remove(*currTeamPlayerRank);
+    PlayerRank* newTeamPlayerRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
+    currTeam->getPlayersRank().insert(*newTeamPlayerRank);
+
+    currPlayer->updateStats(currPlayer->getGamesPlayed(), currPlayer->getGoals(), currPlayer->getCards() );
+    currPlayer->updatePlayerRank(newPlayerRank);
+    currPlayer->updateTeamPlayerRank(newTeamPlayerRank);
+    currPlayer->getTeam()->updateStats(scoredGoals,cardsReceived, 0);
 
     return StatusType::SUCCESS;
 }

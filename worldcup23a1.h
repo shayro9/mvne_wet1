@@ -22,7 +22,7 @@
 #include "PlayerRank.h"
 #include "Team.h"
 #include "CompleteTeam.h"
-#include "List.h"
+//#include "List.h"
 
 class world_cup_t {
 private:

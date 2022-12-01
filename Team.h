@@ -30,7 +30,7 @@ public:
     Tree<Player>& getPlayers();
     Tree<PlayerRank>& getPlayersRank();
 
-    void updateStats(int goals, int cards, int players;
+    void updateStats(int goals, int cards, int players);
     void updateGoalkeepersNum(int n);
     void addPoints(int amount);
     void mergeWith(Team &t,int new_Id);
