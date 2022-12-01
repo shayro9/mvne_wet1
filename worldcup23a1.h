@@ -74,6 +74,9 @@ public:
 	// } </DO-NOT-MODIFY>
 };
 
+//is it allowed?
 bool isComplete(node<Team>* t);
+
+int abs(int x);
 
 #endif // WORLDCUP23A1_H_

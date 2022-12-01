@@ -445,9 +445,49 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
         return StatusType::FAILURE;
     }
 
+    PlayerId* currPlayerId = &playersId.find(playerId)->data;
+    Player* currPlayer = currPlayerId->getPlayer();
+    if (currPlayer->getTeam()->getId() != teamId){
+        return StatusType::FAILURE;
+    }
+    PlayerRank* currRank = currPlayer->getPlayerRank();
+    PlayerRank* prevInList = currPlayer->getPlayerRank()->getPlayerNode()->m_prev->m_data;
+    PlayerRank* nextInList = currPlayer->getPlayerRank()->getPlayerNode()->m_next->m_data;
+    if (abs(prevInList->getGoals() - currRank->getGoals()) < abs(nextInList->getGoals() - currRank->getGoals())){
+        return prevInList->getId();
+    }
+    else if (abs(prevInList->getGoals() - currRank->getGoals()) > abs(nextInList->getGoals() - currRank->getGoals())){
+        return nextInList->getId();
+    }
+    else{
+        if (abs(prevInList->getCards() - currRank->getCards()) < (abs(nextInList->getCards() - currRank->getCards()))){
+            return prevInList->getId();
+        }
+        else if (abs(prevInList->getCards() - currRank->getCards()) > (abs(nextInList->getCards() - currRank->getCards()))){
+            return nextInList->getId();
+        }
+        else{
+            if (abs(prevInList->getId() - currRank->getId()) < abs(nextInList->getId() - currRank->getId())){
+                return prevInList->getId();
+            }
+            else if (abs(prevInList->getId() - currRank->getId()) > abs(nextInList->getId() - currRank->getId())){
+                return nextInList->getId();
+            }
+            else{
+                if (prevInList->getId() > nextInList->getId()){
+                    return prevInList->getId();
+                }
+                else{
+                    return nextInList->getId();
+                }
+            }
+        }
+    }
 
 
-	return 1006;
+
+
+    return 1006;
 }
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
@@ -462,4 +502,12 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 bool isComplete(node<Team>* t)
 {
     return t->data.isComplete();
+}
+
+int abs(int x){
+    if (x < 0){
+        return -x;
+    } else{
+        return x;
+    }
 }

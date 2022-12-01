@@ -15,6 +15,8 @@ public:
     PlayerRank() = default;
 
     int getId() const;
+    int getGoals() const;
+    int getCards() const;
     LNode<PlayerRank*>* getPlayerNode() const;
 
 

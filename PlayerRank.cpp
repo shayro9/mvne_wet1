@@ -64,3 +64,11 @@ bool operator>=(const PlayerRank &pr1, const PlayerRank &pr2)
 LNode<PlayerRank *> *PlayerRank::getPlayerNode() const {
     return m_playerNode;
 }
+
+int PlayerRank::getGoals() const {
+    return m_goals;
+}
+
+int PlayerRank::getCards() const {
+    return m_cards;
+}
