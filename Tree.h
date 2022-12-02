@@ -23,7 +23,7 @@ public:
 
     node<T>* getMax();
     node<T>* findMaxSmaller(const T& t);
-
+    node<T>* findMinBigger(const T& t);
     void merge(Tree<T>& t, int n, int m);
 
     void tree2ArrayInOrder(T * output, bool (*cond)(node<T>*));
@@ -41,6 +41,7 @@ private:
     int balanceFactor(node<T> *n);
     node<T>* findNode(node<T> *root, const T& t);
     node<T>* findMaxSmallerNode(node<T>* root, const T& t);
+    node<T>* findMinBiggerNode(node<T>* root, const T& t);
     node<T>* insertNode(node<T> *root, const T& t);
     node<T>* removeNode(node<T> *root, const T& t);
     node<T>* minValueNode(node<T> *root);
@@ -65,7 +66,22 @@ template<class T>
 node<T>* Tree<T>::findMaxSmaller(const T &t) {
     return findMaxSmallerNode(m_root, t);
 }
+template<class T>
+node<T>* Tree<T>::findMinBigger(const T &t) {
+    return findMinBiggerNode(m_root, t);
+}
 
+
+template<class T>
+node<T>* Tree<T>::findMinBiggerNode(node<T> *root, const T &t) {
+    node<T>* currNode = find(t);
+    if (currNode->r == nullptr){
+        return currNode->parent;
+    }
+    else{
+        return minValueNode(currNode->r);
+    }
+}
 template<class T>
 node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
     node<T>* currNode = find(t);

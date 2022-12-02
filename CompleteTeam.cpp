@@ -19,6 +19,10 @@ LNode<CompleteTeam *> *CompleteTeam::getCompleteNode() const {
     return m_completeNode;
 }
 
+int CompleteTeam::getScore() const {
+    return m_points + m_goals - m_cards;
+}
+
 bool operator> (const CompleteTeam &ct1, const CompleteTeam &ct2){
     return ct2 < ct1;
 }

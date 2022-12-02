@@ -494,9 +494,87 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
 	// TODO: Your code goes here
 
-    Team *competing_teams {};
-    teams.tree2ArrayInOrder(competing_teams,isComplete);
-	return 2;
+   // Team *competing_teams {};
+  //  teams.tree2ArrayInOrder(competing_teams,isComplete);
+
+  //  Team* minTeam = &teams.find(minTeamId)->data;
+  //  Team* maxTeam = &teams.find(maxTeamId)->data;
+    CompleteTeam* minComplete;
+    if (completeTeams.find(minTeamId) != nullptr){
+        minComplete = &completeTeams.find(minTeamId)->data;
+    }
+    else{
+        minComplete = &completeTeams.findMinBigger(minTeamId)->data;
+    }
+    CompleteTeam* maxComplete;
+    if (completeTeams.find(maxTeamId) != nullptr){
+        maxComplete = &completeTeams.find(maxTeamId)->data;
+    }
+    else{
+        maxComplete = &completeTeams.findMaxSmaller(maxTeamId)->data;
+    }
+    LNode<CompleteTeam*>* minCompleteList = minComplete->getCompleteNode();
+    LNode<CompleteTeam*>* maxCompleteList = maxComplete->getCompleteNode();
+    //LNode<CompleteTeam*>* iter = minCompleteList;
+    if (minTeamId == maxTeamId){
+        return minTeamId;
+    }
+
+    List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
+    List<CompleteTeam>()
+
+
+
+
+
+
+
+
+    List<LNode<CompleteTeam*>*> list;
+    list.insertFront(minCompleteList);
+    LNode<CompleteTeam*>* iter = minCompleteList->m_next;
+    int r = 1;
+    while(iter != maxCompleteList->m_next){
+        list.append(iter);
+        iter = iter->m_next;
+        r++;
+    }
+    while (list.getHead() != list.getTail()){
+       LNode< LNode<CompleteTeam*>*>* it = list.getHead();
+       while(it->m_next != nullptr){
+           if (it->m_data->m_data->getScore() > it->m_next->m_data->m_data->getScore()){
+
+           }
+       }
+
+    }
+
+
+
+
+
+    int r = 1;
+    struct couple{
+        int id;
+        int score;
+    };
+    List<couple> list1;
+    list1.insertFront();
+  //  LNode<CompleteTeam*>* iter = minCompleteList;
+    while (iter != maxCompleteList ){
+
+        iter = iter->m_next;
+        r++;
+    }
+    int arr[r][2]; //first in row is id, second play match score
+
+
+
+
+
+
+
+    return 2;
 }
 
 bool isComplete(node<Team>* t)
