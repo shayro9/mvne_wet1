@@ -102,15 +102,6 @@ node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
         else
             return nullptr;
     }
-    /*
-    node<T>* currNode = find(t);
-    if (currNode->l == nullptr){
-        return currNode->parent;
-    }
-    else{
-        return maxValueNode(currNode->l);
-    }*/
-
 }
 
 template<class T>
