@@ -480,6 +480,7 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
+    /*
 	// TODO: Your code goes here
 
    // Team *competing_teams {};
@@ -560,7 +561,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 
 
 
-
+        */
 
     return 2;
 }
