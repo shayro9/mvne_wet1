@@ -99,6 +99,10 @@ void Team::updateGoalkeepersNum(int n){
 void Team::addPoints(int amount) {
     m_points += amount;
     m_gamesPlayed++;
+    if(isComplete())
+    {
+        m_completeTeam->addPoints(amount);
+    }
 }
 
 int Team::getPlayersNum() const {

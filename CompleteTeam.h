@@ -16,6 +16,8 @@ public:
     LNode<CompleteTeam*>* getCompleteNode() const;
     int getScore() const;
 
+    void addPoints(int amount);
+
     friend bool operator== (const CompleteTeam&, const CompleteTeam&);
     friend bool operator< (const CompleteTeam&, const CompleteTeam&);
 
