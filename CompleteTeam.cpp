@@ -23,6 +23,11 @@ int CompleteTeam::getScore() const {
     return m_points + m_goals - m_cards;
 }
 
+void CompleteTeam::addPoints(int amount) {
+    m_points += amount;
+
+}
+
 bool operator> (const CompleteTeam &ct1, const CompleteTeam &ct2){
     return ct2 < ct1;
 }

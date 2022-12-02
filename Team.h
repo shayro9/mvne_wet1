@@ -27,6 +27,7 @@ public:
     int getGoalKeepersNum() const;
     CompleteTeam* getCompleteTeamPointer() const;
     void setCompleteTeamPointer(CompleteTeam* ptr) ;
+    void addPoints(int amount);
 
 
     Tree<Player>& getPlayers();
@@ -34,7 +35,7 @@ public:
 
     void updateStats(int goals, int cards, int players);
     void updateGoalkeepersNum(int n);
-    void addPoints(int amount);
+   // void addPoints(int amount);
     void mergeWith(Team &t,int new_Id);
 
     bool isComplete() const;

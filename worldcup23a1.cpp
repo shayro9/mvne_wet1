@@ -487,6 +487,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 
   //  Team* minTeam = &teams.find(minTeamId)->data;
   //  Team* maxTeam = &teams.find(maxTeamId)->data;
+  /*
     CompleteTeam* minComplete;
     if (completeTeams.find(minTeamId) != nullptr){
         minComplete = &completeTeams.find(minTeamId)->data;
@@ -560,9 +561,10 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 
 
 
-
+*/
 
     return 2;
+
 }
 
 bool isComplete(node<Team>* t)
