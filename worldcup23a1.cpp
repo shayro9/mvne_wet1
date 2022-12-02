@@ -115,12 +115,14 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         playersRank.insert(*new_player->getPlayerRank());
         new_player->getTeam()->addPlayer(new_player);
         playersId.insert(*new_player);
-        LNode<PlayerRank*>* prevInList = playersRank.findMaxSmaller(*new_player->getPlayerRank())->data.getPlayerNode();
+
+        node<PlayerRank>* prevInList = playersRank.findMaxSmaller(*new_player->getPlayerRank());
         if (prevInList != nullptr){
-            playerRankList.insertAfter(prevInList, new_player->getPlayerRank());
+            playerRankList.insertAfter(prevInList->data.getPlayerNode(), new_player->getPlayerRank());
         }
         else{
             playerRankList.insertFront(new_player->getPlayerRank());
+            new_player->setPlayerRank(playerRankList.getHead()->m_data);
         }
 
     }
@@ -277,31 +279,15 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2)
     if (score1 == score2){
         team1->addPoints(DRAW);
         team2->addPoints(DRAW);
-        /* TODO:...
-        if (team1->m_completeTeam != nullptr){
-            team1->m_completeTeam->m_points++;
-        }
-        if (team2->m_completeTeam != nullptr){
-            team2->m_completeTeam->m_points++;
-        }*/
     }
     else if (score1 > score2){
         team1->addPoints(WIN);
         team2->addPoints(LOSS);
-        /* TODO:...
-        if (team1->m_completeTeam != nullptr){
-            team1->m_completeTeam->m_points += 3;
-        }*/
     }
     else{
         team1->addPoints(LOSS);
         team2->addPoints(WIN);
-        /* TODO:...
-        if (team2->m_completeTeam != nullptr){
-            team2->m_completeTeam->m_points += 3;
-        }*/
     }
-
 	return StatusType::SUCCESS;
 }
 
@@ -331,10 +317,12 @@ output_t<int> world_cup_t::get_team_points(int teamId)
     if (teamId <= 0){
         return StatusType::INVALID_INPUT;
     }
-    if (teams.find(teamId) == nullptr){
+
+    Team* currTeam = &teams.find(teamId)->data;
+    if (currTeam == nullptr){
         return StatusType::FAILURE;
     }
-    Team* currTeam = &teams.find(teamId)->data;
+
 	return currTeam->getPoints();
 }
 

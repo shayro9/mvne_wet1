@@ -22,6 +22,8 @@ public:
     void setGamesTeamPlayedBefore(int games);
 
     PlayerRank* getPlayerRank();
+    void setPlayerRank(PlayerRank* playerRank);
+
     PlayerRank* getGroupPlayerRank();
     Team* getTeam();
     void setTeam(Team* t, int gamesPlayed, int *games);

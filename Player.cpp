@@ -112,3 +112,7 @@ void Player::updateTeamPlayerRank(PlayerRank *ptr) {
     m_groupPlayerRank = ptr;
 
 }
+
+void Player::setPlayerRank(PlayerRank *playerRank) {
+    m_playerRank = playerRank;
+}

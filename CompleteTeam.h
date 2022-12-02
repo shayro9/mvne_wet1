@@ -15,6 +15,8 @@ public:
     CompleteTeam& operator=(const CompleteTeam& t)=default;
     LNode<CompleteTeam*>* getCompleteNode() const;
 
+    void addPoints(int amount);
+
     friend bool operator== (const CompleteTeam&, const CompleteTeam&);
     friend bool operator< (const CompleteTeam&, const CompleteTeam&);
 
