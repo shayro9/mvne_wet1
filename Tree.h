@@ -130,8 +130,12 @@ int Tree<T>::height(node<T> *n) {
     if(n != nullptr)
     {
         int left_height, right_height;
-        left_height = height(n->l);
-        right_height = height(n->r);
+        if (n->l != nullptr){
+            left_height = height(n->l);
+        }
+        if (n->r != nullptr) {
+            right_height = height(n->r);
+        }
         h = (left_height > right_height ? left_height : right_height) + 1;
     }
     return h;
@@ -140,7 +144,9 @@ int Tree<T>::height(node<T> *n) {
 template<class T>
 int Tree<T>::balanceFactor(node<T> *n) {
     int left_height, right_height;
-    left_height = height(n->l);
+    if (n->l != nullptr) {
+        left_height = height(n->l);
+    }
     right_height = height(n->r);
     return left_height - right_height;
 }
@@ -175,6 +181,7 @@ node<T> *Tree<T>::insertNode(node<T> *root, const T &t) {
         root->data = t;
         root->l = nullptr;
         root->r = nullptr;
+
         if(m_max == nullptr)
             m_max = root;
         if (t > m_max->data){
@@ -274,6 +281,9 @@ node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
 
     else{
         if(root->r == nullptr && root->l == nullptr) {
+            delete(root);
+          //  m_root = nullptr;
+          //  m_max = nullptr;
             return nullptr;
         }
         else if (root->l == nullptr) {
@@ -296,7 +306,25 @@ node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
 
 template<class T>
 void Tree<T>::remove(const T &t) {
+    bool is_root = false;
+    if (t == m_root->data){
+        is_root = true;
+    //    if (m_root->r == nullptr && m_root->l == nullptr){
+     //       return;
+       // }
+    }
+    if (is_root && m_root->r == nullptr && m_root->l == nullptr){
+        node<T>* new_node = removeNode(m_root,t);
+        m_root = nullptr;
+        m_max = nullptr;
+    }
     node<T>* new_node = removeNode(m_root,t);
+    if (new_node == nullptr){
+        return;
+    }
+    if (is_root){
+        m_root = new_node;
+    }
     int h = 0, new_h = -1;
     while(h != new_h) {
         h = height(new_node);

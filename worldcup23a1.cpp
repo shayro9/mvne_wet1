@@ -433,7 +433,7 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
         return StatusType::FAILURE;
     }
 
-    PlayerId* currPlayerId = &playersId.find(playerId)->data;
+    PlayerId* currPlayerId = &playersId.find(playerId)->data; //complexity!!
     Player* currPlayer = currPlayerId->getPlayer();
     if (currPlayer->getTeam()->getId() != teamId){
         return StatusType::FAILURE;
