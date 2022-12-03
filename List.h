@@ -32,6 +32,7 @@ public:
     void insertAfter(LNode<T>* prevNode, T data);
     void remove(LNode<T>* node);
     void insertFront(T data);
+    void append(T data);
 
 };
 
@@ -98,4 +99,14 @@ LNode<T> *List<T>::getHead() {
 template<class T>
 LNode<T> *List<T>::getTail() {
     return m_tail;
+}
+
+template<class T>
+void List<T>::append(T data) {
+    LNode<T>* newNode = new LNode<T>();
+    newNode->m_data = data;
+    m_tail->m_next = newNode;
+    newNode->m_prev = m_tail;
+    m_tail = newNode;
+
 }

@@ -405,6 +405,7 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
 
 StatusType world_cup_t::get_all_players(int teamId, int *const output)
 {
+
 	// TODO: Your code goes here
     if ((output == nullptr) || (teamId == 0)){
         return StatusType::INVALID_INPUT;
@@ -490,9 +491,9 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
    // Team *competing_teams {};
   //  teams.tree2ArrayInOrder(competing_teams,isComplete);
 
-  //  Team* minTeam = &teams.find(minTeamId)->data;
-  //  Team* maxTeam = &teams.find(maxTeamId)->data;
-  /*
+   // Team* minTeam = &teams.find(minTeamId)->data;
+   // Team* maxTeam = &teams.find(maxTeamId)->data;
+
     CompleteTeam* minComplete;
     if (completeTeams.find(minTeamId) != nullptr){
         minComplete = &completeTeams.find(minTeamId)->data;
@@ -514,8 +515,44 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
         return minTeamId;
     }
 
-    List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
-    List<CompleteTeam>()
+  //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
+    List<CompleteTeam*> list;
+    CompleteTeam* first = new CompleteTeam(minComplete->getId(), minComplete->getScore());
+    list.insertFront(first);
+    LNode<CompleteTeam*>* iter = minCompleteList->m_next;
+    int cnt = 1;
+    while(iter != maxCompleteList->m_next) {
+        CompleteTeam* x = new CompleteTeam(iter->m_data->getId(), iter->m_data->getScore());
+        list.append(x);
+        iter = iter->m_next;
+        cnt++;
+    }
+    while (list.getHead() != list.getTail()){
+        LNode<CompleteTeam*>* it = list.getHead();
+        while (it != list.getTail() && it != nullptr){
+            if (it->m_data->getPoints() > it->m_next->m_data->getPoints()){
+                it->m_data->addPoints(it->m_next->m_data->getPoints() + 3);
+                list.remove(it->m_next);
+
+            }
+            else if(it->m_data->getPoints() < it->m_next->m_data->getPoints()){
+                it->m_next->m_data->addPoints(it->m_data->getPoints() + 3);
+                list.remove(it);
+            }
+            else{
+                if (it->m_data->getId() > it->m_next->m_data->getId()){
+                    it->m_data->addPoints(it->m_next->m_data->getPoints() + 3);
+                    list.remove(it->m_next);
+                }
+                else {
+                    it->m_next->m_data->addPoints(it->m_data->getPoints() + 3);
+                    list.remove(it);
+                }
+            }
+        }
+    }
+    // delete new list and complete teams
+    return list.getHead()->m_data->getId();
 
 
 
@@ -524,7 +561,8 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 
 
 
-    List<LNode<CompleteTeam*>*> list;
+    // List<LNode<CompleteTeam*>*> list;
+    /*
     list.insertFront(minCompleteList);
     LNode<CompleteTeam*>* iter = minCompleteList->m_next;
     int r = 1;
@@ -552,6 +590,9 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
         int id;
         int score;
     };
+
+
+
     List<couple> list1;
     list1.insertFront();
   //  LNode<CompleteTeam*>* iter = minCompleteList;
@@ -566,9 +607,10 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 
 
 
-*/
+
 
     return 2;
+     */
 
 }
 

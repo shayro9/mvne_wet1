@@ -5,6 +5,9 @@ CompleteTeam::CompleteTeam(int teamId, int points, int goals, int cards) :
     m_cards(cards),
     m_goals(goals),
     m_points(points)
+
+
+
 {}
 
 bool operator==(const CompleteTeam &ct1, const CompleteTeam &ct2) {
@@ -26,6 +29,14 @@ int CompleteTeam::getScore() const {
 void CompleteTeam::addPoints(int amount) {
     m_points += amount;
 
+}
+
+int CompleteTeam::getId() const {
+    return m_teamId;
+}
+
+int CompleteTeam::getPoints() const {
+    return m_points;
 }
 
 bool operator> (const CompleteTeam &ct1, const CompleteTeam &ct2){

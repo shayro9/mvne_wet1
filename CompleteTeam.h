@@ -11,10 +11,12 @@ public:
 
     CompleteTeam() = default;
     ~CompleteTeam() = default;
-    CompleteTeam(const CompleteTeam& t)=default;
-    CompleteTeam& operator=(const CompleteTeam& t)=default;
+   // CompleteTeam(const CompleteTeam& t)=default;
+  //  CompleteTeam& operator=(const CompleteTeam& t)=default;
     LNode<CompleteTeam*>* getCompleteNode() const;
     int getScore() const;
+    int getId() const;
+    int getPoints() const;
 
     void addPoints(int amount);
 
