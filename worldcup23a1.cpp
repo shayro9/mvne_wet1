@@ -58,6 +58,7 @@ StatusType world_cup_t::remove_team(int teamId)
     try
     {
         //delete players trees in team
+        //unecessary because there are no players!!
         CompleteTeam *com_to_remove = &completeTeams.find(teamId)->data;
         if (com_to_remove != nullptr){
             completeTeamList.remove(com_to_remove->getCompleteNode());
@@ -65,6 +66,7 @@ StatusType world_cup_t::remove_team(int teamId)
         }
 
         teams.remove(*to_remove);
+        delete(to_remove);
     }
     catch (const std::bad_alloc &)
     {
@@ -238,7 +240,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
         playerRankList.insertAfter(prevInList, newPlayerRank);
     }
     else{
-        playerRankList.insertFront(newPlayerRank);
+        playerRankList.insertFront(newPlayerRank); //if its the smallest one, creates one node list- should add insert before
     }
 
     Team* currTeam = currPlayer->getTeam();
@@ -288,6 +290,8 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2)
         team1->addPoints(LOSS);
         team2->addPoints(WIN);
     }
+    team1->addGames(1);
+    team2->addGames(1);
 	return StatusType::SUCCESS;
 }
 
@@ -361,8 +365,9 @@ output_t<int> world_cup_t::get_top_scorer(int teamId)
             return StatusType::FAILURE;
         }
         else {
-            PlayerRank *maxPlayer = &playersRank.getMax()->data;
-            return maxPlayer->getId();
+            return playerRankList.getTail()->m_data->getId();
+            //PlayerRank *maxPlayer = &playersRank.getMax()->data;
+           // return maxPlayer->getId();
         }
     }
     if (teamId > 0){

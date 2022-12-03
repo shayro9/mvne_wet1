@@ -27,6 +27,7 @@ public:
     List<T>& operator=(const List<T>& l) = delete;
 
     LNode<T>* getHead();
+    LNode<T>* getTail();
 
     void insertAfter(LNode<T>* prevNode, T data);
     void remove(LNode<T>* node);
@@ -92,4 +93,9 @@ void List<T>::insertFront(T data) {
 template<class T>
 LNode<T> *List<T>::getHead() {
     return m_head;
+}
+
+template<class T>
+LNode<T> *List<T>::getTail() {
+    return m_tail;
 }

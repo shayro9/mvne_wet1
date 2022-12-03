@@ -42,7 +42,7 @@ private:
     node<T>* findNode(node<T> *root, const T& t);
     node<T>* findMaxSmallerNode(node<T>* root, const T& t);
     node<T>* findMinBiggerNode(node<T>* root, const T& t);
-    node<T>* insertNode(node<T> *root, const T& t);
+    node<T>* insertNode(node<T> *root, const T t);
     node<T>* removeNode(node<T> *root, const T& t);
     node<T>* minValueNode(node<T> *root);
     node<T>* maxValueNode(node<T> *root);
@@ -174,7 +174,7 @@ node<T>* Tree<T>::balance(node<T> *bad_node) {
 }
 
 template<class T>
-node<T> *Tree<T>::insertNode(node<T> *root, const T &t) {
+node<T> *Tree<T>::insertNode(node<T> *root, const T t) {
     if(root == nullptr)
     {
         root = new node<T>();

@@ -8,12 +8,13 @@ int main()
     for (int i = 1; i < 3; ++i) {
         status = worldCup->add_team(i,10*i/3);
     }
-    for (int i = 1; i < 3; ++i){
-        status = worldCup->remove_team(i);
-    }
-
+ //   for (int i = 1; i < 3; ++i){
+//        status = worldCup->remove_team(i);
+ //   }
+/*
     for (int i = 0; i < 50; ++i) {
         status = worldCup->add_player(i,i%2 + 1,i%3,i%5,i%4,(i/3)%2);
-    }
+    }*/
+    status = worldCup->add_player(3, 1, 1, 1, 1, true);
     return 0;
 }

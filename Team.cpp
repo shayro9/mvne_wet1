@@ -154,6 +154,10 @@ void Team::setCompleteTeamPointer(CompleteTeam* ptr)  {
     m_completeTeam = ptr;
 }
 
+void Team::addGames(int amount) {
+    m_gamesPlayed += amount;
+}
+
 void UpdateGames(node<Player>* p, int gamePlayedBefore)
 {
 

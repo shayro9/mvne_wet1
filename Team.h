@@ -28,6 +28,7 @@ public:
     CompleteTeam* getCompleteTeamPointer() const;
     void setCompleteTeamPointer(CompleteTeam* ptr) ;
     void addPoints(int amount);
+    void addGames(int amount);
 
 
     Tree<Player>& getPlayers();
