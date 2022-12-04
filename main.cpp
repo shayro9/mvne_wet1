@@ -83,6 +83,9 @@ int main()
         status = worldCup->update_player_stats(i,i/4,i%4,i%6);
     }
 
+    for (int i = 0; i < 50; ++i) {
+        status = worldCup->remove_player(i/2);
+    }
 
     for (int i = 0; i < 50; ++i) {
         status = worldCup->play_match(i%2 + 1,(i+1)%2 + 1);
