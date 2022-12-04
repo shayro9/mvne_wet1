@@ -12,7 +12,6 @@ int main()
 //        status = worldCup->remove_team(i);
  //   }
 
-<<<<<<< HEAD
   //  for (int i = 0; i < 50; ++i) {
    //     status = worldCup->add_player(i,i%2 + 1,i%3,i%5,i%4,(i/3)%2);
  //   }
@@ -66,6 +65,9 @@ int main()
     status = worldCup->add_player(74, 3, 1, 10, 7, true);
     status = worldCup->add_player(75, 3, 1, 10, 7, true);
     status = worldCup->add_player(76, 3, 1, 10, 7, true);
+
+    int x = worldCup->knockout_winner(1, 3).ans();
+
 
     return 0;
     /*

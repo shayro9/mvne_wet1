@@ -54,8 +54,8 @@ List<T>::~List() {
         curr_node = curr_node->m_next;
     }
     delete(m_head);
-    delete(m_tail);
-    delete(m_last_added);
+    //delete(m_tail);
+    //delete(m_last_added);
 }
 
 template<class T>
