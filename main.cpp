@@ -30,6 +30,6 @@ int main()
         output_t<int> result = worldCup->get_num_played_games(i);
         //std::cout << i << " - " << result.ans() << "\n";
     }
-    status = worldCup->unite_teams(1,2,54);
+    status = worldCup->unite_teams(1,2,2);
     return 0;
 }

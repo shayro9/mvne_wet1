@@ -121,19 +121,24 @@ int Team::getGoalKeepersNum() const {
 
 void Team::mergeWith(Team &t, int new_Id) {
     //need to delete leftovers team
-    m_teamId = new_Id;
-    m_points += t.getPoints();
-    m_goals += t.getGoals();
-    m_cards += t.getCards();
-    int team_size = m_numOfPlayers;
-    m_numOfPlayers += t.getPlayersNum();
-    m_numOfGoalkeepers += t.getGoalKeepersNum();
+    //m_teamId = new_Id;
+    try {
+        m_points += t.getPoints();
+        m_goals += t.getGoals();
+        m_cards += t.getCards();
+        int team_size = m_numOfPlayers;
+        m_numOfPlayers += t.getPlayersNum();
+        m_numOfGoalkeepers += t.getGoalKeepersNum();
 
-    //update for every player GamesPlayed and gamesTeamPlayedBefore = this.gamePlayed
-    t.getPlayers().inOrder(UpdateGames,m_gamesPlayed);
+        //update for every player GamesPlayed and gamesTeamPlayedBefore = this.gamePlayed
+        t.getPlayers().inOrder(UpdateGames, m_gamesPlayed);
 
-    m_players.merge(t.getPlayers(),team_size,t.getPlayersNum());
-    m_TeamPlayersRank.merge(t.getPlayersRank(),team_size,t.getPlayersNum());
+        m_players.merge(t.getPlayers(), team_size, t.getPlayersNum());
+        m_TeamPlayersRank.merge(t.getPlayersRank(), team_size, t.getPlayersNum());
+    }
+    catch (...){
+        throw std::bad_alloc();
+    }
 }
 
 Tree<Player> &Team::getPlayers() {

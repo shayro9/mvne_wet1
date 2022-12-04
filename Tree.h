@@ -1,6 +1,8 @@
 #ifndef MVNE_WET1_TREE_H
 #define MVNE_WET1_TREE_H
 
+#include "exception"
+
 template <class T>
 struct node{
     T data;
@@ -22,6 +24,7 @@ public:
     void remove(const T& t);
 
     node<T>* getMax();
+    void setMax();
     node<T>* findMaxSmaller(const T& t);
     node<T>* findMinBigger(const T& t);
     void merge(Tree<T>& t, int n, int m);
@@ -423,48 +426,62 @@ node<T>* Tree<T>::sortedArray2Tree(T *input, int start, int end) {
         return nullptr;
 
     int mid = (start + end)/2;
-    auto *root = new node<T>();
-    root->data = input[mid];
-    root->l = sortedArray2Tree(input,start,mid - 1);
-    root->r = sortedArray2Tree(input,mid + 1, end);
-    if(m_max == nullptr)
-        m_max = root;
-    if (input[mid] > m_max->data){
-        m_max = root;
+    try {
+        node<T> *root = new node<T>();
+        root->data = input[mid];
+        root->l = sortedArray2Tree(input,start,mid - 1);
+        root->r = sortedArray2Tree(input,mid + 1, end);
+        if(m_max == nullptr)
+            m_max = root;
+        if (input[mid] > m_max->data){
+            m_max = root;
+        }
+        return root;
     }
-    return root;
+    catch (...) {
+        throw std::bad_alloc();
+    }
 }
 
 template<class T>
 void Tree<T>::merge(Tree<T> &t,int n,int m) {
-    T* array1 = new T;
-    T* array2 = new T;
-    T* merged_array = new T;
-    int k=0,j=0;
+    try {
+        T *array1 = new T;
+        T *array2 = new T;
+        T *merged_array = new T;
+        int k = 0, j = 0;
 
-    this->tree2ArrayInOrder(array1);
-    t.tree2ArrayInOrder(array2);
-    while (k < n && j< m)
-    {
-        if(array1[k] < array2[j]) {
-            merged_array[k + j] = array1[k];
-            k++;
+        this->tree2ArrayInOrder(array1);
+        t.tree2ArrayInOrder(array2);
+        while (k < n && j < m) {
+            if (array1[k] < array2[j]) {
+                merged_array[k + j] = array1[k];
+                k++;
+            } else {
+                merged_array[k + j] = array2[j];
+                j++;
+            }
         }
-        else {
-            merged_array[k + j] = array2[j];
-            j++;
-        }
+        if (k >= n)
+            for (; j < m; ++j) {
+                merged_array[k + j] = array2[j];
+            }
+        else
+            for (; k < n; ++k) {
+                merged_array[k + j] = array1[k];
+            }
+
+        m_root = sortedArray2Tree(merged_array, 0, k + j - 1);
+        setMax();
     }
-    if(k >= n)
-        for (; j < m ; ++j) {
-            merged_array[k+j] = array2[j];
-        }
-    else
-        for (; k < n ; ++k) {
-            merged_array[k+j] = array1[k];
-        }
+    catch (...) {
+        throw std::bad_alloc();
+    }
+}
 
-    m_root = sortedArray2Tree(merged_array,0,k+j-1);
+template<class T>
+void Tree<T>::setMax() {
+    m_max = maxValueNode(m_root);
 }
 
 
