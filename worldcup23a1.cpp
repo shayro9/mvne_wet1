@@ -171,8 +171,6 @@ StatusType world_cup_t::remove_player(int playerId)
 
     bool is_goalkeeper = currPlayer->getPlayer()->isGoalKeeper();
     Team* currTeam = currPlayer->getPlayer()->getTeam();
-    int currGoals = currPlayer->getPlayer()->getGoals();
-    int currCards = currPlayer->getPlayer()->getCards();
 
     try
     {
