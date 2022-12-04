@@ -19,6 +19,7 @@ public:
     int getPoints() const;
 
     void addPoints(int amount);
+    void setCompleteTeamNode(LNode<CompleteTeam*>* node);
 
     friend bool operator== (const CompleteTeam&, const CompleteTeam&);
     friend bool operator< (const CompleteTeam&, const CompleteTeam&);

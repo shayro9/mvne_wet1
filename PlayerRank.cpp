@@ -72,3 +72,7 @@ int PlayerRank::getGoals() const {
 int PlayerRank::getCards() const {
     return m_cards;
 }
+
+void PlayerRank::setPlayerNode(LNode<PlayerRank *> *node) {
+    m_playerNode = node;
+}

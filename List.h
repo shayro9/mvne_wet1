@@ -20,6 +20,7 @@ class List{
 private:
     LNode<T>* m_head;
     LNode<T>* m_tail;
+    LNode<T>* m_last_added;
 public:
     List();
     ~List();
@@ -28,6 +29,7 @@ public:
 
     LNode<T>* getHead();
     LNode<T>* getTail();
+    LNode<T>* getLastAdded();
 
     void insertAfter(LNode<T>* prevNode, T data);
     void remove(LNode<T>* node);
@@ -40,6 +42,7 @@ template<class T>
 List<T>::List() {
     m_tail = nullptr;
     m_head = nullptr;
+    m_last_added = nullptr;
 }
 
 template<class T>
@@ -52,18 +55,21 @@ List<T>::~List() {
     }
     delete(m_head);
     delete(m_tail);
+    delete(m_last_added);
 }
 
 template<class T>
 void List<T>::insertAfter(LNode<T> *prevNode, T data) {
-    LNode<T>* newNode = new LNode<T>();
-    newNode->m_data = data;
-    newNode->m_next = prevNode->m_next;
-    prevNode->m_next = newNode;
-    newNode->m_prev = prevNode;
-    if (newNode->m_next != nullptr){
-        newNode->m_next->m_prev = newNode;
+    m_last_added = new LNode<T>();
+    m_last_added->m_data = data;
+    m_last_added->m_next = prevNode->m_next;
+    prevNode->m_next = m_last_added;
+    m_last_added->m_prev = prevNode;
+    if (m_last_added->m_next != nullptr){
+        m_last_added->m_next->m_prev = m_last_added;
     }
+    else
+        m_tail = m_last_added;
 }
 
 template<class T>
@@ -72,23 +78,25 @@ void List<T>::remove(LNode<T> *node) {
         return;
     }
     if (node == m_head){
-        m_head->m_next = node->m_next;
+        m_head = m_head->m_next;
     }
-    else{
+    else {
         node->m_prev->m_next = node->m_next;
-    }
-    if (node->m_next != nullptr){
-        node->m_next->m_prev = node->m_prev;
+
+        if (node->m_next != nullptr) {
+            node->m_next->m_prev = node->m_prev;
+        }
     }
     delete node;
 }
 
 template<class T>
 void List<T>::insertFront(T data) {
-    LNode<T>* newNode = new LNode<T>();
-    newNode->m_data = data;
-    m_head = newNode;
-    m_tail = newNode;
+    m_last_added = new LNode<T>();
+    m_last_added->m_data = data;
+    if(m_tail == nullptr)
+        m_tail = m_last_added;
+    m_head = m_last_added;
 }
 
 template<class T>
@@ -102,11 +110,16 @@ LNode<T> *List<T>::getTail() {
 }
 
 template<class T>
+LNode<T> *List<T>::getLastAdded() {
+    return m_last_added;
+}
+
+template<class T>
 void List<T>::append(T data) {
-    LNode<T>* newNode = new LNode<T>();
-    newNode->m_data = data;
-    m_tail->m_next = newNode;
-    newNode->m_prev = m_tail;
-    m_tail = newNode;
+    m_last_added = new LNode<T>();
+    m_last_added->m_data = data;
+    m_tail->m_next = m_last_added;
+    m_last_added->m_prev = m_tail;
+    m_tail = m_last_added;
 
 }

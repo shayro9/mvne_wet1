@@ -42,7 +42,7 @@ private:
     node<T>* findNode(node<T> *root, const T& t);
     node<T>* findMaxSmallerNode(node<T>* root, const T& t);
     node<T>* findMinBiggerNode(node<T>* root, const T& t);
-    node<T>* insertNode(node<T> *root, const T t);
+    node<T>* insertNode(node<T> *root, const T& t);
     node<T>* removeNode(node<T> *root, const T& t);
     node<T>* minValueNode(node<T> *root);
     node<T>* maxValueNode(node<T> *root);
@@ -84,8 +84,11 @@ node<T>* Tree<T>::findMinBiggerNode(node<T> *root, const T &t) {
 }
 template<class T>
 node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
-    if(!root->l && !root->r)
+    if(root == nullptr)
         return nullptr;
+
+    if(!root->l && !root->r)
+        return root;
 
     if(root->data > t)
         return findMaxSmallerNode(root->l,t);
@@ -130,12 +133,8 @@ int Tree<T>::height(node<T> *n) {
     if(n != nullptr)
     {
         int left_height, right_height;
-        if (n->l != nullptr){
-            left_height = height(n->l);
-        }
-        if (n->r != nullptr) {
-            right_height = height(n->r);
-        }
+        left_height = height(n->l);
+        right_height = height(n->r);
         h = (left_height > right_height ? left_height : right_height) + 1;
     }
     return h;
@@ -143,10 +142,11 @@ int Tree<T>::height(node<T> *n) {
 
 template<class T>
 int Tree<T>::balanceFactor(node<T> *n) {
+    if(!n)
+        return 0;
+
     int left_height, right_height;
-    if (n->l != nullptr) {
-        left_height = height(n->l);
-    }
+    left_height = height(n->l);
     right_height = height(n->r);
     return left_height - right_height;
 }
@@ -174,7 +174,7 @@ node<T>* Tree<T>::balance(node<T> *bad_node) {
 }
 
 template<class T>
-node<T> *Tree<T>::insertNode(node<T> *root, const T t) {
+node<T> *Tree<T>::insertNode(node<T> *root, const T& t) {
     if(root == nullptr)
     {
         root = new node<T>();
@@ -281,56 +281,51 @@ node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
 
     else{
         if(root->r == nullptr && root->l == nullptr) {
+            if(root == m_root)
+            {
+                m_root = nullptr;
+                m_max = nullptr;
+            }
             delete(root);
-          //  m_root = nullptr;
-          //  m_max = nullptr;
             return nullptr;
         }
         else if (root->l == nullptr) {
             node<T>* temp = root->r;
+            if(root == m_root)
+                m_root = temp;
             delete(root);
             return temp;
         }
         else if (root->r == nullptr) {
             node<T>* temp = root->l;
+            if(root == m_root)
+                m_root = temp;
             delete(root);
             return temp;
         }
 
         node<T>* temp = minValueNode(root->r); //complexity issue
+        if(temp == m_max)
+            m_max = root;
         root->data = temp->data;
         root->r = removeNode(root->r,temp->data);
+    }
+    int h = 0, new_h = -1;
+    while(h != new_h)
+    {
+        h = height(root);
+        if(root == m_root)
+            m_root = balance(root);
+        else
+            root = balance(root);
+        new_h = height(root);
     }
     return root;
 }
 
 template<class T>
 void Tree<T>::remove(const T &t) {
-    bool is_root = false;
-    if (t == m_root->data){
-        is_root = true;
-    //    if (m_root->r == nullptr && m_root->l == nullptr){
-     //       return;
-       // }
-    }
-    if (is_root && m_root->r == nullptr && m_root->l == nullptr){
-        node<T>* new_node = removeNode(m_root,t);
-        m_root = nullptr;
-        m_max = nullptr;
-    }
-    node<T>* new_node = removeNode(m_root,t);
-    if (new_node == nullptr){
-        return;
-    }
-    if (is_root){
-        m_root = new_node;
-    }
-    int h = 0, new_h = -1;
-    while(h != new_h) {
-        h = height(new_node);
-        balance(new_node);
-        new_h = height(new_node);
-    }
+    removeNode(m_root,t);
 }
 
 template<class T>

@@ -66,7 +66,6 @@ StatusType world_cup_t::remove_team(int teamId)
         }
 
         teams.remove(*to_remove);
-        delete(to_remove);
     }
     catch (const std::bad_alloc &)
     {
@@ -111,43 +110,48 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
 
         Player* new_player = new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper); // add games team played before
+        PlayerRank* new_player_rank = new_player->getPlayerRank();
+
         Team* new_player_team = &teams.find(teamId)->data;
         new_player->setTeam(new_player_team,new_player_team->getGamesPlayed(),new_player_team->getGamesPlayedPoint());
 
-        playersRank.insert(*new_player->getPlayerRank());
-        new_player->getTeam()->addPlayer(new_player);
-        playersId.insert(*new_player);
+        node<PlayerRank>* prevInList = playersRank.findMaxSmaller(*new_player_rank);
 
-        node<PlayerRank>* prevInList = playersRank.findMaxSmaller(*new_player->getPlayerRank());
         if (prevInList != nullptr){
-            playerRankList.insertAfter(prevInList->data.getPlayerNode(), new_player->getPlayerRank());
+            playerRankList.insertAfter(prevInList->data.getPlayerNode(), new_player_rank);
+
         }
         else{
-            playerRankList.insertFront(new_player->getPlayerRank());
-            new_player->setPlayerRank(playerRankList.getHead()->m_data);
+            playerRankList.insertFront(new_player_rank);
         }
+        new_player_rank->setPlayerNode(playerRankList.getLastAdded());
 
+        new_player_team->addPlayer(new_player);
+        playersRank.insert(*new_player_rank);
+        playersId.insert(*new_player);
+
+        numOfPlayers++;
+        // should be in try catch
+
+        if (new_player_team->isComplete() && (completeTeams.find(teamId) == nullptr)){
+            CompleteTeam* new_completeTeam =
+                    new CompleteTeam(teamId,new_player_team->getPoints(),new_player_team->getGoals(),new_player_team->getCards());
+
+            node<CompleteTeam>* prevConInList = completeTeams.findMaxSmaller(*new_completeTeam);
+            if (prevConInList != nullptr) {
+                completeTeamList.insertAfter(prevConInList->data.getCompleteNode(), new_completeTeam);
+            } else{
+                completeTeamList.insertFront(new_completeTeam);
+            }
+            new_player_team->setCompleteTeamPointer(new_completeTeam); //connect Team Pointer to Complete Team
+            new_completeTeam->setCompleteTeamNode(completeTeamList.getLastAdded());
+            completeTeams.insert(*new_completeTeam);
+        }
     }
     catch (const std::bad_alloc &)
     {
         return StatusType::ALLOCATION_ERROR;
     }
-
-    numOfPlayers++;
-    // should be in try catch
-    Team curr_team = teams.find(teamId)->data;
-    if (curr_team.isComplete() && (completeTeams.find(teamId) == nullptr)){
-        CompleteTeam* new_completeTeam = new CompleteTeam(curr_team.getId(),curr_team.getPoints(),curr_team.getGoals(),curr_team.getCards());
-        LNode<CompleteTeam*>* prevConInList = completeTeams.findMaxSmaller(*new_completeTeam)->data.getCompleteNode();
-        if (prevConInList != nullptr) {
-            completeTeamList.insertAfter(prevConInList, new_completeTeam);
-        } else{
-            completeTeamList.insertFront(new_completeTeam);
-        }
-        //curr_team.setCompleteTeam(new_completeTeam); //connect Team Pointer to Complete Team
-        completeTeams.insert(*new_completeTeam);
-    }
-
 	return StatusType::SUCCESS;
 }
 
@@ -159,11 +163,12 @@ StatusType world_cup_t::remove_player(int playerId)
         return StatusType::INVALID_INPUT;
     }
 
-    if (playersId.find(playerId) == nullptr){
+    PlayerId *currPlayer = &playersId.find(playerId)->data;
+    if (currPlayer == nullptr){
         return StatusType::FAILURE;
     }
 
-    PlayerId *currPlayer = &playersId.find(playerId)->data;
+
     bool is_goalkeeper = currPlayer->getPlayer()->isGoalKeeper();
     Team* currTeam = currPlayer->getPlayer()->getTeam();
     int currGoals = currPlayer->getPlayer()->getGoals();
@@ -171,11 +176,10 @@ StatusType world_cup_t::remove_player(int playerId)
 
     try
     {
+        currPlayer->getPlayer()->getTeam()->removePlayer(currPlayer->getPlayer());
         playerRankList.remove(currPlayer->getPlayer()->getPlayerRank()->getPlayerNode());
         playersRank.remove(*currPlayer->getPlayer()->getPlayerRank());
-        currPlayer->getPlayer()->getTeam()->removePlayer(currPlayer->getPlayer());
         playersId.remove(*currPlayer);
-        currTeam->updateStats(-currGoals, -currCards, -1);
         if (is_goalkeeper){
             currTeam->updateGoalkeepersNum(-1);
         }
@@ -187,15 +191,15 @@ StatusType world_cup_t::remove_player(int playerId)
     }
 
 
-    if ((currTeam->getPlayersNum() < 11) || (currTeam->getGoalKeepersNum() < 1) || (currTeam->getCompleteTeamPointer() != nullptr)){
-        CompleteTeam* currComplete = currTeam->getCompleteTeamPointer();
+    CompleteTeam* currComplete = currTeam->getCompleteTeamPointer();
+    if (!currTeam->isComplete() && currComplete){
         completeTeamList.remove(currComplete->getCompleteNode());
         completeTeams.remove(*currTeam->getCompleteTeamPointer());
         currTeam->setCompleteTeamPointer(nullptr);
     }
 
 
-
+    numOfPlayers--;
 	return StatusType::SUCCESS;
 }
 

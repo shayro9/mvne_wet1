@@ -17,6 +17,8 @@ public:
     int getId() const;
     int getGoals() const;
     int getCards() const;
+
+    void setPlayerNode(LNode<PlayerRank*>* node);
     LNode<PlayerRank*>* getPlayerNode() const;
 
 
