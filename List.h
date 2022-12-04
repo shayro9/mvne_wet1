@@ -55,6 +55,12 @@ List<T>::~List() {
         }
         delete(m_tail);
     }
+<<<<<<< HEAD
+    delete(m_head);
+    //delete(m_tail);
+    //delete(m_last_added);
+=======
+>>>>>>> 707bf0c584abfe67f974a045ef8d5308baa74433
 }
 
 template<class T>

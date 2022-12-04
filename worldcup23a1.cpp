@@ -143,6 +143,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         // should be in try catch
 
         if (new_player_team->isComplete() && (completeTeams.find(teamId) == nullptr)){
+
             CompleteTeam* new_completeTeam =
                     new CompleteTeam(teamId,new_player_team->getPoints(),new_player_team->getGoals(),new_player_team->getCards());
 
@@ -155,6 +156,21 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             new_player_team->setCompleteTeamPointer(new_completeTeam); //connect Team Pointer to Complete Team
             new_completeTeam->setCompleteTeamNode(completeTeamList.getLastAdded());
             completeTeams.insert(*new_completeTeam);
+            /*
+            CompleteTeam* new_completeTeam =
+                    new CompleteTeam(teamId,new_player_team->getPoints(),new_player_team->getGoals(),new_player_team->getCards());
+            completeTeams.insert(*new_completeTeam);
+            new_player_team->setCompleteTeamPointer(new_completeTeam); //connect Team Pointer to Complete Team
+
+            node<CompleteTeam>* prevConInList = completeTeams.findMaxSmaller(*new_completeTeam);
+            if (prevConInList != nullptr) {
+                completeTeamList.insertAfter(prevConInList->data.getCompleteNode(), new_completeTeam);
+            } else{
+                completeTeamList.insertFront(new_completeTeam);
+            }
+            new_completeTeam->setCompleteTeamNode(completeTeamList.getLastAdded());
+*/
+
         }
     }
     catch (const std::bad_alloc &)
@@ -361,22 +377,18 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
     Team* team1 = &teams.find(teamId1)->data;
     Team* team2 = &teams.find(teamId2)->data;
-    if(newTeamId != teamId1 && newTeamId != teamId2) {
-        Team *new_team = &teams.find(newTeamId)->data;
-        if(new_team)
-            return StatusType::FAILURE;
-    }
+    Team* new_team = &teams.find(newTeamId)->data;
 
-    if(!team1 || !team2)
+    if(!team1 || !team2 || new_team)
         return StatusType::FAILURE;
 
     try {
         team1->mergeWith(*team2, newTeamId);
+        teams.insert(*team1);
+        teams.remove(teamId1);
         teams.remove(teamId2);
-        team1->setId(newTeamId);
-        teams.setMax();
     }
-    catch (const std::bad_alloc &) {
+    catch (...) {
         return StatusType::ALLOCATION_ERROR;
     }
 	return StatusType::SUCCESS;
@@ -528,16 +540,22 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
     CompleteTeam* minComplete;
     if (completeTeams.find(minTeamId) != nullptr){
         minComplete = &completeTeams.find(minTeamId)->data;
+        minComplete = minComplete->getCompleteNode()->m_data;
     }
     else{
         minComplete = &completeTeams.findMinBigger(minTeamId)->data;
+        minComplete = minComplete->getCompleteNode()->m_data;
+
     }
     CompleteTeam* maxComplete;
     if (completeTeams.find(maxTeamId) != nullptr){
         maxComplete = &completeTeams.find(maxTeamId)->data;
+        maxComplete = maxComplete->getCompleteNode()->m_data;
     }
     else{
         maxComplete = &completeTeams.findMaxSmaller(maxTeamId)->data;
+        maxComplete = maxComplete->getCompleteNode()->m_data;
+
     }
     LNode<CompleteTeam*>* minCompleteList = minComplete->getCompleteNode();
     LNode<CompleteTeam*>* maxCompleteList = maxComplete->getCompleteNode();
@@ -563,21 +581,42 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
         while (it != list.getTail() && it != nullptr){
             if (it->m_data->getPoints() > it->m_next->m_data->getPoints()){
                 it->m_data->addPoints(it->m_next->m_data->getPoints() + 3);
+
                 list.remove(it->m_next);
+                it = it->m_next;
+
 
             }
             else if(it->m_data->getPoints() < it->m_next->m_data->getPoints()){
                 it->m_next->m_data->addPoints(it->m_data->getPoints() + 3);
-                list.remove(it);
+                if (it->m_next->m_next != nullptr) {
+                    it = it->m_next->m_next;
+                    list.remove(it->m_prev->m_prev);
+                }
+                else{
+                    list.remove(it);
+                    it = nullptr;
+                }
+
+
             }
             else{
                 if (it->m_data->getId() > it->m_next->m_data->getId()){
                     it->m_data->addPoints(it->m_next->m_data->getPoints() + 3);
                     list.remove(it->m_next);
+                    it = it->m_next;
+
                 }
                 else {
                     it->m_next->m_data->addPoints(it->m_data->getPoints() + 3);
-                    list.remove(it);
+                    if (it->m_next->m_next != nullptr) {
+                        it = it->m_next->m_next;
+                        list.remove(it->m_prev->m_prev);
+                    }
+                    else{
+                        list.remove(it);
+                        it = nullptr;
+                    }
                 }
             }
         }
