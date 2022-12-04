@@ -94,9 +94,13 @@ template<class T>
 void List<T>::insertFront(T data) {
     m_last_added = new LNode<T>();
     m_last_added->m_data = data;
+    if(m_head != nullptr){
+        m_last_added->m_next = m_head;
+        m_head->m_prev = m_last_added;
+    }
+    m_head = m_last_added;
     if(m_tail == nullptr)
         m_tail = m_last_added;
-    m_head = m_last_added;
 }
 
 template<class T>

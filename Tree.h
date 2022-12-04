@@ -88,7 +88,7 @@ node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
         return nullptr;
 
     if(!root->l && !root->r)
-        return root;
+        return nullptr;
 
     if(root->data > t)
         return findMaxSmallerNode(root->l,t);
@@ -441,6 +441,7 @@ void Tree<T>::merge(Tree<T> &t,int n,int m) {
     T* array2 = new T;
     T* merged_array = new T;
     int k=0,j=0;
+
     this->tree2ArrayInOrder(array1);
     t.tree2ArrayInOrder(array2);
     while (k < n && j< m)

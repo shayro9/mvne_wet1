@@ -160,6 +160,10 @@ void Team::addGames(int amount) {
     m_gamesPlayed += amount;
 }
 
+void Team::setId(int newId) {
+    m_teamId = newId;
+}
+
 void UpdateGames(node<Player>* p, int gamePlayedBefore)
 {
 

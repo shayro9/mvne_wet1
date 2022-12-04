@@ -34,6 +34,8 @@ public:
     Tree<Player>& getPlayers();
     Tree<PlayerRank>& getPlayersRank();
 
+    void setId(int newId);
+
     void updateStats(int goals, int cards, int players);
     void updateGoalkeepersNum(int n);
    // void addPoints(int amount);
