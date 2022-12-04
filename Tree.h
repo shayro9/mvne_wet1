@@ -2,6 +2,7 @@
 #define MVNE_WET1_TREE_H
 
 #include "exception"
+#include "new"
 
 template <class T>
 struct node{
@@ -437,8 +438,8 @@ node<T>* Tree<T>::sortedArray2Tree(T *input, int start, int end) {
         }
         return root;
     }
-    catch (...) {
-        throw std::bad_alloc();
+    catch (std::bad_alloc& e) {
+        throw e;
     }
 }
 

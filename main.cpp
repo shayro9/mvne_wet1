@@ -1,5 +1,6 @@
 #include "Tree.h"
 #include "worldcup23a1.h"
+#include "iostream"
 
 int main()
 {
@@ -24,15 +25,16 @@ int main()
         status = worldCup->play_match(i%2 + 1,(i+1)%2 + 1);
         output_t<int> result1 = worldCup->get_team_points(1);
         output_t<int> result2 = worldCup->get_team_points(2);
-        //std::cout << 1 << " - " << result1.ans() << "\n";
-        //std::cout << 2 << " - " << result2.ans() << "\n";
+        std::cout << 1 << " - " << result1.ans() << "\n";
+        std::cout << 2 << " - " << result2.ans() << "\n";
     }
 
     for (int i = 0; i < 50; ++i) {
         output_t<int> result = worldCup->get_num_played_games(i);
-        //std::cout << i << " - " << result.ans() << "\n";
+        std::cout << i << " - " << result.ans() << "\n";
     }
     status = worldCup->unite_teams(1,2,2);
+    status = status;
     /*status = worldCup->add_player(3, 1, 1, 1, 1, true);
     int x = worldCup->get_top_scorer(-1).ans();*/
     return 0;

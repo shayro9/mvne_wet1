@@ -2,12 +2,9 @@
 
 CompleteTeam::CompleteTeam(int teamId, int points, int goals, int cards) :
     m_teamId(teamId),
-    m_cards(cards),
+    m_points(points),
     m_goals(goals),
-    m_points(points)
-
-
-
+    m_cards(cards)
 {}
 
 bool operator==(const CompleteTeam &ct1, const CompleteTeam &ct2) {
