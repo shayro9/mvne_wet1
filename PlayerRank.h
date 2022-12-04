@@ -6,7 +6,6 @@
 #include "List.h"
 //#include "CompleteTeam.h"
 //#include "Team.h"
-//#include "Player.h"
 
 class PlayerRank{
 public:

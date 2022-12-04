@@ -22,7 +22,7 @@ public:
     Tree& operator=(const Tree& q)=default;
 
     node<T>* find(const T& t);
-    void insert(const T& t);
+    void insert(T& t);
     void remove(const T& t);
 
     node<T>* getMax();
@@ -221,7 +221,7 @@ node<T> *Tree<T>::insertNode(node<T> *root, const T& t) {
 }
 
 template<class T>
-void Tree<T>::insert(const T &t) {
+void Tree<T>::insert(T &t) {
     m_root = insertNode(m_root,t);
 }
 

@@ -2,7 +2,6 @@
 #define MVNE_WET1_TEAM_H
 
 #include "Tree.h"
-//#include "PlayerRank.h"
 #include "Player.h"
 #include "CompleteTeam.h"
 
@@ -15,7 +14,7 @@ public:
     Team() = default;
     ~Team();
 
-    void addPlayer(Player* player);
+    Player* addPlayer(Player* player);
     void removePlayer(Player* player);
 
     int getId() const;
