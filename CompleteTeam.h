@@ -17,6 +17,8 @@ public:
     int getScore() const;
     int getId() const;
     int getPoints() const;
+    void addGoals(int amount);
+    void addCards(int amount);
 
     void addPoints(int amount);
     void setCompleteTeamNode(LNode<CompleteTeam*>* node);

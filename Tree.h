@@ -106,9 +106,8 @@ node<T>* Tree<T>::findMinBiggerNode(node<T> *root, const T &t) {
 }
 template<class T>
 node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
-    if(root == nullptr)
+    if (root == nullptr)
         return nullptr;
-<<<<<<< HEAD
 
     if (!root->l && !root->r) {
         if (root->data < t) {
@@ -138,24 +137,22 @@ node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
             else
                 return nullptr;
         }
-=======
-    if(!root->l && !root->r)
-        return nullptr;
-    if(root->data > t)
-        return findMaxSmallerNode(root->l,t);
-    else if(root->data < t) {
-        node<T>* right_smallest_max = findMaxSmallerNode(root->r,t);
-        if(right_smallest_max)
-            return root->data > right_smallest_max->data ? root : right_smallest_max;
-        else
-            return root;
->>>>>>> 707bf0c584abfe67f974a045ef8d5308baa74433
-    }
-    else{
-        if(root->l)
-            return maxValueNode(root->l);
-        else
+        if (!root->l && !root->r)
             return nullptr;
+        if (root->data > t)
+            return findMaxSmallerNode(root->l, t);
+        else if (root->data < t) {
+            node<T> *right_smallest_max = findMaxSmallerNode(root->r, t);
+            if (right_smallest_max)
+                return root->data > right_smallest_max->data ? root : right_smallest_max;
+            else
+                return root;
+        } else {
+            if (root->l)
+                return maxValueNode(root->l);
+            else
+                return nullptr;
+        }
     }
 }
 
@@ -471,37 +468,35 @@ int Tree<T>::tree2ArrayInOrder_rec(node<T> *root, T *output, int index, bool (*c
 
 template<class T>
 node<T>* Tree<T>::sortedArray2Tree(T *input, int start, int end) {
-    if(start > end)
+    if (start > end)
         return nullptr;
 
-    int mid = (start + end)/2;
-<<<<<<< HEAD
+    int mid = (start + end) / 2;
     auto *root = new node<T>();
     root->data = input[mid];
-    root->l = sortedArray2Tree(input,start,mid - 1);
-    root->r = sortedArray2Tree(input,mid + 1, end);
-    if(m_max == nullptr)
+    root->l = sortedArray2Tree(input, start, mid - 1);
+    root->r = sortedArray2Tree(input, mid + 1, end);
+    if (m_max == nullptr)
         m_max = root;
-    if (input[mid] > m_max->data){
+    if (input[mid] > m_max->data) {
         m_max = root;
-=======
-    try {
-        node<T> *root = new node<T>();
-        root->data = input[mid];
-        root->l = sortedArray2Tree(input,start,mid - 1);
-        root->r = sortedArray2Tree(input,mid + 1, end);
-        if(m_max == nullptr)
-            m_max = root;
-        if (input[mid] > m_max->data){
-            m_max = root;
+        try {
+            node<T> *root = new node<T>();
+            root->data = input[mid];
+            root->l = sortedArray2Tree(input, start, mid - 1);
+            root->r = sortedArray2Tree(input, mid + 1, end);
+            if (m_max == nullptr)
+                m_max = root;
+            if (input[mid] > m_max->data) {
+                m_max = root;
+            }
+            return root;
+        }
+        catch (std::bad_alloc &e) {
+            throw e;
         }
         return root;
     }
-    catch (std::bad_alloc& e) {
-        throw e;
->>>>>>> 707bf0c584abfe67f974a045ef8d5308baa74433
-    }
-    return root;
 }
 
 template<class T>

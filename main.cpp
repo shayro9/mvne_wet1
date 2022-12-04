@@ -6,11 +6,10 @@ int main()
 {
     StatusType status;
     world_cup_t* worldCup = new world_cup_t();
-    for (int i = 1; i < 3; ++i) {
+    for (int i = 1; i < 4; ++i) {
         status = worldCup->add_team(i,10*i/3);
     }
 
-<<<<<<< HEAD
   //  for (int i = 0; i < 50; ++i) {
    //     status = worldCup->add_player(i,i%2 + 1,i%3,i%5,i%4,(i/3)%2);
  //   }
@@ -36,6 +35,7 @@ int main()
     status = worldCup->add_player(100, 1, 1, 8, 6, true);
     status = worldCup->add_player(80, 2, 1, 10, 7, true);
     status = worldCup->add_player(90, 2, 1, 10, 7, true);
+    /*
     status = worldCup->add_player(91, 2, 1, 10, 7, true);
     status = worldCup->add_player(92, 2, 1, 10, 7, true);
     status = worldCup->add_player(93, 2, 1, 10, 7, true);
@@ -64,6 +64,8 @@ int main()
     status = worldCup->add_player(74, 3, 1, 10, 7, true);
     status = worldCup->add_player(75, 3, 1, 10, 7, true);
     status = worldCup->add_player(76, 3, 1, 10, 7, true);
+     */
+    int x21 = worldCup->get_closest_player(21, 1).ans();
 
     int x = worldCup->knockout_winner(1, 3).ans();
 

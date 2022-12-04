@@ -55,3 +55,11 @@ bool operator<=(const CompleteTeam &ct1, const CompleteTeam &ct2){
 bool operator>=(const CompleteTeam &ct1, const CompleteTeam &ct2){
     return ct2 <= ct1;
 }
+
+void CompleteTeam::addGoals(int amount) {
+    m_goals += amount;
+}
+
+void CompleteTeam::addCards(int amount) {
+    m_cards += amount;
+}
