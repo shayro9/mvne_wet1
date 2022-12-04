@@ -13,6 +13,7 @@ public:
     explicit Team(int teamId, int points, int goals = 0, int cards = 0, int numOfPlayers = 0, int gamesPlayed = 0);
     Team(int teamId);
     Team() = default;
+    ~Team();
 
     void addPlayer(Player* player);
     void removePlayer(Player* player);

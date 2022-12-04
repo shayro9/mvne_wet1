@@ -7,6 +7,7 @@
     PlayerId(Player &player);
     PlayerId(int id);
     PlayerId() = default;
+    ~PlayerId();
 
     Player* getPlayer();
 

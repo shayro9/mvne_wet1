@@ -27,6 +27,10 @@ Player *PlayerId::getPlayer() {
     return m_player;
 }
 
+PlayerId::~PlayerId() {
+    delete(m_player);
+}
+
 bool operator> (const PlayerId& id1, const PlayerId& id2){
     return id2 < id1;
 }

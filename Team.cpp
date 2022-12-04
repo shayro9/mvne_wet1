@@ -169,6 +169,10 @@ void Team::setId(int newId) {
     m_teamId = newId;
 }
 
+Team::~Team() {
+    delete(m_completeTeam);
+}
+
 void UpdateGames(node<Player>* p, int gamePlayedBefore)
 {
 

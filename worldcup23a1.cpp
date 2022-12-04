@@ -16,10 +16,12 @@ world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(T
 	// TODO: Your code goes here
 }
 
+/*
 world_cup_t::~world_cup_t()
 {
 	// TODO: Your code goes here
 }
+ */
 
 
 StatusType world_cup_t::add_team(int teamId, int points)
@@ -109,7 +111,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         */
 
 
-        Player* new_player = new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper); // add games team played before
+        auto* new_player = new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper); // add games team played before
         PlayerRank* new_player_rank = new_player->getPlayerRank();
 
         Team* new_player_team = &teams.find(teamId)->data;
@@ -147,6 +149,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             new_completeTeam->setCompleteTeamNode(completeTeamList.getLastAdded());
             completeTeams.insert(*new_completeTeam);
         }
+        //delete(new_player);
     }
     catch (const std::bad_alloc &)
     {

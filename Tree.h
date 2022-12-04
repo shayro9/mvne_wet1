@@ -16,8 +16,9 @@ template <class T>
 class Tree {
 public:
     Tree();
-    ~Tree() = default;
-    Tree(const Tree& t)=default;
+    ~Tree();
+    void DestroyRecursive(node<T>* node);
+    Tree(const Tree& t) = default;
     Tree& operator=(const Tree& q)=default;
 
     node<T>* find(const T& t);
@@ -65,6 +66,22 @@ private:
     node<T>* sortedArray2Tree( T *input,int start, int end);
     int height(node<T>* n);
 };
+
+template<class T>
+void Tree<T>::DestroyRecursive(node<T>* node)
+{
+    if (node)
+    {
+        DestroyRecursive(node->l);
+        DestroyRecursive(node->r);
+        delete(node);
+    }
+}
+
+template<class T>
+Tree<T>::~Tree() {
+    DestroyRecursive(m_root);
+}
 
 template<class T>
 node<T>* Tree<T>::findMaxSmaller(const T &t) {
@@ -483,6 +500,5 @@ template<class T>
 void Tree<T>::setMax() {
     m_max = maxValueNode(m_root);
 }
-
 
 #endif //MVNE_WET1_TREE_H
