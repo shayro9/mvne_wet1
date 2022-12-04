@@ -171,8 +171,6 @@ StatusType world_cup_t::remove_player(int playerId)
 
     bool is_goalkeeper = currPlayer->getPlayer()->isGoalKeeper();
     Team* currTeam = currPlayer->getPlayer()->getTeam();
-    int currGoals = currPlayer->getPlayer()->getGoals();
-    int currCards = currPlayer->getPlayer()->getCards();
 
     try
     {
@@ -210,7 +208,11 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
     if(playerId <=0 || gamesPlayed < 0 || scoredGoals < 0 || cardsReceived < 0)
         return StatusType::INVALID_INPUT;
 
-    Player* currPlayer = (playersId.find(playerId)->data.getPlayer());
+    node<PlayerId>* currPlayerId = playersId.find(playerId);
+    if(currPlayerId == nullptr)
+        return StatusType::FAILURE;
+
+    Player* currPlayer = currPlayerId->data.getPlayer();
 
     currPlayer->updateStats(gamesPlayed,scoredGoals,cardsReceived);
     currPlayer->getTeam()->updateStats(scoredGoals,cardsReceived, 0);
@@ -239,13 +241,18 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
 
     PlayerRank* newPlayerRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
     playersRank.insert(*newPlayerRank);
-    LNode<PlayerRank*>* prevInList = playersRank.findMaxSmaller(*newPlayerRank)->data.getPlayerNode();
+    node<PlayerRank>* added_node = playersRank.find(*newPlayerRank);
+
+    node<PlayerRank>* prevInList = playersRank.findMaxSmaller(*newPlayerRank);
     if (prevInList != nullptr){
-        playerRankList.insertAfter(prevInList, newPlayerRank);
+        playerRankList.insertAfter(prevInList->data.getPlayerNode(), newPlayerRank);
     }
     else{
         playerRankList.insertFront(newPlayerRank); //if its the smallest one, creates one node list- should add insert before
     }
+    newPlayerRank->setPlayerNode(playerRankList.getLastAdded());
+    added_node->data.setPlayerNode(playerRankList.getLastAdded());
+    currPlayer->setPlayerRank(newPlayerRank);
 
     Team* currTeam = currPlayer->getTeam();
     PlayerRank* currTeamPlayerRank = currPlayer->getGroupPlayerRank();
@@ -350,6 +357,9 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
     try {
         team1->mergeWith(*team2, newTeamId);
+        teams.insert(*team1);
+        teams.remove(teamId1);
+        teams.remove(teamId2);
     }
     catch (...) {
         return StatusType::ALLOCATION_ERROR;
