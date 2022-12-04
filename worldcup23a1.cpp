@@ -357,18 +357,22 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
     Team* team1 = &teams.find(teamId1)->data;
     Team* team2 = &teams.find(teamId2)->data;
-    Team* new_team = &teams.find(newTeamId)->data;
+    if(newTeamId != teamId1 && newTeamId != teamId2) {
+        Team *new_team = &teams.find(newTeamId)->data;
+        if(new_team)
+            return StatusType::FAILURE;
+    }
 
-    if(!team1 || !team2 || new_team)
+    if(!team1 || !team2)
         return StatusType::FAILURE;
 
     try {
         team1->mergeWith(*team2, newTeamId);
-        teams.insert(*team1);
-        teams.remove(teamId1);
         teams.remove(teamId2);
+        team1->setId(newTeamId);
+        teams.setMax();
     }
-    catch (...) {
+    catch (const std::bad_alloc &) {
         return StatusType::ALLOCATION_ERROR;
     }
 	return StatusType::SUCCESS;
