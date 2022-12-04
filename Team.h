@@ -2,7 +2,6 @@
 #define MVNE_WET1_TEAM_H
 
 #include "Tree.h"
-//#include "PlayerRank.h"
 #include "Player.h"
 #include "CompleteTeam.h"
 
@@ -13,8 +12,9 @@ public:
     explicit Team(int teamId, int points, int goals = 0, int cards = 0, int numOfPlayers = 0, int gamesPlayed = 0);
     Team(int teamId);
     Team() = default;
+    ~Team();
 
-    void addPlayer(Player* player);
+    Player* addPlayer(Player* player);
     void removePlayer(Player* player);
 
     int getId() const;

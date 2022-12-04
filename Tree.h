@@ -1,6 +1,7 @@
 #ifndef MVNE_WET1_TREE_H
 #define MVNE_WET1_TREE_H
 #include "exception"
+#include "new"
 
 
 template <class T>
@@ -15,12 +16,13 @@ template <class T>
 class Tree {
 public:
     Tree();
-    ~Tree() = default;
-    Tree(const Tree& t)=default;
+    ~Tree();
+    void DestroyRecursive(node<T>* node);
+    Tree(const Tree& t) = default;
     Tree& operator=(const Tree& q)=default;
 
     node<T>* find(const T& t);
-    void insert(const T& t);
+    void insert(T& t);
     void remove(const T& t);
 
     node<T>* getMax();
@@ -66,6 +68,22 @@ private:
 };
 
 template<class T>
+void Tree<T>::DestroyRecursive(node<T>* node)
+{
+    if (node)
+    {
+        DestroyRecursive(node->l);
+        DestroyRecursive(node->r);
+        delete(node);
+    }
+}
+
+template<class T>
+Tree<T>::~Tree() {
+    DestroyRecursive(m_root);
+}
+
+template<class T>
 node<T>* Tree<T>::findMaxSmaller(const T &t) {
 
     return findMaxSmallerNode(m_root, t);
@@ -88,8 +106,9 @@ node<T>* Tree<T>::findMinBiggerNode(node<T> *root, const T &t) {
 }
 template<class T>
 node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
-    if (root == nullptr)
+    if(root == nullptr)
         return nullptr;
+<<<<<<< HEAD
 
     if (!root->l && !root->r) {
         if (root->data < t) {
@@ -119,9 +138,24 @@ node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
             else
                 return nullptr;
         }
+=======
+    if(!root->l && !root->r)
+        return nullptr;
+    if(root->data > t)
+        return findMaxSmallerNode(root->l,t);
+    else if(root->data < t) {
+        node<T>* right_smallest_max = findMaxSmallerNode(root->r,t);
+        if(right_smallest_max)
+            return root->data > right_smallest_max->data ? root : right_smallest_max;
+        else
+            return root;
+>>>>>>> 707bf0c584abfe67f974a045ef8d5308baa74433
     }
     else{
-        return nullptr;
+        if(root->l)
+            return maxValueNode(root->l);
+        else
+            return nullptr;
     }
 }
 
@@ -219,7 +253,7 @@ node<T> *Tree<T>::insertNode(node<T> *root, const T& t) {
 }
 
 template<class T>
-void Tree<T>::insert(const T &t) {
+void Tree<T>::insert(T &t) {
     m_root = insertNode(m_root,t);
 }
 
@@ -441,6 +475,7 @@ node<T>* Tree<T>::sortedArray2Tree(T *input, int start, int end) {
         return nullptr;
 
     int mid = (start + end)/2;
+<<<<<<< HEAD
     auto *root = new node<T>();
     root->data = input[mid];
     root->l = sortedArray2Tree(input,start,mid - 1);
@@ -449,6 +484,22 @@ node<T>* Tree<T>::sortedArray2Tree(T *input, int start, int end) {
         m_max = root;
     if (input[mid] > m_max->data){
         m_max = root;
+=======
+    try {
+        node<T> *root = new node<T>();
+        root->data = input[mid];
+        root->l = sortedArray2Tree(input,start,mid - 1);
+        root->r = sortedArray2Tree(input,mid + 1, end);
+        if(m_max == nullptr)
+            m_max = root;
+        if (input[mid] > m_max->data){
+            m_max = root;
+        }
+        return root;
+    }
+    catch (std::bad_alloc& e) {
+        throw e;
+>>>>>>> 707bf0c584abfe67f974a045ef8d5308baa74433
     }
     return root;
 }

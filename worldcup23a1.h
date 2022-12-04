@@ -39,7 +39,7 @@ public:
 	// <DO-NOT-MODIFY> {
 	
 	world_cup_t();
-	virtual ~world_cup_t();
+	virtual ~world_cup_t()=default;
 	
 	StatusType add_team(int teamId, int points);
 	
@@ -76,7 +76,5 @@ public:
 
 //is it allowed?
 bool isComplete(node<Team>* t);
-
-int abs(int x);
 
 #endif // WORLDCUP23A1_H_

@@ -47,15 +47,20 @@ List<T>::List() {
 
 template<class T>
 List<T>::~List() {
-    LNode<T>* curr_node = m_head->m_next;
-    while (curr_node)
-    {
-        delete(curr_node->m_prev);
-        curr_node = curr_node->m_next;
+    if(m_head) {
+        LNode<T> *curr_node = m_head->m_next;
+        while (curr_node) {
+            delete (curr_node->m_prev);
+            curr_node = curr_node->m_next;
+        }
+        delete(m_tail);
     }
+<<<<<<< HEAD
     delete(m_head);
     //delete(m_tail);
     //delete(m_last_added);
+=======
+>>>>>>> 707bf0c584abfe67f974a045ef8d5308baa74433
 }
 
 template<class T>
