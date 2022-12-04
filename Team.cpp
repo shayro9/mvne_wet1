@@ -49,7 +49,7 @@ bool operator>=(const Team& t1, const Team& t2)
     return t2 <= t1;
 }
 
-void Team::addPlayer(Player *player) {
+Player* Team::addPlayer(Player *player) {
     m_players.insert(*player);
     m_TeamPlayersRank.insert(*player->getPlayerRank());
     m_numOfPlayers++;
@@ -57,6 +57,8 @@ void Team::addPlayer(Player *player) {
     m_cards += player->getCards();
     if(player->isGoalKeeper())
         m_numOfGoalkeepers++;
+
+    return &m_players.find(*player)->data;
 }
 
 bool Team::isComplete() const {

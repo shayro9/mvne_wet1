@@ -3,7 +3,11 @@
 //
 #include "PlayerRank.h"
 
-PlayerRank::PlayerRank(int playerId, int goals, int cards) : m_playerId(playerId), m_goals(goals), m_cards(cards)
+PlayerRank::PlayerRank(int playerId, int goals, int cards) :
+    m_playerId(playerId),
+    m_goals(goals),
+    m_cards(cards),
+    m_playerNode(nullptr)
 {
     //m_playerRankNode = new LinkedListNode<int>(playerId);
 }

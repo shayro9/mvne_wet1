@@ -23,14 +23,14 @@ public:
 
     PlayerRank* getPlayerRank();
     void setPlayerRank(PlayerRank* playerRank);
+    void setTeamPlayerRank(PlayerRank* ptr);
 
     PlayerRank* getGroupPlayerRank();
     Team* getTeam();
     void setTeam(Team* t, int gamesPlayed, int *games);
 
     void updateStats(int games, int goals, int cards);
-    void updatePlayerRank(PlayerRank* ptr);
-    void updateTeamPlayerRank(PlayerRank* ptr);
+
 
     friend bool operator<(const Player&, const Player&);
     friend bool operator==(const Player&, const Player&);
