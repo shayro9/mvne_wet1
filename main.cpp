@@ -33,7 +33,7 @@ int main()
         //std::cout << i << " - " << result.ans() << "\n";
     }
     status = worldCup->unite_teams(1,2,2);
-    status = worldCup->add_player(3, 1, 1, 1, 1, true);
-    int x = worldCup->get_top_scorer(-1).ans();
+    /*status = worldCup->add_player(3, 1, 1, 1, 1, true);
+    int x = worldCup->get_top_scorer(-1).ans();*/
     return 0;
 }
