@@ -147,6 +147,13 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             new_completeTeam->setCompleteTeamNode(completeTeamList.getLastAdded());
             completeTeams.insert(*new_completeTeam);
         }
+
+
+        else if (new_player_team->isComplete()){
+
+            new_player_team->getCompleteTeamPointer()->addGoals(goals);
+            new_player_team->getCompleteTeamPointer()->addCards(cards);
+        }
     }
     catch (const std::bad_alloc &)
     {
@@ -461,7 +468,13 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
         return StatusType::FAILURE;
     }
     PlayerRank* currRank = currPlayer->getPlayerRank();
-    PlayerRank* prevInList = currPlayer->getPlayerRank()->getPlayerNode()->m_prev->m_data;
+    if (!currPlayer->getPlayerRank()->getPlayerNode()->m_prev) {
+        return currPlayer->getPlayerRank()->getPlayerNode()->m_next->m_data->getId();
+    }
+    PlayerRank *prevInList = currPlayer->getPlayerRank()->getPlayerNode()->m_prev->m_data;
+    if (!currPlayer->getPlayerRank()->getPlayerNode()->m_next){
+        return prevInList->getId();
+    }
     PlayerRank* nextInList = currPlayer->getPlayerRank()->getPlayerNode()->m_next->m_data;
     if (abs(prevInList->getGoals() - currRank->getGoals()) < abs(nextInList->getGoals() - currRank->getGoals())){
         return prevInList->getId();

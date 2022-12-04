@@ -43,6 +43,14 @@ void CompleteTeam::setCompleteTeamNode(LNode<CompleteTeam *> *node) {
     m_completeNode = node;
 }
 
+void CompleteTeam::addGoals(int amount) {
+    m_goals += amount;
+}
+
+void CompleteTeam::addCards(int amount) {
+    m_cards += amount;
+}
+
 bool operator> (const CompleteTeam &ct1, const CompleteTeam &ct2){
     return ct2 < ct1;
 }
