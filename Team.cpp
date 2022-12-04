@@ -10,7 +10,9 @@ Team::Team(int teamId, int points, int goals, int cards, int numOfPlayers, int g
     m_numOfGoalkeepers(0),
     m_players(Tree<Player>()),
     m_TeamPlayersRank(Tree<PlayerRank>())
-{}
+{
+    m_completeTeam = nullptr;
+}
 
 Team::Team(int teamId) :
     Team(teamId,0)
@@ -78,8 +80,8 @@ int Team::getCards() const {
 }
 
 void Team::removePlayer(Player *player) {
-    m_players.remove(*player);
     m_TeamPlayersRank.remove(*player->getPlayerRank());
+    m_players.remove(*player);
     m_numOfPlayers--;
     m_cards -= player->getCards();
     m_goals -= player->getGoals();

@@ -20,8 +20,10 @@ Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, 
 }
 
 Player::~Player() {
+    /*
     delete(m_playerRank);
     delete(m_groupPlayerRank);
+     */
 }
 
 bool operator<(const Player& p1, const Player& p2) {
@@ -63,7 +65,7 @@ int Player::getCards() const{
     return m_cards;
 }
 
-PlayerRank *Player::getPlayerRank() {
+PlayerRank* Player::getPlayerRank() {
     return m_playerRank;
 }
 
@@ -111,8 +113,4 @@ void Player::updatePlayerRank(PlayerRank *ptr) {
 void Player::updateTeamPlayerRank(PlayerRank *ptr) {
     m_groupPlayerRank = ptr;
 
-}
-
-void Player::setPlayerRank(PlayerRank *playerRank) {
-    m_playerRank = playerRank;
 }

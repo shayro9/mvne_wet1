@@ -39,6 +39,10 @@ int CompleteTeam::getPoints() const {
     return m_points;
 }
 
+void CompleteTeam::setCompleteTeamNode(LNode<CompleteTeam *> *node) {
+    m_completeNode = node;
+}
+
 bool operator> (const CompleteTeam &ct1, const CompleteTeam &ct2){
     return ct2 < ct1;
 }
