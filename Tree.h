@@ -67,6 +67,7 @@ private:
 
 template<class T>
 node<T>* Tree<T>::findMaxSmaller(const T &t) {
+
     return findMaxSmallerNode(m_root, t);
 }
 template<class T>
@@ -87,26 +88,37 @@ node<T>* Tree<T>::findMinBiggerNode(node<T> *root, const T &t) {
 }
 template<class T>
 node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
-    if(root == nullptr)
+    if (root == nullptr)
         return nullptr;
 
-    if(!root->l && !root->r)
-        return nullptr;
-
-    if(root->data > t)
-        return findMaxSmallerNode(root->l,t);
-    else if(root->data < t) {
-        node<T>* right_smallest_max = findMaxSmallerNode(root->r,t);
-        if(right_smallest_max)
-            return root->data > right_smallest_max->data ? root : right_smallest_max;
-        else
+    if (!root->l && !root->r) {
+        if (root->data < t) {
             return root;
-    }
-    else{
-        if(root->l)
-            return maxValueNode(root->l);
-        else
+        } else {
             return nullptr;
+        }
+
+    }
+
+    if (root->data > t) {
+        if (root->l) {
+            return findMaxSmallerNode(root->l, t);
+        } else {
+            return nullptr;
+        }
+    } else if (root->data < t) {
+        if (root->r) {
+            node<T> *right_smallest_max = findMaxSmallerNode(root->r, t);
+            if (right_smallest_max)
+                return root->data > right_smallest_max->data ? root : right_smallest_max;
+            else
+                return root;
+        } else {
+            if (root->l)
+                return maxValueNode(root->l);
+            else
+                return nullptr;
+        }
     }
 }
 
