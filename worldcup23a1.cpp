@@ -420,7 +420,7 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
-	// TODO: Your code goes here
+    // TODO: Your code goes here
     if ((teamId <= 0) || (playerId <= 0)){
         return StatusType::INVALID_INPUT;
     }
@@ -432,15 +432,21 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
         return StatusType::FAILURE;
     }
     //Tree<Player> currTree = currTeam->getPlayers();
-  //  Player* curr = currTree.find(playerId);
-  //  Player* currPlayer = &currTeam->getPlayers().find(playerId)->data
+    //  Player* curr = currTree.find(playerId);
+    //  Player* currPlayer = &currTeam->getPlayers().find(playerId)->data
     PlayerId* currPlayerId = &playersId.find(playerId)->data; //complexity!!
     Player* currPlayer = currPlayerId->getPlayer();
     if (currPlayer->getTeam()->getId() != teamId){
         return StatusType::FAILURE;
     }
     PlayerRank* currRank = currPlayer->getPlayerRank();
-    PlayerRank* prevInList = currPlayer->getPlayerRank()->getPlayerNode()->m_prev->m_data;
+    if (!currPlayer->getPlayerRank()->getPlayerNode()->m_prev) {
+        return currPlayer->getPlayerRank()->getPlayerNode()->m_next->m_data->getId();
+    }
+    PlayerRank *prevInList = currPlayer->getPlayerRank()->getPlayerNode()->m_prev->m_data;
+    if (!currPlayer->getPlayerRank()->getPlayerNode()->m_next){
+        return prevInList->getId();
+    }
     PlayerRank* nextInList = currPlayer->getPlayerRank()->getPlayerNode()->m_next->m_data;
     if (abs(prevInList->getGoals() - currRank->getGoals()) < abs(nextInList->getGoals() - currRank->getGoals())){
         return prevInList->getId();
@@ -472,6 +478,10 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
             }
         }
     }
+
+
+
+
 
 
 
