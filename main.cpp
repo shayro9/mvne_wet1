@@ -15,12 +15,15 @@ int main()
         status = worldCup->add_player(i,i%2 + 1,i%3,i%5,i%4,(i/3)%2);
     }
 
+    for (int i = 0; i < 50; ++i) {
+        status = worldCup->update_player_stats(i,i%2 + 1,i%3,i%5);
+    }
 
     for (int i = 0; i < 20; ++i) {
         status = worldCup->remove_player(i);
     }
 
-    /*
+
     for (int i = 0; i < 50; ++i) {
         status = worldCup->play_match(i%2 + 1,(i+1)%2 + 1);
         output_t<int> result1 = worldCup->get_team_points(1);
@@ -32,7 +35,7 @@ int main()
     for (int i = 0; i < 50; ++i) {
         output_t<int> result = worldCup->get_num_played_games(i);
         result.ans();
-    }*/
+    }
     delete(worldCup);
     status = status;
     /*
