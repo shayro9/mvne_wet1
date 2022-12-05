@@ -14,7 +14,7 @@ public:
     Team() = default;
     ~Team();
 
-    Player* addPlayer(Player* player);
+    Player* addPlayer(Player* player, PlayerRank* playerRank);
     void removePlayer(Player* player);
 
     int getId() const;
@@ -25,8 +25,8 @@ public:
     int getGamesPlayed() const;
     int* getGamesPlayedPoint();
     int getGoalKeepersNum() const;
-    CompleteTeam* getCompleteTeamPointer() const;
-    void setCompleteTeamPointer(CompleteTeam* ptr) ;
+    node<CompleteTeam>* getCompleteTeamPointer() const;
+    void setCompleteTeamPointer(node<CompleteTeam>* ptr) ;
     void addPoints(int amount);
     void addGames(int amount);
 
@@ -55,7 +55,7 @@ private:
     int m_gamesPlayed;
     int m_numOfGoalkeepers;
 
-    CompleteTeam* m_completeTeam;
+    node<CompleteTeam>* m_completeTeam;
 
     Tree<Player> m_players;
     Tree<PlayerRank> m_TeamPlayersRank;

@@ -49,9 +49,10 @@ bool operator>=(const Team& t1, const Team& t2)
     return t2 <= t1;
 }
 
-Player* Team::addPlayer(Player *player) {
+Player* Team::addPlayer(Player *player,PlayerRank *playerRank) {
     m_players.insert(*player);
-    m_TeamPlayersRank.insert(*player->getPlayerRank());
+    m_TeamPlayersRank.insert(*playerRank);
+    player->setTeamPlayerRank(playerRank);
     m_numOfPlayers++;
     m_goals += player->getGoals();
     m_cards += player->getCards();
@@ -82,12 +83,13 @@ int Team::getCards() const {
 }
 
 void Team::removePlayer(Player *player) {
-    m_TeamPlayersRank.remove(*player->getPlayerRank());
-    m_players.remove(*player);
     m_numOfPlayers--;
     m_cards -= player->getCards();
     m_goals -= player->getGoals();
     m_numOfGoalkeepers -= player->isGoalKeeper();
+
+    m_TeamPlayersRank.remove(*player->getPlayerRank());
+    m_players.remove(*player);
 }
 
 void Team::updateStats(int goals, int cards, int players) {
@@ -105,7 +107,7 @@ void Team::addPoints(int amount) {
     m_gamesPlayed++;
     if(isComplete())
     {
-        m_completeTeam->addPoints(amount);
+        m_completeTeam->data.addPoints(amount);
     }
 }
 
@@ -155,11 +157,11 @@ int *Team::getGamesPlayedPoint() {
     return &m_gamesPlayed;
 }
 
-CompleteTeam *Team::getCompleteTeamPointer() const {
+node<CompleteTeam> *Team::getCompleteTeamPointer() const {
     return m_completeTeam;
 }
 
-void Team::setCompleteTeamPointer(CompleteTeam* ptr)  {
+void Team::setCompleteTeamPointer(node<CompleteTeam>* ptr)  {
     m_completeTeam = ptr;
 }
 
@@ -172,7 +174,7 @@ void Team::setId(int newId) {
 }
 
 Team::~Team() {
-    delete(m_completeTeam);
+
 }
 
 void UpdateGames(node<Player>* p, int gamePlayedBefore)

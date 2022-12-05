@@ -11,15 +11,14 @@ public:
 
     CompleteTeam() = default;
     ~CompleteTeam() = default;
-   // CompleteTeam(const CompleteTeam& t)=default;
-  //  CompleteTeam& operator=(const CompleteTeam& t)=default;
-    LNode<CompleteTeam*>* getCompleteNode() const;
+
+    LNode<CompleteTeam>* getCompleteNode() const;
     int getScore() const;
     int getId() const;
     int getPoints() const;
 
     void addPoints(int amount);
-    void setCompleteTeamNode(LNode<CompleteTeam*>* node);
+    void setCompleteTeamNode(LNode<CompleteTeam>* node);
 
     friend bool operator== (const CompleteTeam&, const CompleteTeam&);
     friend bool operator< (const CompleteTeam&, const CompleteTeam&);
@@ -29,7 +28,7 @@ private:
     int m_points;
     int m_goals;
     int m_cards;
-    LNode<CompleteTeam*>* m_completeNode;
+    LNode<CompleteTeam>* m_completeNode;
 
 };
 

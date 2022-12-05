@@ -65,7 +65,7 @@ bool operator>=(const PlayerRank &pr1, const PlayerRank &pr2)
     return pr2 <= pr1;
 }
 
-LNode<PlayerRank *> *PlayerRank::getPlayerNode() const {
+LNode<PlayerRank> *PlayerRank::getPlayerNode() const {
     return m_playerNode;
 }
 
@@ -77,6 +77,6 @@ int PlayerRank::getCards() const {
     return m_cards;
 }
 
-void PlayerRank::setPlayerNode(LNode<PlayerRank *> *node) {
+void PlayerRank::setPlayerNode(LNode<PlayerRank> *node) {
     m_playerNode = node;
 }
