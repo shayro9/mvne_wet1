@@ -58,9 +58,9 @@ int main()
         } else if (!op.compare("get_team_points")) {
             cin >> d1;
             print(op, obj->get_team_points(d1));
-        } else if (!op.compare("unite_teams")) {
+       /* } else if (!op.compare("unite_teams")) {
             cin >> d1 >> d2 >> d3;
-            print(op, obj->unite_teams(d1, d2, d3));
+            print(op, obj->unite_teams(d1, d2, d3));*/
         } else if (!op.compare("get_top_scorer")) {
             cin >> d1;
             print(op, obj->get_top_scorer(d1));

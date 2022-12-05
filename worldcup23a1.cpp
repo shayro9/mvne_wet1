@@ -491,67 +491,90 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
-	// TODO: Your code goes here
 
-   // Team *competing_teams {};
-  //  teams.tree2ArrayInOrder(competing_teams,isComplete);
+    // TODO: Your code goes here
 
-   // Team* minTeam = &teams.find(minTeamId)->data;
-   // Team* maxTeam = &teams.find(maxTeamId)->data;
+    // Team *competing_teams {};
+    //  teams.tree2ArrayInOrder(competing_teams,isComplete);
 
-    CompleteTeam* minComplete;
-    if (completeTeams.find(minTeamId) != nullptr){
+    // Team* minTeam = &teams.find(minTeamId)->data;
+    // Team* maxTeam = &teams.find(maxTeamId)->data;
+
+    CompleteTeam *minComplete;
+    if (completeTeams.find(minTeamId) != nullptr) {
         minComplete = &completeTeams.find(minTeamId)->data;
-    }
-    else{
+        minComplete = minComplete->getCompleteNode()->m_data;
+    } else {
         minComplete = &completeTeams.findMinBigger(minTeamId)->data;
+        minComplete = minComplete->getCompleteNode()->m_data;
+
     }
-    CompleteTeam* maxComplete;
-    if (completeTeams.find(maxTeamId) != nullptr){
+    CompleteTeam *maxComplete;
+    if (completeTeams.find(maxTeamId) != nullptr) {
         maxComplete = &completeTeams.find(maxTeamId)->data;
-    }
-    else{
+        maxComplete = maxComplete->getCompleteNode()->m_data;
+    } else {
         maxComplete = &completeTeams.findMaxSmaller(maxTeamId)->data;
+        maxComplete = maxComplete->getCompleteNode()->m_data;
+
     }
-    LNode<CompleteTeam>* minCompleteList = minComplete->getCompleteNode();
-    LNode<CompleteTeam>* maxCompleteList = maxComplete->getCompleteNode();
+    LNode<CompleteTeam > *minCompleteList = minComplete->getCompleteNode();
+    LNode<CompleteTeam > *maxCompleteList = maxComplete->getCompleteNode();
     //LNode<CompleteTeam*>* iter = minCompleteList;
-    if (minTeamId == maxTeamId){
+    if (minTeamId == maxTeamId) {
         return minTeamId;
     }
 
-  //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
-    List<CompleteTeam> list;
-    CompleteTeam* first = new CompleteTeam(minComplete->getId(), minComplete->getScore());
+    //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
+    List<CompleteTeam > list;
+    CompleteTeam *first = new CompleteTeam(minComplete->getId(), minComplete->getScore());
     list.insertFront(*first);
-    LNode<CompleteTeam>* iter = minCompleteList->m_next;
+    LNode<CompleteTeam > *iter = minCompleteList->m_next;
     int cnt = 1;
-    while(iter != maxCompleteList->m_next) {
-        CompleteTeam* x = new CompleteTeam(iter->m_data->getId(), iter->m_data->getScore());
+    while (iter != maxCompleteList->m_next) {
+        CompleteTeam *x = new CompleteTeam(iter->m_data->getId(), iter->m_data->getScore());
         list.append(*x);
         iter = iter->m_next;
         cnt++;
     }
-    while (list.getHead() != list.getTail()){
-        LNode<CompleteTeam>* it = list.getHead();
-        while (it != list.getTail() && it != nullptr){
-            if (it->m_data->getPoints() > it->m_next->m_data->getPoints()){
+    while (list.getHead() != list.getTail()) {
+        LNode<CompleteTeam > *it = list.getHead();
+        while (it != list.getTail() && it != nullptr) {
+            if (it->m_data->getPoints() > it->m_next->m_data->getPoints()) {
                 it->m_data->addPoints(it->m_next->m_data->getPoints() + 3);
-                list.remove(it->m_next);
 
-            }
-            else if(it->m_data->getPoints() < it->m_next->m_data->getPoints()){
+                list.remove(it->m_next);
+                it = it->m_next;
+
+
+            } else if (it->m_data->getPoints() < it->m_next->m_data->getPoints()) {
                 it->m_next->m_data->addPoints(it->m_data->getPoints() + 3);
-                list.remove(it);
-            }
-            else{
-                if (it->m_data->getId() > it->m_next->m_data->getId()){
+                //  list.remove(it);
+                if (it->m_next->m_next != nullptr) {
+                    it = it->m_next->m_next;
+                    list.remove(it->m_prev->m_prev);
+                } else {
+                    list.remove(it);
+                    it = nullptr;
+                }
+
+
+            } else {
+                if (it->m_data->getId() > it->m_next->m_data->getId()) {
                     it->m_data->addPoints(it->m_next->m_data->getPoints() + 3);
                     list.remove(it->m_next);
-                }
-                else {
+                    it = it->m_next;
+
+                } else {
                     it->m_next->m_data->addPoints(it->m_data->getPoints() + 3);
-                    list.remove(it);
+                    //  list.remove(it);
+                    if (it->m_next->m_next != nullptr) {
+                        it = it->m_next->m_next;
+                        list.remove(it->m_prev->m_prev);
+                    } else {
+                        list.remove(it);
+                        it = nullptr;
+                    }
                 }
             }
         }
@@ -559,65 +582,8 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
     // delete new list and complete teams
     return list.getHead()->m_data->getId();
 
-
-
-
-
-
-
-
-    // List<LNode<CompleteTeam*>*> list;
-    /*
-    list.insertFront(minCompleteList);
-    LNode<CompleteTeam*>* iter = minCompleteList->m_next;
-    int r = 1;
-    while(iter != maxCompleteList->m_next){
-        list.append(iter);
-        iter = iter->m_next;
-        r++;
-    }
-    while (list.getHead() != list.getTail()){
-       LNode< LNode<CompleteTeam*>*>* it = list.getHead();
-       while(it->m_next != nullptr){
-           if (it->m_data->m_data->getScore() > it->m_next->m_data->m_data->getScore()){
-
-           }
-       }
-
-    }
-
-
-
-
-
-    int r = 1;
-    struct couple{
-        int id;
-        int score;
-    };
-
-
-
-    List<couple> list1;
-    list1.insertFront();
-  //  LNode<CompleteTeam*>* iter = minCompleteList;
-    while (iter != maxCompleteList ){
-
-        iter = iter->m_next;
-        r++;
-    }
-    int arr[r][2]; //first in row is id, second play match score
-
-
-
-
-
-
-
-    return 2;
-     */
-
 }
+
 
 bool isComplete(node<Team>* t)
 {
