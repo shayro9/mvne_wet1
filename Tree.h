@@ -470,6 +470,7 @@ void Tree<T>::merge(Tree<T> &t,int n,int m) {
         T *array1 = new T;
         T *array2 = new T;
         T *merged_array = new T;
+
         int k = 0, j = 0;
 
         this->tree2ArrayInOrder(array1);
