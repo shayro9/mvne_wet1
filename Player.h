@@ -11,6 +11,7 @@ public:
     Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
     ~Player();
     Player() = default;
+    Player& operator=(const Player& p);
 
     int getId() const;
     int getGoals() const;

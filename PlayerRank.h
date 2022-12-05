@@ -16,10 +16,12 @@ public:
     int getId() const;
     int getGoals() const;
     int getCards() const;
+    int getConnectedPointers() const;
+    void reducePointers();
+    void connectPointer();
 
     void setPlayerNode(LNode<PlayerRank>* node);
     LNode<PlayerRank>* getPlayerNode() const;
-
 
     friend bool operator== (const PlayerRank&, const PlayerRank&);
     friend bool operator< (const PlayerRank&, const PlayerRank&);
@@ -31,6 +33,7 @@ private:
     int m_playerId;
     int m_goals;
     int m_cards;
+    int m_connectedPointers;
     LNode<PlayerRank>* m_playerNode;
 
     //LinkedListNode<int>* m_playerRankNode;
