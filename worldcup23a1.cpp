@@ -517,13 +517,14 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
-	// TODO: Your code goes here
 
-   // Team *competing_teams {};
-  //  teams.tree2ArrayInOrder(competing_teams,isComplete);
+    // TODO: Your code goes here
 
-   // Team* minTeam = &teams.find(minTeamId)->data;
-   // Team* maxTeam = &teams.find(maxTeamId)->data;
+    // Team *competing_teams {};
+    //  teams.tree2ArrayInOrder(competing_teams,isComplete);
+
+    // Team* minTeam = &teams.find(minTeamId)->data;
+    // Team* maxTeam = &teams.find(maxTeamId)->data;
 
     CompleteTeam* minComplete;
     if (completeTeams.find(minTeamId) != nullptr){
@@ -546,7 +547,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
         return minTeamId;
     }
 
-  //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
+    //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
     List<CompleteTeam*> list;
     CompleteTeam* first = new CompleteTeam(minComplete->getId(), minComplete->getScore());
     list.insertFront(first);
