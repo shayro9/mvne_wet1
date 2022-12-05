@@ -8,7 +8,7 @@ int main()
     world_cup_t* worldCup = new world_cup_t();
 
     for (int i = 1; i < 3; ++i) {
-        status = worldCup->add_team(1,10*i/3);
+        status = worldCup->add_team(i,10*i/3);
     }
 
     status = worldCup->add_player(1,1,1,0,100, false);
