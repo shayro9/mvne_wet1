@@ -135,7 +135,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             } else{
                 completeTeamList.insertFront(completeTeams.find(*new_completeTeam)->data);
             }
-            new_completeTeam->setCompleteTeamNode(completeTeamList.getLastAdded());
+            completeTeams.find(*new_completeTeam)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
             new_player_team->setCompleteTeamPointer(completeTeams.find(*new_completeTeam));
             delete(new_completeTeam);
         }
