@@ -335,6 +335,35 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         return StatusType::FAILURE;
 
     try {
+        int points = team1->getPoints() + team2->getPoints();
+        int goals = team1->getGoals() + team2->getGoals();
+        int cards = team1->getCards() + team2->getCards();
+        int players = team1->getPlayersNum() + team2->getPlayersNum();
+        int goalKeepers = team1->getGoalKeepersNum() + team2->getGoalKeepersNum();
+        int games_played = team1->getGamesPlayed() + team2->getGamesPlayed();
+
+        Team* new_team = new Team(newTeamId,points,goals,cards,players,games_played);
+        new_team->updateGoalkeepersNum(goalKeepers);
+
+        completeTeamList.remove(team1->getCompleteTeamPointer()->data.getCompleteNode());
+        completeTeamList.remove(team2->getCompleteTeamPointer()->data.getCompleteNode());
+        completeTeams.remove(teamId1);
+        completeTeams.remove(teamId2);
+
+        if(new_team->isComplete()) {
+            CompleteTeam *new_complete_team = new CompleteTeam(newTeamId, points, goals, cards);
+            node<CompleteTeam>* prevComInList = completeTeams.findMaxSmaller(*new_complete_team);
+            if (prevComInList != nullptr && completeTeamList.getSize() > 0) {
+                completeTeamList.insertAfter(prevComInList->data.getCompleteNode(), completeTeams.find(*new_complete_team)->data);
+            } else{
+                completeTeamList.insertFront(completeTeams.find(*new_complete_team)->data);
+            }
+            completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
+            completeTeams.insert(*new_complete_team);
+            new_team->setCompleteTeamPointer(completeTeams.find(*new_complete_team));
+        }
+
+
         team1->mergeWith(*team2, newTeamId);
         teams.remove(teamId2);
         team1->setId(newTeamId);
@@ -548,17 +577,19 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
             if (it->m_data->getPoints() > it->m_next->m_data->getPoints()) {
                 it->m_data->addPoints(it->m_next->m_data->getPoints() + 3);
 
+                delete(it->m_next->m_data);
                 list.remove(it->m_next);
                 it = it->m_next;
-
 
             } else if (it->m_data->getPoints() < it->m_next->m_data->getPoints()) {
                 it->m_next->m_data->addPoints(it->m_data->getPoints() + 3);
                 //  list.remove(it);
                 if (it->m_next->m_next != nullptr) {
                     it = it->m_next->m_next;
+                    delete(it->m_prev->m_prev->m_data);
                     list.remove(it->m_prev->m_prev);
                 } else {
+                    delete(it->m_data);
                     list.remove(it);
                     it = nullptr;
                 }
@@ -567,6 +598,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
             } else {
                 if (it->m_data->getId() > it->m_next->m_data->getId()) {
                     it->m_data->addPoints(it->m_next->m_data->getPoints() + 3);
+                    delete(it->m_next->m_data);
                     list.remove(it->m_next);
                     it = it->m_next;
 
@@ -575,8 +607,10 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
                     //  list.remove(it);
                     if (it->m_next->m_next != nullptr) {
                         it = it->m_next->m_next;
+                        delete(it->m_prev->m_prev->m_data);
                         list.remove(it->m_prev->m_prev);
                     } else {
+                        delete(it->m_data);
                         list.remove(it);
                         it = nullptr;
                     }
@@ -585,7 +619,9 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
         }
     }
     // delete new list and complete teams
-    return list.getHead()->m_data->getId();
+    int result = list.getHead()->m_data->getId();
+    delete(list.getHead()->m_data);
+    return result;
 
 }
 
