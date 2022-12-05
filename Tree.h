@@ -74,13 +74,18 @@ void Tree<T>::DestroyRecursive(node<T>* node)
     {
         DestroyRecursive(node->l);
         DestroyRecursive(node->r);
+        if(node == m_root)
+            m_root = nullptr;
+        if(node == m_max)
+            m_max = nullptr;
         delete(node);
     }
 }
 
 template<class T>
 Tree<T>::~Tree() {
-    DestroyRecursive(m_root);
+    if(m_root)
+        DestroyRecursive(m_root);
 }
 
 template<class T>
@@ -468,11 +473,13 @@ node<T>* Tree<T>::sortedArray2Tree(T *input, int start, int end) {
         root->data = input[mid];
         root->l = sortedArray2Tree(input,start,mid - 1);
         root->r = sortedArray2Tree(input,mid + 1, end);
-        if(m_max == nullptr)
-            m_max = root;
-        if (input[mid] > m_max->data){
-            m_max = root;
+        if(m_max != nullptr) {
+            if (input[mid] > m_max->data) {
+                m_max = root;
+            }
         }
+        else
+            m_max = root;
         return root;
     }
     catch (std::bad_alloc& e) {
@@ -481,16 +488,17 @@ node<T>* Tree<T>::sortedArray2Tree(T *input, int start, int end) {
 }
 
 template<class T>
-void Tree<T>::merge(Tree<T> &t,int n,int m) {
+void Tree<T>::merge(Tree<T> &t,const int n,const int m) {
     try {
-        T *array1 = new T;
-        T *array2 = new T;
-        T *merged_array = new T;
+        T *array1 = new T[n];
+        T *array2 = new T[m];
+        T *merged_array = new T[n+m];
 
         int k = 0, j = 0;
 
         this->tree2ArrayInOrder(array1);
         t.tree2ArrayInOrder(array2);
+
         while (k < n && j < m) {
             if (array1[k] < array2[j]) {
                 merged_array[k + j] = array1[k];
@@ -509,7 +517,13 @@ void Tree<T>::merge(Tree<T> &t,int n,int m) {
                 merged_array[k + j] = array1[k];
             }
 
-        m_root = sortedArray2Tree(merged_array, 0, k + j - 1);
+        t.DestroyRecursive(t.m_root);
+        DestroyRecursive(m_root);
+        node<T>* temp = sortedArray2Tree(merged_array, 0, k + j - 1);
+        delete[] array1;
+        delete[] array2;
+        delete[] merged_array;
+        m_root = temp;
         setMax();
     }
     catch (...) {

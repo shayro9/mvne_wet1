@@ -103,14 +103,49 @@ void Player::setTeam(Team *t, int gamesPlayed, int* games) {
 
 void Player::setTeamPlayerRank(PlayerRank *ptr) {
     m_groupPlayerRank = ptr;
+    m_groupPlayerRank->connectPointer();
 }
 
 void Player::setPlayerRank(PlayerRank *playerRank) {
     m_playerRank = playerRank;
+    m_playerRank->connectPointer();
 }
 
 void Player::clearRankPointers() {
-    delete(m_playerRank);
-    delete(m_groupPlayerRank);
+    if(m_playerRank) {
+        if (m_playerRank->getConnectedPointers() == 1)
+            delete (m_playerRank);
+        else
+            m_playerRank->reducePointers();
+    }
+    if(m_groupPlayerRank) {
+        if (m_groupPlayerRank->getConnectedPointers() == 1)
+            delete (m_groupPlayerRank);
+        else
+            m_groupPlayerRank->reducePointers();
+    }
+}
+
+Player &Player::operator=(const Player &p) {
+    if(this == &p)
+        return *this;
+
+    m_playerId = p.m_playerId;
+    m_teamId = p.m_teamId;
+    m_gamesPlayed = p.m_gamesPlayed;
+    m_gamesTeamPlayedBefore = p.m_gamesTeamPlayedBefore;
+    m_goals = p.m_goals;
+    m_cards = p.m_cards;
+    m_goalKeeper = p.m_goalKeeper;
+
+    m_gamesTeamPlayed = p.m_gamesTeamPlayed;
+    m_team = p.m_team;
+
+    if(p.m_groupPlayerRank)
+        this->setTeamPlayerRank(p.m_groupPlayerRank);
+    if(p.m_playerRank)
+        this->setPlayerRank(p.m_playerRank);
+
+    return *this;
 }
 
