@@ -96,12 +96,28 @@ node<T>* Tree<T>::findMinBigger(const T &t) {
 
 template<class T>
 node<T>* Tree<T>::findMinBiggerNode(node<T> *root, const T &t) {
-    node<T>* currNode = find(t);
-    if (currNode->r == nullptr){
-        return currNode->parent;
+    if(root == nullptr)
+        return nullptr;
+    if(!root->l && !root->r) {
+        if (root->data <= t)
+            return nullptr;
+        else
+            return root;
+    }
+    if(root->data < t)
+        return findMinBiggerNode(root->r,t);
+    else if(root->data > t) {
+        node<T>* right_smallest_max = findMinBiggerNode(root->l,t);
+        if(right_smallest_max)
+            return root->data < right_smallest_max->data ? root : right_smallest_max;
+        else
+            return root;
     }
     else{
-        return minValueNode(currNode->r);
+        if(root->r)
+            return minValueNode(root->r);
+        else
+            return nullptr;
     }
 }
 template<class T>

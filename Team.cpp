@@ -103,7 +103,7 @@ void Team::updateGoalkeepersNum(int n){
 
 void Team::addPoints(int amount) {
     m_points += amount;
-    m_gamesPlayed++;
+   // m_gamesPlayed++;
     if(isComplete())
     {
         m_completeTeam->data.addPoints(amount);
@@ -172,9 +172,8 @@ void Team::setId(int newId) {
     m_teamId = newId;
 }
 
-Team::~Team() {
 
-}
+
 
 void UpdateGames(node<Player>* p, int gamePlayedBefore)
 {

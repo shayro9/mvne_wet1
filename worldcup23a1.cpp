@@ -499,6 +499,9 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 
     // Team* minTeam = &teams.find(minTeamId)->data;
     // Team* maxTeam = &teams.find(maxTeamId)->data;
+    if ((minTeamId <0) || (maxTeamId<0) || (maxTeamId<minTeamId)){
+        return StatusType::INVALID_INPUT;
+    }
 
     CompleteTeam *minComplete;
     if (completeTeams.find(minTeamId) != nullptr) {
@@ -524,7 +527,9 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
     if (minTeamId == maxTeamId) {
         return minTeamId;
     }
-
+    if (maxComplete < minComplete){
+        return StatusType::FAILURE;
+    }
     //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
     List<CompleteTeam > list;
     CompleteTeam *first = new CompleteTeam(minComplete->getId(), minComplete->getScore());

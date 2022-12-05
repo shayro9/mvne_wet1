@@ -83,6 +83,14 @@ void List<T>::remove(LNode<T> *node) {
         m_head = m_head->m_next;
         if (m_head)
              m_head->m_prev = nullptr;
+
+    }
+    else if (node == m_tail){
+        m_tail = m_tail->m_prev;
+        if (m_tail){
+            m_tail->m_next = nullptr;
+        }
+
     }
     else {
         node->m_prev->m_next = node->m_next;
@@ -103,7 +111,8 @@ void List<T>::insertFront(T& data) {
         m_last_added->m_next = m_head;
         m_head->m_prev = m_last_added;
     }
-    m_last_added->m_prev = nullptr; //
+
+    m_last_added->m_prev = nullptr;
     m_head = m_last_added;
     if(m_tail == nullptr)
         m_tail = m_last_added;
