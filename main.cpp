@@ -11,23 +11,18 @@ int main()
         status = worldCup->add_team(1,10*i/3);
     }
 
-
-    for (int i = 0; i < 50; ++i) {
+    status = worldCup->add_player(1,1,1,0,100, false);
+    for (int i = 2; i < 50; ++i) {
         status = worldCup->add_player(i,i%2 + 1,i%3,i%5,i%4,(i/3)%2);
     }
 
-    /*
     for (int i = 0; i < 50; ++i) {
         status = worldCup->update_player_stats(i,i%2 + 1,i%3,i%5);
     }
 
     for (int i = 0; i < 20; ++i) {
         status = worldCup->remove_player(i);
-    }*/
-
-    status = worldCup->add_player(1,1,2,3,4, true);
-    status = worldCup->update_player_stats(1,2,3,4);
-    status = worldCup->remove_player(1);
+    }
 
     for (int i = 0; i < 50; ++i) {
         status = worldCup->play_match(i%2 + 1,(i+1)%2 + 1);
@@ -41,10 +36,10 @@ int main()
         output_t<int> result = worldCup->get_num_played_games(i);
         result.ans();
     }
-    delete(worldCup);
+
     status = status;
-    /*
     status = worldCup->unite_teams(1,2,2);
+    delete(worldCup);
     //status = worldCup->add_player(3, 1, 1, 1, 1, true);
     //int x = worldCup->get_top_scorer(-1).ans();*/
     return 0;

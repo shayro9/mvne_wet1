@@ -21,6 +21,7 @@ private:
     LNode<T>* m_head;
     LNode<T>* m_tail;
     LNode<T>* m_last_added;
+    int m_size;
 public:
     List();
     ~List();
@@ -30,6 +31,7 @@ public:
     LNode<T>* getHead();
     LNode<T>* getTail();
     LNode<T>* getLastAdded();
+    int getSize();
 
     void insertAfter(LNode<T>* prevNode, T& data);
     void remove(LNode<T>* node);
@@ -39,7 +41,7 @@ public:
 };
 
 template<class T>
-List<T>::List() {
+List<T>::List() : m_size(0) {
     m_tail = nullptr;
     m_head = nullptr;
     m_last_added = nullptr;
@@ -69,6 +71,7 @@ void List<T>::insertAfter(LNode<T> *prevNode, T& data) {
     }
     else
         m_tail = m_last_added;
+    m_size++;
 }
 
 template<class T>
@@ -87,6 +90,7 @@ void List<T>::remove(LNode<T> *node) {
         }
     }
     delete(node);
+    m_size--;
 }
 
 template<class T>
@@ -100,6 +104,7 @@ void List<T>::insertFront(T& data) {
     m_head = m_last_added;
     if(m_tail == nullptr)
         m_tail = m_last_added;
+    m_size++;
 }
 
 template<class T>
@@ -124,5 +129,10 @@ void List<T>::append(T& data) {
     m_tail->m_next = m_last_added;
     m_last_added->m_prev = m_tail;
     m_tail = m_last_added;
+    m_size++;
+}
 
+template<class T>
+int List<T>::getSize() {
+    return m_size;
 }
