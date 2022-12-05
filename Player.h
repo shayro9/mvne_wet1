@@ -5,6 +5,7 @@
 //#include "Team.h"
 
 class Team;
+class PlayerId;
 
 class Player {
 public:
@@ -23,8 +24,11 @@ public:
     void setGamesTeamPlayedBefore(int games);
 
     PlayerRank* getPlayerRank();
+    PlayerId* getPlayerId();
+
     void setPlayerRank(PlayerRank* playerRank);
     void setTeamPlayerRank(PlayerRank* ptr);
+    void setPlayerId(PlayerId *id);
 
     void clearRankPointers();
 
@@ -51,6 +55,7 @@ private:
     int* m_gamesTeamPlayed;
     PlayerRank* m_playerRank;
     PlayerRank* m_groupPlayerRank;
+    PlayerId* m_Id;
     Team* m_team;
 };
 

@@ -11,6 +11,7 @@ Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, 
     m_gamesTeamPlayed(nullptr),
     m_playerRank(nullptr),
     m_groupPlayerRank(nullptr),
+    m_Id(nullptr),
     m_team(nullptr)
 {
     /*
@@ -141,6 +142,7 @@ Player &Player::operator=(const Player &p) {
 
     m_gamesTeamPlayed = p.m_gamesTeamPlayed;
     m_team = p.m_team;
+    m_Id = p.m_Id;
 
     if(p.m_groupPlayerRank)
         this->setTeamPlayerRank(p.m_groupPlayerRank);
@@ -148,5 +150,13 @@ Player &Player::operator=(const Player &p) {
         this->setPlayerRank(p.m_playerRank);
 
     return *this;
+}
+
+PlayerId *Player::getPlayerId() {
+    return m_Id;
+}
+
+void Player::setPlayerId(PlayerId *id) {
+    m_Id = id;
 }
 

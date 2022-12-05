@@ -114,13 +114,15 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         new_player_group_rank->setPlayerNode(playerRankList.getLastAdded());
         playersRank.insert(*new_player_rank);
         Player* temp = new_player_team->addPlayer(new_player,new_player_group_rank);
-        temp->setPlayerRank(new_player_rank);
-        temp->setTeamPlayerRank(new_player_group_rank);
-
         PlayerId* playerId1 = new PlayerId(*temp);
         playersId.insert(*playerId1);
-        delete(playerId1);
+        temp->setPlayerRank(new_player_rank);
+        temp->setTeamPlayerRank(new_player_group_rank);
+        temp->setPlayerId(&playersId.find(*playerId1)->data);
+
+
         delete(new_player);
+        delete(playerId1);
         numOfPlayers++;
 
 
@@ -166,12 +168,13 @@ StatusType world_cup_t::remove_player(int playerId)
 
     try
     {
-        PlayerRank temp = *currPlayer->getPlayer()->getPlayerRank();
-        playerRankList.remove(temp.getPlayerNode());
-        playersRank.remove(temp);
-        currPlayer->getPlayer()->getTeam()->removePlayer(currPlayer->getPlayer());
-
+        PlayerRank temp_rank = *currPlayer->getPlayer()->getPlayerRank();
+        Player temp_player = *currPlayer->getPlayer();
+        playerRankList.remove(temp_rank.getPlayerNode());
+        playersRank.remove(temp_rank);
         playersId.remove(*currPlayer);
+        currTeam->removePlayer(&temp_player);
+
         if (is_goalkeeper){
             currTeam->updateGoalkeepersNum(-1);
         }
@@ -364,10 +367,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         }
 
 
-        team1->mergeWith(*team2, newTeamId);
-        teams.remove(teamId2);
-        team1->setId(newTeamId);
-        teams.setMax();
+
     }
     catch (const std::bad_alloc &) {
         return StatusType::ALLOCATION_ERROR;
