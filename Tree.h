@@ -108,8 +108,12 @@ template<class T>
 node<T>* Tree<T>::findMaxSmallerNode(node<T> *root, const T &t) {
     if(root == nullptr)
         return nullptr;
-    if(!root->l && !root->r)
-        return nullptr;
+    if(!root->l && !root->r) {
+        if (root->data >= t)
+            return nullptr;
+        else
+            return root;
+    }
     if(root->data > t)
         return findMaxSmallerNode(root->l,t);
     else if(root->data < t) {

@@ -25,6 +25,8 @@ public:
     void setPlayerRank(PlayerRank* playerRank);
     void setTeamPlayerRank(PlayerRank* ptr);
 
+    void clearRankPointers();
+
     PlayerRank* getGroupPlayerRank();
     Team* getTeam();
     void setTeam(Team* t, int gamesPlayed, int *games);
