@@ -46,6 +46,7 @@ private:
     int m_cards;
     bool m_goalKeeper;
 
+
     int* m_gamesTeamPlayed;
     PlayerRank* m_playerRank;
     PlayerRank* m_groupPlayerRank;

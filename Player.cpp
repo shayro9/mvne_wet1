@@ -7,8 +7,10 @@ Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, 
     m_goals(goals),
     m_cards(cards),
     m_goalKeeper(goalKeeper),
+    m_gamesTeamPlayed(nullptr),
     m_playerRank(nullptr),
-    m_groupPlayerRank(nullptr)
+    m_groupPlayerRank(nullptr),
+    m_team(nullptr)
 {
     /*
     m_playerRank = new PlayerRank(playerId, goals, cards);
@@ -17,8 +19,7 @@ Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, 
 }
 
 Player::~Player() {
-    //delete(m_playerRank);
-    //delete(m_groupPlayerRank);
+    clearRankPointers();
 }
 
 bool operator<(const Player& p1, const Player& p2) {
@@ -106,5 +107,10 @@ void Player::setTeamPlayerRank(PlayerRank *ptr) {
 
 void Player::setPlayerRank(PlayerRank *playerRank) {
     m_playerRank = playerRank;
+}
+
+void Player::clearRankPointers() {
+    delete(m_playerRank);
+    delete(m_groupPlayerRank);
 }
 

@@ -31,8 +31,8 @@ private:
     Tree<PlayerRank> playersRank;
     Tree<PlayerId> playersId;
     Tree<CompleteTeam> completeTeams;
-    List<PlayerRank*> playerRankList;
-    List<CompleteTeam*> completeTeamList;
+    List<PlayerRank> playerRankList;
+    List<CompleteTeam> completeTeamList;
 
 
 public:

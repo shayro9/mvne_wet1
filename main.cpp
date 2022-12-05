@@ -8,7 +8,7 @@ int main()
     world_cup_t* worldCup = new world_cup_t();
 
     for (int i = 1; i < 3; ++i) {
-        status = worldCup->add_team(i,10*i/3);
+        status = worldCup->add_team(1,10*i/3);
     }
 
     status = worldCup->add_player(1,1,1,0,100, false);
@@ -36,10 +36,10 @@ int main()
         output_t<int> result = worldCup->get_num_played_games(i);
         result.ans();
     }
-
-    status = status;
-    status = worldCup->unite_teams(1,2,2);
     delete(worldCup);
+    status = status;
+    /*
+    status = worldCup->unite_teams(1,2,2);
     //status = worldCup->add_player(3, 1, 1, 1, 1, true);
     //int x = worldCup->get_top_scorer(-1).ans();*/
     return 0;

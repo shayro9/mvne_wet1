@@ -9,7 +9,7 @@
 
 template<class T>
 struct LNode {
-    T m_data;
+    T* m_data;
     LNode *m_next;
     LNode *m_prev;
 };
@@ -21,6 +21,7 @@ private:
     LNode<T>* m_head;
     LNode<T>* m_tail;
     LNode<T>* m_last_added;
+    int m_size;
 public:
     List();
     ~List();
@@ -30,16 +31,17 @@ public:
     LNode<T>* getHead();
     LNode<T>* getTail();
     LNode<T>* getLastAdded();
+    int getSize();
 
-    void insertAfter(LNode<T>* prevNode, T data);
+    void insertAfter(LNode<T>* prevNode, T& data);
     void remove(LNode<T>* node);
-    void insertFront(T data);
-    void append(T data);
+    void insertFront(T& data);
+    void append(T& data);
 
 };
 
 template<class T>
-List<T>::List() {
+List<T>::List() : m_size(0) {
     m_tail = nullptr;
     m_head = nullptr;
     m_last_added = nullptr;
@@ -58,9 +60,9 @@ List<T>::~List() {
 }
 
 template<class T>
-void List<T>::insertAfter(LNode<T> *prevNode, T data) {
+void List<T>::insertAfter(LNode<T> *prevNode, T& data) {
     m_last_added = new LNode<T>();
-    m_last_added->m_data = data;
+    m_last_added->m_data = &data;
     m_last_added->m_next = prevNode->m_next;
     prevNode->m_next = m_last_added;
     m_last_added->m_prev = prevNode;
@@ -69,6 +71,7 @@ void List<T>::insertAfter(LNode<T> *prevNode, T data) {
     }
     else
         m_tail = m_last_added;
+    m_size++;
 }
 
 template<class T>
@@ -86,13 +89,14 @@ void List<T>::remove(LNode<T> *node) {
             node->m_next->m_prev = node->m_prev;
         }
     }
-    delete node;
+    delete(node);
+    m_size--;
 }
 
 template<class T>
-void List<T>::insertFront(T data) {
+void List<T>::insertFront(T& data) {
     m_last_added = new LNode<T>();
-    m_last_added->m_data = data;
+    m_last_added->m_data = &data;
     if(m_head != nullptr){
         m_last_added->m_next = m_head;
         m_head->m_prev = m_last_added;
@@ -100,6 +104,7 @@ void List<T>::insertFront(T data) {
     m_head = m_last_added;
     if(m_tail == nullptr)
         m_tail = m_last_added;
+    m_size++;
 }
 
 template<class T>
@@ -118,11 +123,16 @@ LNode<T> *List<T>::getLastAdded() {
 }
 
 template<class T>
-void List<T>::append(T data) {
+void List<T>::append(T& data) {
     m_last_added = new LNode<T>();
-    m_last_added->m_data = data;
+    m_last_added->m_data = &data;
     m_tail->m_next = m_last_added;
     m_last_added->m_prev = m_tail;
     m_tail = m_last_added;
+    m_size++;
+}
 
+template<class T>
+int List<T>::getSize() {
+    return m_size;
 }

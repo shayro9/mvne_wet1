@@ -17,8 +17,8 @@ public:
     int getGoals() const;
     int getCards() const;
 
-    void setPlayerNode(LNode<PlayerRank*>* node);
-    LNode<PlayerRank*>* getPlayerNode() const;
+    void setPlayerNode(LNode<PlayerRank>* node);
+    LNode<PlayerRank>* getPlayerNode() const;
 
 
     friend bool operator== (const PlayerRank&, const PlayerRank&);
@@ -31,7 +31,7 @@ private:
     int m_playerId;
     int m_goals;
     int m_cards;
-    LNode<PlayerRank*>* m_playerNode;
+    LNode<PlayerRank>* m_playerNode;
 
     //LinkedListNode<int>* m_playerRankNode;
 };

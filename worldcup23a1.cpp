@@ -11,7 +11,7 @@
 #define LOSS 0
 
 world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>()),
-                             completeTeams(Tree<CompleteTeam>()), playerRankList(List<PlayerRank*>()), completeTeamList(List<CompleteTeam*>())
+                             completeTeams(Tree<CompleteTeam>()), playerRankList(List<PlayerRank>()), completeTeamList(List<CompleteTeam>())
 {
 	// TODO: Your code goes here
 }
@@ -95,66 +95,49 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
     try
     {
-
-        /*
-        Player new_player = Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper); // add games team played before
-        new_player.m_playerRank = new PlayerRank(playerId, goals, cards);
-        playersRank.insert(new_player.m_playerRank);
-        node<PlayerRank*> curr = playersRank.find(new_player.m_playerRank);
-        node<PlayerRank*> prevPlayerRank = curr.findPrev();
-        //node<PlayerRank>* nextPlayerRank = curr.findNext();
-        playersRankList.insertAfter(prevPlayerRank);
-        new_player.m_groupPlayerRank = new PlayerRank(playerId, goals, cards);
-        new_player.m_team->m_TeamPlayersRank.insert(*new_player.m_groupPlayerRank);
-        players.insert(new_player);
-        playersId.insert(new PlayerId(playerId, &new_player));
-        */
-
-
-        auto* new_player = new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper); // add games team played before
+        Player* new_player = new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper);
         PlayerRank* new_player_rank = new PlayerRank(playerId,goals,cards);
-        PlayerRank temp_rank = *new_player_rank;
+        PlayerRank* new_player_group_rank = new PlayerRank(playerId,goals,cards);
 
         Team* new_player_team = &teams.find(teamId)->data;
         new_player->setTeam(new_player_team,new_player_team->getGamesPlayed(),new_player_team->getGamesPlayedPoint());
 
         node<PlayerRank>* prevInList = playersRank.findMaxSmaller(*new_player_rank);
-
         if (prevInList != nullptr){
-            playerRankList.insertAfter(prevInList->data.getPlayerNode(), &temp_rank);
+            playerRankList.insertAfter(prevInList->data.getPlayerNode(), *new_player_rank);
 
         }
         else{
-            playerRankList.insertFront(&temp_rank);
+            playerRankList.insertFront(*new_player_rank);
         }
-        temp_rank.setPlayerNode(playerRankList.getLastAdded());
+        new_player_rank->setPlayerNode(playerRankList.getLastAdded());
+        new_player_group_rank->setPlayerNode(playerRankList.getLastAdded());
+        playersRank.insert(*new_player_rank);
+        Player* temp = new_player_team->addPlayer(new_player,new_player_group_rank);
+        temp->setPlayerRank(new_player_rank);
+        temp->setTeamPlayerRank(new_player_group_rank);
 
-        new_player->setPlayerRank(&temp_rank);
-        Player* temp = new_player_team->addPlayer(new_player);
-        playersRank.insert(temp_rank);
         PlayerId* playerId1 = new PlayerId(*temp);
         playersId.insert(*playerId1);
-
         delete(playerId1);
         delete(new_player);
-        delete(new_player_rank);
-
         numOfPlayers++;
-        // should be in try catch
+
 
         if (new_player_team->isComplete() && (completeTeams.find(teamId) == nullptr)){
             CompleteTeam* new_completeTeam =
                     new CompleteTeam(teamId,new_player_team->getPoints(),new_player_team->getGoals(),new_player_team->getCards());
 
-            node<CompleteTeam>* prevConInList = completeTeams.findMaxSmaller(*new_completeTeam);
-            if (prevConInList != nullptr) {
-                completeTeamList.insertAfter(prevConInList->data.getCompleteNode(), new_completeTeam);
-            } else{
-                completeTeamList.insertFront(new_completeTeam);
-            }
-            new_player_team->setCompleteTeamPointer(new_completeTeam); //connect Team Pointer to Complete Team
-            new_completeTeam->setCompleteTeamNode(completeTeamList.getLastAdded());
             completeTeams.insert(*new_completeTeam);
+            node<CompleteTeam>* prevConInList = completeTeams.findMaxSmaller(*new_completeTeam);
+            if (prevConInList != nullptr && completeTeamList.getSize() > 0) {
+                completeTeamList.insertAfter(prevConInList->data.getCompleteNode(), completeTeams.find(*new_completeTeam)->data);
+            } else{
+                completeTeamList.insertFront(completeTeams.find(*new_completeTeam)->data);
+            }
+            new_completeTeam->setCompleteTeamNode(completeTeamList.getLastAdded());
+            new_player_team->setCompleteTeamPointer(completeTeams.find(*new_completeTeam));
+            delete(new_completeTeam);
         }
     }
     catch (const std::bad_alloc &)
@@ -183,30 +166,29 @@ StatusType world_cup_t::remove_player(int playerId)
 
     try
     {
+        PlayerRank temp = *currPlayer->getPlayer()->getPlayerRank();
+        playerRankList.remove(temp.getPlayerNode());
+        playersRank.remove(temp);
         currPlayer->getPlayer()->getTeam()->removePlayer(currPlayer->getPlayer());
-        playerRankList.remove(currPlayer->getPlayer()->getPlayerRank()->getPlayerNode());
-        playersRank.remove(*currPlayer->getPlayer()->getPlayerRank());
+
         playersId.remove(*currPlayer);
         if (is_goalkeeper){
             currTeam->updateGoalkeepersNum(-1);
         }
 
+        node<CompleteTeam>* currComplete = completeTeams.find(currTeam->getCompleteTeamPointer()->data);
+        if (!currTeam->isComplete() && currComplete){
+            CompleteTeam temp_team = currComplete->data;
+            completeTeamList.remove(temp_team.getCompleteNode());
+            completeTeams.remove(currTeam->getCompleteTeamPointer()->data);
+        }
+
+        numOfPlayers--;
     }
     catch (const std::bad_alloc &)
     {
         return StatusType::ALLOCATION_ERROR;
     }
-
-
-    CompleteTeam* currComplete = currTeam->getCompleteTeamPointer();
-    if (!currTeam->isComplete() && currComplete){
-        completeTeamList.remove(currComplete->getCompleteNode());
-        completeTeams.remove(*currTeam->getCompleteTeamPointer());
-        currTeam->setCompleteTeamPointer(nullptr);
-    }
-
-
-    numOfPlayers--;
 	return StatusType::SUCCESS;
 }
 
@@ -222,59 +204,41 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
         return StatusType::FAILURE;
 
     Player* currPlayer = currPlayerId->data.getPlayer();
-    PlayerRank* outdated_player_rank = new PlayerRank(playerId,currPlayer->getGoals(),currPlayer->getCards());
+    PlayerRank* outdated_player_rank = currPlayer->getPlayerRank();
 
     currPlayer->updateStats(gamesPlayed,scoredGoals,cardsReceived);
     currPlayer->getTeam()->updateStats(scoredGoals,cardsReceived, 0);
 
     PlayerRank* newPlayerRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
-    PlayerRank temp_rank = *newPlayerRank;
-    /*
-    PlayerRank* currPlayerRank = currPlayer->m_playerRank;
-    playersRank.remove(currPlayerRank);
-    PlayerRank* new_playerRank = new PlayerRank(playerId, currPlayer->m_goals, currPlayer->m_cards);
-    playersRank.insert(new_playerRank);
-
-    currPlayer->m_playerRank = new_playerRank;
-    PlayerRank* currTeamPlayerRank = currPlayer->m_groupPlayerRank;
-    currPlayer->m_team->m_TeamPlayersRank.remove(currTeamPlayerRank);
-    PlayerRank* new_teamPlayerRank = new PlayerRank(playerId, currPlayer->m_goals, currPlayer->m_cards);
-    currPlayer->m_team->m_TeamPlayersRank.insert(new_teamPlayerRank);
-    currPlayer->m_groupPlayerRank = new_teamPlayerRank;
-    */
-    //add exceptions
-
-
-    //Player* currPlayer = playersId.find(playerId)->data.getPlayer();
+    PlayerRank* newPlayerTeamRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
+    Team* currTeam = currPlayer->getTeam();
 
     playerRankList.remove(outdated_player_rank->getPlayerNode());
     playersRank.remove(*outdated_player_rank);
+    currTeam->getPlayersRank().remove(*outdated_player_rank);
+    currPlayer->clearRankPointers();
 
-    playersRank.insert(temp_rank);
+    playersRank.insert(*newPlayerRank);
     node<PlayerRank>* added_node = playersRank.find(*newPlayerRank);
 
-    node<PlayerRank>* prevInList = playersRank.findMaxSmaller(temp_rank);
-    if (prevInList != nullptr){
-        playerRankList.insertAfter(prevInList->data.getPlayerNode(), &temp_rank);
+    node<PlayerRank>* prevInList = playersRank.findMaxSmaller(*newPlayerRank);
+    if (prevInList != nullptr && playerRankList.getSize() > 0){
+        playerRankList.insertAfter(prevInList->data.getPlayerNode(), *newPlayerRank);
     }
     else{
-        playerRankList.insertFront(&temp_rank); //if its the smallest one, creates one node list- should add insert before
+        playerRankList.insertFront(*newPlayerRank); //if its the smallest one, creates one node list- should add insert before
     }
-    temp_rank.setPlayerNode(playerRankList.getLastAdded());
+    newPlayerRank->setPlayerNode(playerRankList.getLastAdded());
     added_node->data.setPlayerNode(playerRankList.getLastAdded());
-    currPlayer->setPlayerRank(&temp_rank);
+    currPlayer->setPlayerRank(newPlayerRank);
 
-
-    Team* currTeam = currPlayer->getTeam();
     //PlayerRank* currTeamPlayerRank = currPlayer->getGroupPlayerRank();
-    currTeam->getPlayersRank().remove(*outdated_player_rank);
-    currTeam->getPlayersRank().insert(temp_rank);
+    currTeam->getPlayersRank().insert(*newPlayerTeamRank);
 
-    currPlayer->setPlayerRank(&temp_rank);
-    currPlayer->setTeamPlayerRank(&temp_rank);
+    currPlayer->setTeamPlayerRank(newPlayerTeamRank);
 
-    delete(outdated_player_rank);
-    delete(newPlayerRank);
+    //delete(outdated_player_rank);
+    //delete(newPlayerRank);
 
     return StatusType::SUCCESS;
 }
@@ -517,14 +481,13 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
+	// TODO: Your code goes here
 
-    // TODO: Your code goes here
+   // Team *competing_teams {};
+  //  teams.tree2ArrayInOrder(competing_teams,isComplete);
 
-    // Team *competing_teams {};
-    //  teams.tree2ArrayInOrder(competing_teams,isComplete);
-
-    // Team* minTeam = &teams.find(minTeamId)->data;
-    // Team* maxTeam = &teams.find(maxTeamId)->data;
+   // Team* minTeam = &teams.find(minTeamId)->data;
+   // Team* maxTeam = &teams.find(maxTeamId)->data;
 
     CompleteTeam* minComplete;
     if (completeTeams.find(minTeamId) != nullptr){
@@ -540,27 +503,27 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
     else{
         maxComplete = &completeTeams.findMaxSmaller(maxTeamId)->data;
     }
-    LNode<CompleteTeam*>* minCompleteList = minComplete->getCompleteNode();
-    LNode<CompleteTeam*>* maxCompleteList = maxComplete->getCompleteNode();
+    LNode<CompleteTeam>* minCompleteList = minComplete->getCompleteNode();
+    LNode<CompleteTeam>* maxCompleteList = maxComplete->getCompleteNode();
     //LNode<CompleteTeam*>* iter = minCompleteList;
     if (minTeamId == maxTeamId){
         return minTeamId;
     }
 
-    //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
-    List<CompleteTeam*> list;
+  //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
+    List<CompleteTeam> list;
     CompleteTeam* first = new CompleteTeam(minComplete->getId(), minComplete->getScore());
-    list.insertFront(first);
-    LNode<CompleteTeam*>* iter = minCompleteList->m_next;
+    list.insertFront(*first);
+    LNode<CompleteTeam>* iter = minCompleteList->m_next;
     int cnt = 1;
     while(iter != maxCompleteList->m_next) {
         CompleteTeam* x = new CompleteTeam(iter->m_data->getId(), iter->m_data->getScore());
-        list.append(x);
+        list.append(*x);
         iter = iter->m_next;
         cnt++;
     }
     while (list.getHead() != list.getTail()){
-        LNode<CompleteTeam*>* it = list.getHead();
+        LNode<CompleteTeam>* it = list.getHead();
         while (it != list.getTail() && it != nullptr){
             if (it->m_data->getPoints() > it->m_next->m_data->getPoints()){
                 it->m_data->addPoints(it->m_next->m_data->getPoints() + 3);
