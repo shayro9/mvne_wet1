@@ -11,18 +11,23 @@ int main()
         status = worldCup->add_team(1,10*i/3);
     }
 
+
     for (int i = 0; i < 50; ++i) {
         status = worldCup->add_player(i,i%2 + 1,i%3,i%5,i%4,(i/3)%2);
     }
 
+    /*
     for (int i = 0; i < 50; ++i) {
         status = worldCup->update_player_stats(i,i%2 + 1,i%3,i%5);
     }
 
     for (int i = 0; i < 20; ++i) {
         status = worldCup->remove_player(i);
-    }
+    }*/
 
+    status = worldCup->add_player(1,1,2,3,4, true);
+    status = worldCup->update_player_stats(1,2,3,4);
+    status = worldCup->remove_player(1);
 
     for (int i = 0; i < 50; ++i) {
         status = worldCup->play_match(i%2 + 1,(i+1)%2 + 1);

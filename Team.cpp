@@ -52,7 +52,6 @@ bool operator>=(const Team& t1, const Team& t2)
 Player* Team::addPlayer(Player *player,PlayerRank *playerRank) {
     m_players.insert(*player);
     m_TeamPlayersRank.insert(*playerRank);
-    player->setTeamPlayerRank(playerRank);
     m_numOfPlayers++;
     m_goals += player->getGoals();
     m_cards += player->getCards();
