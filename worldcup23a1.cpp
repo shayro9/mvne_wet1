@@ -170,11 +170,11 @@ StatusType world_cup_t::remove_player(int playerId)
     try
     {
         PlayerRank temp_rank = *currPlayer->getPlayer()->getPlayerRank();
-        Player temp_player = *currPlayer->getPlayer();
+        Player* temp_player = currPlayer->getPlayer();
         playerRankList.remove(temp_rank.getPlayerNode());
         playersRank.remove(temp_rank);
         playersId.remove(*currPlayer);
-        currTeam->removePlayer(&temp_player);
+        currTeam->removePlayer(temp_player);
 
         if (is_goalkeeper){
             currTeam->updateGoalkeepersNum(-1);
