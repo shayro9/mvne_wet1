@@ -116,6 +116,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         Player* temp = new_player_team->addPlayer(new_player,new_player_group_rank);
         PlayerId* playerId1 = new PlayerId(*temp);
         playersId.insert(*playerId1);
+
         temp->setPlayerRank(new_player_rank);
         temp->setTeamPlayerRank(new_player_group_rank);
         temp->setPlayerId(&playersId.find(*playerId1)->data);

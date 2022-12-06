@@ -7,6 +7,8 @@
 //#include "CompleteTeam.h"
 //#include "Team.h"
 
+class Player;
+
 class PlayerRank{
 public:
     PlayerRank(int playerId, int goals=0, int cards=0);
@@ -20,8 +22,11 @@ public:
     void reducePointers();
     void connectPointer();
 
-    void setPlayerNode(LNode<PlayerRank>* node);
     LNode<PlayerRank>* getPlayerNode() const;
+    Player* getPlayer() const;
+    void setPlayerNode(LNode<PlayerRank>* node);
+    void setPlayer(Player* player);
+
 
     friend bool operator== (const PlayerRank&, const PlayerRank&);
     friend bool operator< (const PlayerRank&, const PlayerRank&);
@@ -35,6 +40,8 @@ private:
     int m_cards;
     int m_connectedPointers;
     LNode<PlayerRank>* m_playerNode;
+
+    Player* m_player;
 
     //LinkedListNode<int>* m_playerRankNode;
 };

@@ -8,7 +8,8 @@ PlayerRank::PlayerRank(int playerId, int goals, int cards) :
     m_goals(goals),
     m_cards(cards),
     m_connectedPointers(0),
-    m_playerNode(nullptr)
+    m_playerNode(nullptr),
+    m_player(nullptr)
 {
     //m_playerRankNode = new LinkedListNode<int>(playerId);
 }
@@ -92,4 +93,12 @@ void PlayerRank::reducePointers() {
 
 void PlayerRank::connectPointer() {
     m_connectedPointers++;
+}
+
+Player *PlayerRank::getPlayer() const {
+    return m_player;
+}
+
+void PlayerRank::setPlayer(Player *player) {
+    m_player = player;
 }
