@@ -409,8 +409,9 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
             } else{
                 completeTeamList.insertFront(*new_complete_team);
             }
-            completeTeams.insert(*new_complete_team);
+
             new_complete_team->setCompleteTeamNode(completeTeamList.getLastAdded());
+            completeTeams.insert(*new_complete_team);
        //     completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
             new_team->setCompleteTeamPointer(&completeTeams.find(*new_complete_team)->data);
         }
