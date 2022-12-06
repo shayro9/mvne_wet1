@@ -10,6 +10,7 @@ class PlayerId;
 class Player {
 public:
     Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
+    Player(int id);
     ~Player();
     Player() = default;
     Player& operator=(const Player& p);

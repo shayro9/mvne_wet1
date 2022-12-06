@@ -20,6 +20,10 @@ Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, 
     */
 }
 
+Player::Player(int id) :
+    Player(id, 0, 0, 0, 0, false){
+}
+
 Player::~Player() {
     clearRankPointers();
 }
