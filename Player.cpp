@@ -119,14 +119,18 @@ void Player::setPlayerRank(PlayerRank *playerRank) {
 
 void Player::clearRankPointers() {
     if(m_playerRank) {
-        if (m_playerRank->getConnectedPointers() == 1)
+        if (m_playerRank->getConnectedPointers() == 1) {
             delete (m_playerRank);
+            m_playerRank = nullptr;
+        }
         else
             m_playerRank->reducePointers();
     }
     if(m_groupPlayerRank) {
-        if (m_groupPlayerRank->getConnectedPointers() == 1)
+        if (m_groupPlayerRank->getConnectedPointers() == 1) {
             delete (m_groupPlayerRank);
+            m_groupPlayerRank = nullptr;
+        }
         else
             m_groupPlayerRank->reducePointers();
     }
