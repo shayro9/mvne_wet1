@@ -10,6 +10,7 @@
     ~PlayerId();
 
     Player* getPlayer();
+    void setPlayer(Player* player);
 
     friend bool operator== (const PlayerId&, const PlayerId&);
     friend bool operator< (const PlayerId&, const PlayerId&);

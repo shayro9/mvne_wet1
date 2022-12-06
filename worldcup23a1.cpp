@@ -138,7 +138,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
                 completeTeamList.insertFront(completeTeams.find(*new_completeTeam)->data);
             }
             completeTeams.find(*new_completeTeam)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
-            new_player_team->setCompleteTeamPointer(completeTeams.find(*new_completeTeam));
+            new_player_team->setCompleteTeamPointer(&completeTeams.find(*new_completeTeam)->data);
             delete(new_completeTeam);
         }
     }
@@ -179,11 +179,11 @@ StatusType world_cup_t::remove_player(int playerId)
             currTeam->updateGoalkeepersNum(-1);
         }
 
-        node<CompleteTeam>* currComplete = completeTeams.find(currTeam->getCompleteTeamPointer()->data);
+        node<CompleteTeam>* currComplete = completeTeams.find(*currTeam->getCompleteTeamPointer());
         if (!currTeam->isComplete() && currComplete){
             CompleteTeam temp_team = currComplete->data;
             completeTeamList.remove(temp_team.getCompleteNode());
-            completeTeams.remove(currTeam->getCompleteTeamPointer()->data);
+            completeTeams.remove(*currTeam->getCompleteTeamPointer());
         }
 
         numOfPlayers--;
@@ -338,6 +338,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         return StatusType::FAILURE;
 
     try {
+        //setup ints
         int points = team1->getPoints() + team2->getPoints();
         int goals = team1->getGoals() + team2->getGoals();
         int cards = team1->getCards() + team2->getCards();
@@ -345,29 +346,67 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         int goalKeepers = team1->getGoalKeepersNum() + team2->getGoalKeepersNum();
         int games_played = team1->getGamesPlayed() + team2->getGamesPlayed();
 
-        Team* new_team = new Team(newTeamId,points,goals,cards,players,games_played);
-        new_team->updateGoalkeepersNum(goalKeepers);
+        //TODO : create player array
+        Tree<Player>* team1_players = &team1->getPlayers();
+        Tree<Player>* team2_players = &team2->getPlayers();
+        const int players1 = team1->getPlayersNum();
+        const int players2 = team2->getPlayersNum();
+        Player* team1_array = new Player[players1];
+        Player* team2_array = new Player[players2];
+        Player* merged_player_array = new Player[players1 + players2];
+        team1_players->tree2ArrayInOrder(team1_array);
+        team2_players->tree2ArrayInOrder(team2_array);
+        mergeSort(team1_array,team2_array,merged_player_array,players1,players2);
 
-        completeTeamList.remove(team1->getCompleteTeamPointer()->data.getCompleteNode());
-        completeTeamList.remove(team2->getCompleteTeamPointer()->data.getCompleteNode());
-        completeTeams.remove(teamId1);
-        completeTeams.remove(teamId2);
+        Tree<Player>* merged_players = new Tree<Player>(sortedArray2Tree(merged_player_array,0,players1+players2 - 1));
+        merged_players->inOrder(updatePlayerIdPointers,0);
+
+        //TODO : create player rank array
+        Tree<PlayerRank>* team1_ranks = &team1->getPlayersRank();
+        Tree<PlayerRank>* team2_ranks = &team2->getPlayersRank();
+        PlayerRank* team1_rank_array = new PlayerRank[players1];
+        PlayerRank* team2_rank_array = new PlayerRank[players2];
+        PlayerRank* merged_rank_array = new PlayerRank[players1 + players2];
+        team1_ranks->tree2ArrayInOrder(team1_rank_array);
+        team2_ranks->tree2ArrayInOrder(team2_rank_array);
+        mergeSort(team1_rank_array,team2_rank_array,merged_rank_array,players1,players2);
+
+        Tree<PlayerRank>* merged_ranks = new Tree<PlayerRank>(sortedArray2Tree(merged_rank_array,0,players1+players2 - 1));
+
+        Team* new_team = new Team(newTeamId,points,goals,cards,players,games_played,goalKeepers,
+                                  merged_players,merged_ranks);
+
+        delete[] team1_array;
+        delete[] team2_array;
+        delete[] merged_player_array;
+        delete[] team1_rank_array;
+        delete[] team2_rank_array;
+        delete[] merged_rank_array;
+
+        //handle past complete teams
+        //TODO : if needed!
+        if(team1->isComplete()) {
+            completeTeamList.remove(team1->getCompleteTeamPointer()->getCompleteNode());
+            completeTeams.remove(teamId1);
+        }
+        if(team2->isComplete()) {
+            completeTeamList.remove(team2->getCompleteTeamPointer()->getCompleteNode());
+            completeTeams.remove(teamId2);
+        }
 
         if(new_team->isComplete()) {
             CompleteTeam *new_complete_team = new CompleteTeam(newTeamId, points, goals, cards);
             node<CompleteTeam>* prevComInList = completeTeams.findMaxSmaller(*new_complete_team);
             if (prevComInList != nullptr && completeTeamList.getSize() > 0) {
-                completeTeamList.insertAfter(prevComInList->data.getCompleteNode(), completeTeams.find(*new_complete_team)->data);
+                completeTeamList.insertAfter(prevComInList->data.getCompleteNode(), *new_complete_team);
             } else{
-                completeTeamList.insertFront(completeTeams.find(*new_complete_team)->data);
+                completeTeamList.insertFront(*new_complete_team);
             }
-            completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
             completeTeams.insert(*new_complete_team);
-            new_team->setCompleteTeamPointer(completeTeams.find(*new_complete_team));
+            completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
+            new_team->setCompleteTeamPointer(&completeTeams.find(*new_complete_team)->data);
         }
-
-
-
+        teams.insert(*new_team);
     }
     catch (const std::bad_alloc &) {
         return StatusType::ALLOCATION_ERROR;
@@ -539,7 +578,6 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
     } else {
         minComplete = &completeTeams.findMinBigger(minTeamId)->data;
         minComplete = minComplete->getCompleteNode()->m_data;
-
     }
     CompleteTeam *maxComplete;
     if (completeTeams.find(maxTeamId) != nullptr) {
@@ -629,4 +667,9 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 bool isComplete(node<Team>* t)
 {
     return t->data.isComplete();
+}
+
+void updatePlayerIdPointers(node<Player>* player, int num)
+{
+    player->data.getPlayerId()->setPlayer(&player->data);
 }

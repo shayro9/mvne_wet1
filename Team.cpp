@@ -8,11 +8,23 @@ Team::Team(int teamId, int points, int goals, int cards, int numOfPlayers, int g
     m_numOfPlayers(numOfPlayers),
     m_gamesPlayed(gamesPlayed),
     m_numOfGoalkeepers(0),
+    m_completeTeam(nullptr),
     m_players(Tree<Player>()),
     m_TeamPlayersRank(Tree<PlayerRank>())
-{
-    m_completeTeam = nullptr;
-}
+{}
+
+Team::Team(int teamId, int points, int goals, int cards, int numOfPlayers, int gamesPlayed, int goalKeepers,
+           Tree<Player> *players, Tree<PlayerRank> *ranks) :
+        m_teamId(teamId),
+        m_points(points),
+        m_goals(goals),
+        m_cards(cards),
+        m_numOfPlayers(numOfPlayers),
+        m_gamesPlayed(gamesPlayed),
+        m_numOfGoalkeepers(goalKeepers),
+        m_players(*players),
+        m_TeamPlayersRank(*ranks)
+{}
 
 Team::Team(int teamId) :
     Team(teamId,0)
@@ -106,7 +118,7 @@ void Team::addPoints(int amount) {
    // m_gamesPlayed++;
     if(isComplete())
     {
-        m_completeTeam->data.addPoints(amount);
+        m_completeTeam->addPoints(amount);
     }
 }
 
@@ -122,28 +134,6 @@ int Team::getGoalKeepersNum() const {
     return m_numOfGoalkeepers;
 }
 
-void Team::mergeWith(Team &t, int new_Id) {
-    //need to delete leftovers team
-    //m_teamId = new_Id;
-    try {
-        m_points += t.getPoints();
-        m_goals += t.getGoals();
-        m_cards += t.getCards();
-        int team_size = m_numOfPlayers;
-        m_numOfPlayers += t.getPlayersNum();
-        m_numOfGoalkeepers += t.getGoalKeepersNum();
-
-        //update for every player GamesPlayed and gamesTeamPlayedBefore = this.gamePlayed
-        t.getPlayers().inOrder(UpdateGames, m_gamesPlayed);
-
-        m_players.merge(t.getPlayers(), team_size, t.getPlayersNum());
-        m_TeamPlayersRank.merge(t.getPlayersRank(), team_size, t.getPlayersNum());
-    }
-    catch (...){
-        throw std::bad_alloc();
-    }
-}
-
 Tree<Player> &Team::getPlayers() {
     return m_players;
 }
@@ -156,11 +146,11 @@ int *Team::getGamesPlayedPoint() {
     return &m_gamesPlayed;
 }
 
-node<CompleteTeam> *Team::getCompleteTeamPointer() const {
+CompleteTeam *Team::getCompleteTeamPointer() const {
     return m_completeTeam;
 }
 
-void Team::setCompleteTeamPointer(node<CompleteTeam>* ptr)  {
+void Team::setCompleteTeamPointer(CompleteTeam* ptr)  {
     m_completeTeam = ptr;
 }
 
@@ -171,9 +161,6 @@ void Team::addGames(int amount) {
 void Team::setId(int newId) {
     m_teamId = newId;
 }
-
-
-
 
 void UpdateGames(node<Player>* p, int gamePlayedBefore)
 {

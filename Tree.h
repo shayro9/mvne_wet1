@@ -16,6 +16,7 @@ template <class T>
 class Tree {
 public:
     Tree();
+    explicit Tree(node<T>*);
     ~Tree();
     void DestroyRecursive(node<T>* node);
     Tree(const Tree& t) = default;
@@ -86,6 +87,12 @@ template<class T>
 Tree<T>::~Tree() {
     if(m_root)
         DestroyRecursive(m_root);
+}
+
+template<class T>
+Tree<T>::Tree(node<T>* node) : Tree(){
+    m_root = node;
+    setMax();
 }
 
 template<class T>

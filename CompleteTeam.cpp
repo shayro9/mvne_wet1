@@ -5,6 +5,7 @@ CompleteTeam::CompleteTeam(int teamId, int points, int goals, int cards) :
     m_points(points),
     m_goals(goals),
     m_cards(cards),
+    m_connectedPointers(0),
     m_completeNode(nullptr)
 {}
 

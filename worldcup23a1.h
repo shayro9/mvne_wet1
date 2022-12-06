@@ -77,4 +77,47 @@ public:
 //is it allowed?
 bool isComplete(node<Team>* t);
 
+template <class T>
+void mergeSort(T* array1, T* array2, T* output, int n, int m)
+{
+    int k = 0, j = 0;
+    while (k < n && j < m) {
+        if (array1[k] < array2[j]) {
+            output[k + j] = array1[k];
+            k++;
+        } else {
+            output[k + j] = array2[j];
+            j++;
+        }
+    }
+    if (k >= n)
+        for (; j < m; ++j) {
+            output[k + j] = array2[j];
+        }
+    else
+        for (; k < n; ++k) {
+            output[k + j] = array1[k];
+        }
+}
+
+template<class T>
+node<T>* sortedArray2Tree(T *input, int start, int end) {
+    if(start > end)
+        return nullptr;
+
+    int mid = (start + end)/2;
+    try {
+        node<T> *root = new node<T>();
+        root->data = input[mid];
+        root->l = sortedArray2Tree(input,start,mid - 1);
+        root->r = sortedArray2Tree(input,mid + 1, end);
+        return root;
+    }
+    catch (std::bad_alloc& e) {
+        throw e;
+    }
+}
+
+void updatePlayerIdPointers(node<Player>* player, int num);
+
 #endif // WORLDCUP23A1_H_
