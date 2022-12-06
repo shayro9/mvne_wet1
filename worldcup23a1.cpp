@@ -431,11 +431,12 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
     if (currTeam == nullptr){
         return StatusType::FAILURE;
     }
-    //Tree<Player> currTree = currTeam->getPlayers();
-    //  Player* curr = currTree.find(playerId);
-    //  Player* currPlayer = &currTeam->getPlayers().find(playerId)->data
-    PlayerId* currPlayerId = &playersId.find(playerId)->data; //complexity!!
-    Player* currPlayer = currPlayerId->getPlayer();
+
+    Tree<Player> currTree = currTeam->getPlayers();
+    Player* currPlayer = &currTree.find(playerId)->data;
+//     Player* currPlayer = &currTeam->getPlayers().find(playerId)->data;
+     //PlayerId* currPlayerId = &playersId.find(playerId)->data; //complexity!!
+     //Player* currPlayer = currPlayerId->getPlayer();
     if (currPlayer->getTeam()->getId() != teamId){
         return StatusType::FAILURE;
     }
