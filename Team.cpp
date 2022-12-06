@@ -134,8 +134,8 @@ int Team::getGoalKeepersNum() const {
     return m_numOfGoalkeepers;
 }
 
-Tree<Player> &Team::getPlayers() {
-    return m_players;
+Tree<Player> *Team::getPlayers() {
+    return &m_players;
 }
 
 Tree<PlayerRank> &Team::getPlayersRank() {

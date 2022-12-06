@@ -33,7 +33,7 @@ public:
     void addGames(int amount);
 
 
-    Tree<Player>& getPlayers();
+    Tree<Player>* getPlayers();
     Tree<PlayerRank>& getPlayersRank();
 
     void setId(int newId);

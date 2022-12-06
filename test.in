@@ -43,7 +43,6 @@ play_match 2 3
 play_match 1 2
 get_num_played_games 2003
 get_team_points 3
-unite_teams 1 2 2
 get_top_scorer -1
 get_all_players_count 3
 get_all_players 4

@@ -347,8 +347,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         int games_played = team1->getGamesPlayed() + team2->getGamesPlayed();
 
         //TODO : create player array
-        Tree<Player>* team1_players = &team1->getPlayers();
-        Tree<Player>* team2_players = &team2->getPlayers();
+        Tree<Player>* team1_players = team1->getPlayers();
+        Tree<Player>* team2_players = team2->getPlayers();
         const int players1 = team1->getPlayersNum();
         const int players2 = team2->getPlayersNum();
         Player* team1_array = new Player[players1];
@@ -500,8 +500,8 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
         return StatusType::FAILURE;
     }
 
-    Tree<Player> currTree = currTeam->getPlayers();
-    Player* currPlayer = &currTree.find(playerId)->data;
+    Tree<Player>* currTree = currTeam->getPlayers();
+    Player* currPlayer = &currTree->find(playerId)->data;
 //     Player* currPlayer = &currTeam->getPlayers().find(playerId)->data;
      //PlayerId* currPlayerId = &playersId.find(playerId)->data; //complexity!!
      //Player* currPlayer = currPlayerId->getPlayer();
