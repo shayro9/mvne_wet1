@@ -604,7 +604,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
     if (minTeamId == maxTeamId) {
         return minTeamId;
     }
-    if (maxComplete < minComplete){
+    if (*maxComplete < *minComplete){
         return StatusType::FAILURE;
     }
     //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
