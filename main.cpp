@@ -10,6 +10,7 @@ int main()
     StatusType res = obj->add_team(1, 2);
     res = obj->add_player(1, 1, 3, 3, 3, true);
     res = obj->remove_player(1);
+    res = res;
     delete obj;
     return 0;
 }
