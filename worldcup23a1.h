@@ -120,4 +120,6 @@ node<T>* sortedArray2Tree(T *input, int start, int end) {
 
 void updatePlayerIdPointers(node<Player>* player, int num);
 
+void updateTeamPlayerRankPointers(node<Player>* player, int num);
+
 #endif // WORLDCUP23A1_H_

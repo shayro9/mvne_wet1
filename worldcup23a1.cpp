@@ -97,7 +97,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
     {
         Player* new_player = new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper);
         PlayerRank* new_player_rank = new PlayerRank(playerId,goals,cards);
+
         PlayerRank* new_player_group_rank = new PlayerRank(playerId,goals,cards);
+        new_player_group_rank->setPlayer(new_player); //
 
         Team* new_player_team = &teams.find(teamId)->data;
         new_player->setTeam(new_player_team,new_player_team->getGamesPlayed(),new_player_team->getGamesPlayedPoint());
@@ -215,6 +217,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
 
     PlayerRank* newPlayerRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
     PlayerRank* newPlayerTeamRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
+    newPlayerTeamRank->setPlayer(currPlayer); //
     Team* currTeam = currPlayer->getTeam();
 
     playerRankList.remove(outdated_player_rank->getPlayerNode());
@@ -373,6 +376,9 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         mergeSort(team1_rank_array,team2_rank_array,merged_rank_array,players1,players2);
 
         Tree<PlayerRank>* merged_ranks = new Tree<PlayerRank>(sortedArray2Tree(merged_rank_array,0,players1+players2 - 1));
+        merged_players->inOrder(updatePlayerIdPointers,0);
+
+
 
         Team* new_team = new Team(newTeamId,points,goals,cards,players,games_played,goalKeepers,
                                   merged_players,merged_ranks);
@@ -397,14 +403,15 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
         if(new_team->isComplete()) {
             CompleteTeam *new_complete_team = new CompleteTeam(newTeamId, points, goals, cards);
-            node<CompleteTeam>* prevComInList = completeTeams.findMaxSmaller(*new_complete_team);
+            node<CompleteTeam>* prevComInList = completeTeams.findMaxSmaller(*new_complete_team); //complexity issue
             if (prevComInList != nullptr && completeTeamList.getSize() > 0) {
                 completeTeamList.insertAfter(prevComInList->data.getCompleteNode(), *new_complete_team);
             } else{
                 completeTeamList.insertFront(*new_complete_team);
             }
             completeTeams.insert(*new_complete_team);
-            completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
+            new_complete_team->setCompleteTeamNode(completeTeamList.getLastAdded());
+       //     completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
             new_team->setCompleteTeamPointer(&completeTeams.find(*new_complete_team)->data);
         }
         teams.insert(*new_team);
@@ -674,4 +681,8 @@ bool isComplete(node<Team>* t)
 void updatePlayerIdPointers(node<Player>* player, int num)
 {
     player->data.getPlayerId()->setPlayer(&player->data);
+}
+
+void updateTeamPlayerRankPointers(node<Player> *player, int num) {
+    player->data.getGroupPlayerRank()->setPlayer(&player->data);
 }
