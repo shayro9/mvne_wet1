@@ -9,7 +9,7 @@
 // This file is READ ONLY: even if you submit something else, the compiler ..
 // .. WILL use our file.
 // 
-/*
+
 #include "worldcup23a1.h"
 #include <string>
 #include <iostream>
@@ -75,6 +75,7 @@ int main()
             print(op, obj->get_closest_player(d1, d2));
         } else if (!op.compare("knockout_winner")) {
             cin >> d1 >> d2;
+            int x = obj->knockout_winner(d1, d2).ans();
             print(op, obj->knockout_winner(d1, d2));
         } else {
             cout << "Unknown command: " << op << endl;
@@ -135,4 +136,3 @@ void query_get_all_players(string cmd, world_cup_t *obj, int teamID)
     }
     delete[] out_mem;
 }
-*/
