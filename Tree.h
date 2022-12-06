@@ -51,6 +51,7 @@ private:
     node<T>* insertNode(node<T> *root, const T& t);
     node<T>* removeNode(node<T> *root, const T& t);
     node<T>* minValueNode(node<T> *root);
+    node<T>* minValueNodeParent(node<T> *root);
     node<T>* maxValueNode(node<T> *root);
     node<T>* balance(node<T> *bad_node);
 
@@ -315,6 +316,17 @@ node<T> *Tree<T>::minValueNode(node<T> *root) {
 }
 
 template<class T>
+node<T> *Tree<T>::minValueNodeParent(node<T> *root) {
+    if(root->l == nullptr)
+        return nullptr;
+
+    if(root->l->l == nullptr)
+        return root;
+
+    return minValueNode(root->l);
+}
+
+template<class T>
 node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
     if(root == nullptr)
         return root;
@@ -356,11 +368,20 @@ node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
             return temp;
         }
 
-        node<T>* temp = minValueNode(root->r); //complexity issue
-        if(temp == m_max)
-            m_max = root;
-        root->data = temp->data;
-        root->r = removeNode(root->r,temp->data);
+        node<T>* temp_parent = minValueNodeParent(root->r);
+        if(!temp_parent)
+            temp_parent = root;
+        node<T>* min_son = temp_parent->l;
+        if(root == m_max)
+            m_max = root->r;
+
+        temp_parent->l = min_son->r;
+        min_son->l = root->l;
+        min_son->r = removeNode(root->r,min_son->data);
+        if(root == m_root)
+            m_root = min_son;
+        delete(root);
+        return min_son;
     }
     int h = 0, new_h = -1;
     while(h != new_h)
