@@ -96,6 +96,7 @@ int main()
     res = obj->add_player(3010, 3, 30, 0, 0, true);
     (res == StatusType::SUCCESS);
     res = obj->add_player(3011, 3, 30, 0, 0, true);
+    
     (res == StatusType::SUCCESS);
     res = obj->remove_player(3011);
     (res == StatusType::SUCCESS);
