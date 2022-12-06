@@ -5,6 +5,16 @@
 
 int main()
 {
+
+    world_cup_t *obj = new world_cup_t();
+    StatusType res = obj->add_team(1, 2);
+    //(res == StatusType::SUCCESS);
+    res = obj->add_player(1, 1, 3, 3, 3, true);
+    //(res == StatusType::SUCCESS);
+    res = obj->remove_player(1);
+    //(res == StatusType::SUCCESS);
+    delete obj;
+    /*
     StatusType status;
     world_cup_t* worldCup = new world_cup_t();
     for (int i = 1; i < 4; ++i) {

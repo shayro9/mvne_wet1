@@ -15,9 +15,9 @@ add_executable(mvne_wet1
         PlayerId.h
         PlayerId.cpp
         Tree.h
-        main23a1.cpp
         worldcup23a1.h
         worldcup23a1.cpp
         CompleteTeam.h
         CompleteTeam.cpp
+        main.cpp
         List.h)
