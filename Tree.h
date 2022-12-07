@@ -337,7 +337,7 @@ node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
     }
 
     else if(t > root->data) {
-        if (root->r->data == m_max->data){
+        if (root->r->data == m_max->data && m_max->l == nullptr){
             m_max = root;
         }
         root->r = removeNode(root->r, t);
@@ -364,20 +364,27 @@ node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
             node<T>* temp = root->l;
             if(root == m_root)
                 m_root = temp;
+            if(root == m_max)
+                m_max = temp;
             delete(root);
             return temp;
         }
 
         node<T>* temp_parent = minValueNodeParent(root->r);
-        if(!temp_parent)
-            temp_parent = root;
-        node<T>* min_son = temp_parent->l;
-        if(root == m_max)
-            m_max = root->r;
-
-        temp_parent->l = min_son->r;
+        node<T>* min_son = minValueNode(root->r);
         min_son->l = root->l;
-        min_son->r = removeNode(root->r,min_son->data);
+        if(!temp_parent)
+        {
+            if(root == m_root)
+                m_root = min_son;
+            delete(root);
+            return min_son;
+        }
+        if(temp_parent == root->r)
+        {
+            temp_parent->l = min_son->r;
+        }
+        min_son->r = root->r;
         if(root == m_root)
             m_root = min_son;
         delete(root);
