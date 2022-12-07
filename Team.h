@@ -12,13 +12,15 @@ class Team {
 public:
     explicit Team(int teamId, int points, int goals = 0, int cards = 0, int numOfPlayers = 0, int gamesPlayed = 0);
     explicit Team(int teamId, int points, int goals, int cards, int numOfPlayers, int gamesPlayed, int goalKeepers,
-                  Tree<Player>* players, Tree<PlayerRank>* ranks);
+                  const Tree<Player>& players, const Tree<PlayerRank>& ranks);
     Team(int teamId);
     Team() = default;
     ~Team() = default;
 
     Player* addPlayer(Player* player, PlayerRank* playerRank);
     void removePlayer(Player* player);
+
+    void nullTreePointers();
 
     int getId() const;
     int getPoints() const;

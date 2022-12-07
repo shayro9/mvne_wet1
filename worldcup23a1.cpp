@@ -364,8 +364,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         team2_players->tree2ArrayInOrder(team2_array);
         mergeSort(team1_array,team2_array,merged_player_array,players1,players2);
 
-        Tree<Player>* merged_players = new Tree<Player>(sortedArray2Tree(merged_player_array,0,players1+players2 - 1));
-        merged_players->inOrder(updatePlayerIdPointers,0);
+        Tree<Player> merged_players = Tree<Player>(sortedArray2Tree(merged_player_array,0,players1+players2 - 1));
+        merged_players.inOrder(updatePlayerIdPointers,0);
 
         //TODO : create player rank array
         Tree<PlayerRank>* team1_ranks = &team1->getPlayersRank();
@@ -377,8 +377,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         team2_ranks->tree2ArrayInOrder(team2_rank_array);
         mergeSort(team1_rank_array,team2_rank_array,merged_rank_array,players1,players2);
 
-        Tree<PlayerRank>* merged_ranks = new Tree<PlayerRank>(sortedArray2Tree(merged_rank_array,0,players1+players2 - 1));
-        merged_players->inOrder(updatePlayerIdPointers,0);
+        Tree<PlayerRank> merged_ranks = Tree<PlayerRank>(sortedArray2Tree(merged_rank_array,0,players1+players2 - 1));
+        merged_players.inOrder(updatePlayerIdPointers,0);
 
 
 
@@ -405,22 +405,27 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
         if(new_team->isComplete()) {
             CompleteTeam *new_complete_team = new CompleteTeam(newTeamId, points, goals, cards);
+            completeTeams.insert(*new_complete_team);
             node<CompleteTeam>* prevComInList = completeTeams.findMaxSmaller(*new_complete_team); //complexity issue
             if (prevComInList != nullptr && completeTeamList.getSize() > 0) {
-                completeTeamList.insertAfter(prevComInList->data.getCompleteNode(), *new_complete_team);
+                completeTeamList.insertAfter(prevComInList->data.getCompleteNode(), completeTeams.find(*new_complete_team)->data);
             } else{
-                completeTeamList.insertFront(*new_complete_team);
+                completeTeamList.insertFront(completeTeams.find(*new_complete_team)->data);
             }
 
-            new_complete_team->setCompleteTeamNode(completeTeamList.getLastAdded());
-            completeTeams.insert(*new_complete_team);
-       //     completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
+            //new_complete_team->setCompleteTeamNode(completeTeamList.getLastAdded());
+            completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
             new_team->setCompleteTeamPointer(&completeTeams.find(*new_complete_team)->data);
+            delete(new_complete_team);
         }
 
-        teams.remove(teamId1); //
-        teams.remove(teamId2); //
+        teams.remove(teamId1);
+        teams.remove(teamId2);
         teams.insert(*new_team);
+        new_team->nullTreePointers();
+        delete new_team;
+        merged_ranks.nullTree();
+        merged_players.nullTree();
     }
     catch (...) {
         return StatusType::ALLOCATION_ERROR;
