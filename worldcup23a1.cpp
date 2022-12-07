@@ -405,16 +405,18 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
         if(new_team->isComplete()) {
             CompleteTeam *new_complete_team = new CompleteTeam(newTeamId, points, goals, cards);
+            completeTeams.insert(*new_complete_team);
             node<CompleteTeam>* prevComInList = completeTeams.findMaxSmaller(*new_complete_team); //complexity issue
             if (prevComInList != nullptr && completeTeamList.getSize() > 0) {
-                completeTeamList.insertAfter(prevComInList->data.getCompleteNode(), *new_complete_team);
+                completeTeamList.insertAfter(prevComInList->data.getCompleteNode(), completeTeams.find(*new_complete_team)->data);
             } else{
-                completeTeamList.insertFront(*new_complete_team);
+                completeTeamList.insertFront(completeTeams.find(*new_complete_team)->data);
             }
 
-            new_complete_team->setCompleteTeamNode(completeTeamList.getLastAdded());
-            completeTeams.insert(*new_complete_team);
+            //new_complete_team->setCompleteTeamNode(completeTeamList.getLastAdded());
+            completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
             new_team->setCompleteTeamPointer(&completeTeams.find(*new_complete_team)->data);
+            delete(new_complete_team);
         }
 
         teams.remove(teamId1); //
