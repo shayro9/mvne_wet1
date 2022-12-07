@@ -14,7 +14,7 @@ Team::Team(int teamId, int points, int goals, int cards, int numOfPlayers, int g
 {}
 
 Team::Team(int teamId, int points, int goals, int cards, int numOfPlayers, int gamesPlayed, int goalKeepers,
-           Tree<Player> *players, Tree<PlayerRank> *ranks) :
+           const Tree<Player>& players, const Tree<PlayerRank>& ranks) :
         m_teamId(teamId),
         m_points(points),
         m_goals(goals),
@@ -22,8 +22,8 @@ Team::Team(int teamId, int points, int goals, int cards, int numOfPlayers, int g
         m_numOfPlayers(numOfPlayers),
         m_gamesPlayed(gamesPlayed),
         m_numOfGoalkeepers(goalKeepers),
-        m_players(*players),
-        m_TeamPlayersRank(*ranks)
+        m_players(players),
+        m_TeamPlayersRank(ranks)
 {}
 
 Team::Team(int teamId) :
