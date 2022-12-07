@@ -79,25 +79,28 @@ void List<T>::remove(LNode<T> *node) {
     if ((m_head == nullptr) || (node == nullptr)){
         return;
     }
+    if (node == m_last_added){
+        m_last_added = nullptr;
+    }
+    if(node != m_tail && node != m_head) {
+        node->m_prev->m_next = node->m_next;
+
+        if (node->m_next != nullptr) {
+            node->m_next->m_prev = node->m_prev;
+        }
+    }
     if (node == m_head){
         m_head = m_head->m_next;
         if (m_head)
              m_head->m_prev = nullptr;
 
     }
-    else if (node == m_tail){
+    if (node == m_tail){
         m_tail = m_tail->m_prev;
         if (m_tail){
             m_tail->m_next = nullptr;
         }
 
-    }
-    else {
-        node->m_prev->m_next = node->m_next;
-
-        if (node->m_next != nullptr) {
-            node->m_next->m_prev = node->m_prev;
-        }
     }
     delete(node);
     m_size--;
