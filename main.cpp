@@ -106,13 +106,13 @@ int main()
     (res == StatusType::SUCCESS);
     res = obj->remove_player(3010);
     (res == StatusType::SUCCESS);
-  //  res = obj->remove_player(3009);
+    res = obj->remove_player(3009);
     (res == StatusType::SUCCESS);
     res = obj->remove_player(3005);
     (res == StatusType::SUCCESS);
     res = obj->remove_player(3004);
     (res == StatusType::SUCCESS);
- //   res = obj->remove_player(3006);
+    //res = obj->remove_player(3006);
     (res == StatusType::SUCCESS);
     res = obj->remove_player(3007);
     (res == StatusType::SUCCESS);
