@@ -42,6 +42,12 @@ void CompleteTeam::setCompleteTeamNode(LNode<CompleteTeam> *node) {
     m_completeNode = node;
 }
 
+void CompleteTeam::updateStats(int points, int goals, int cards) {
+    m_points = points;
+    m_goals = goals;
+    m_cards = cards;
+}
+
 bool operator> (const CompleteTeam &ct1, const CompleteTeam &ct2){
     return ct2 < ct1;
 }

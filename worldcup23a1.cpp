@@ -144,6 +144,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             new_player_team->setCompleteTeamPointer(&completeTeams.find(*new_completeTeam)->data);
             delete(new_completeTeam);
         }
+        else if (new_player_team->isComplete()){
+            new_player_team->getCompleteTeamPointer()->updateStats(new_player_team->getPoints(), new_player_team->getGoals(), new_player_team->getCards());
+        }
     }
     catch (const std::bad_alloc &)
     {
