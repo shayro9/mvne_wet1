@@ -97,7 +97,7 @@ void Team::removePlayer(Player *player) {
     m_numOfPlayers--;
     m_cards -= player->getCards();
     m_goals -= player->getGoals();
-    m_numOfGoalkeepers -= player->isGoalKeeper();
+   // m_numOfGoalkeepers -= player->isGoalKeeper();
 
     m_TeamPlayersRank.remove(*player->getPlayerRank());
     m_players.remove(*player);

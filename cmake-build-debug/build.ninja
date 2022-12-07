@@ -77,13 +77,6 @@ build CMakeFiles/mvne_wet1.dir/PlayerId.cpp.obj: CXX_COMPILER__mvne_wet1_Debug C
   OBJECT_DIR = CMakeFiles\mvne_wet1.dir
   OBJECT_FILE_DIR = CMakeFiles\mvne_wet1.dir
 
-build CMakeFiles/mvne_wet1.dir/main.cpp.obj: CXX_COMPILER__mvne_wet1_Debug C$:/Users/amida/CLionProjects/mvne_wet1_git/main.cpp || cmake_object_order_depends_target_mvne_wet1
-  DEP_FILE = CMakeFiles\mvne_wet1.dir\main.cpp.obj.d
-  FLAGS = -g -std=gnu++14
-  INCLUDES = -IC:/Users/amida/CLionProjects/mvne_wet1_git/.
-  OBJECT_DIR = CMakeFiles\mvne_wet1.dir
-  OBJECT_FILE_DIR = CMakeFiles\mvne_wet1.dir
-
 build CMakeFiles/mvne_wet1.dir/worldcup23a1.cpp.obj: CXX_COMPILER__mvne_wet1_Debug C$:/Users/amida/CLionProjects/mvne_wet1_git/worldcup23a1.cpp || cmake_object_order_depends_target_mvne_wet1
   DEP_FILE = CMakeFiles\mvne_wet1.dir\worldcup23a1.cpp.obj.d
   FLAGS = -g -std=gnu++14
@@ -98,6 +91,13 @@ build CMakeFiles/mvne_wet1.dir/CompleteTeam.cpp.obj: CXX_COMPILER__mvne_wet1_Deb
   OBJECT_DIR = CMakeFiles\mvne_wet1.dir
   OBJECT_FILE_DIR = CMakeFiles\mvne_wet1.dir
 
+build CMakeFiles/mvne_wet1.dir/main23a1.cpp.obj: CXX_COMPILER__mvne_wet1_Debug C$:/Users/amida/CLionProjects/mvne_wet1_git/main23a1.cpp || cmake_object_order_depends_target_mvne_wet1
+  DEP_FILE = CMakeFiles\mvne_wet1.dir\main23a1.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/amida/CLionProjects/mvne_wet1_git/.
+  OBJECT_DIR = CMakeFiles\mvne_wet1.dir
+  OBJECT_FILE_DIR = CMakeFiles\mvne_wet1.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target mvne_wet1
@@ -106,7 +106,7 @@ build CMakeFiles/mvne_wet1.dir/CompleteTeam.cpp.obj: CXX_COMPILER__mvne_wet1_Deb
 #############################################
 # Link the executable mvne_wet1.exe
 
-build mvne_wet1.exe: CXX_EXECUTABLE_LINKER__mvne_wet1_Debug CMakeFiles/mvne_wet1.dir/Team.cpp.obj CMakeFiles/mvne_wet1.dir/Player.cpp.obj CMakeFiles/mvne_wet1.dir/PlayerRank.cpp.obj CMakeFiles/mvne_wet1.dir/PlayerId.cpp.obj CMakeFiles/mvne_wet1.dir/main.cpp.obj CMakeFiles/mvne_wet1.dir/worldcup23a1.cpp.obj CMakeFiles/mvne_wet1.dir/CompleteTeam.cpp.obj
+build mvne_wet1.exe: CXX_EXECUTABLE_LINKER__mvne_wet1_Debug CMakeFiles/mvne_wet1.dir/Team.cpp.obj CMakeFiles/mvne_wet1.dir/Player.cpp.obj CMakeFiles/mvne_wet1.dir/PlayerRank.cpp.obj CMakeFiles/mvne_wet1.dir/PlayerId.cpp.obj CMakeFiles/mvne_wet1.dir/worldcup23a1.cpp.obj CMakeFiles/mvne_wet1.dir/CompleteTeam.cpp.obj CMakeFiles/mvne_wet1.dir/main23a1.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\mvne_wet1.dir

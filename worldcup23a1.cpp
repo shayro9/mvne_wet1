@@ -180,7 +180,7 @@ StatusType world_cup_t::remove_player(int playerId)
 
         if (is_goalkeeper){
             currTeam->updateGoalkeepersNum(-1);
-        }
+       }
 
         node<CompleteTeam>* currComplete = completeTeams.find(*currTeam->getCompleteTeamPointer());
         if (!currTeam->isComplete() && currComplete){
@@ -326,7 +326,7 @@ output_t<int> world_cup_t::get_team_points(int teamId)
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 {
 	// TODO: Your code goes here
-    if(teamId1 <= 0 || teamId2 <= 0 || newTeamId <= 0){
+    if(teamId1 <= 0 || teamId2 <= 0 || newTeamId <= 0 || teamId2 == teamId1){
         return StatusType::INVALID_INPUT;
     }
 
@@ -415,6 +415,9 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
        //     completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
             new_team->setCompleteTeamPointer(&completeTeams.find(*new_complete_team)->data);
         }
+
+        teams.remove(teamId1); //
+        teams.remove(teamId2); //
         teams.insert(*new_team);
     }
     catch (const std::bad_alloc &) {
@@ -489,6 +492,9 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
         currTeam->getPlayersRank().tree2IDArrayInOrder(output);
     }
     else{
+        if (numOfPlayers == 0){
+            return StatusType::FAILURE;
+        }
         playersRank.tree2IDArrayInOrder(output);
     }
 
@@ -511,6 +517,9 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 
     Tree<Player>* currTree = currTeam->getPlayers();
     Player* currPlayer = &currTree->find(playerId)->data;
+    if (!currPlayer){
+        return StatusType::FAILURE;
+    }
 //     Player* currPlayer = &currTeam->getPlayers().find(playerId)->data;
      //PlayerId* currPlayerId = &playersId.find(playerId)->data; //complexity!!
      //Player* currPlayer = currPlayerId->getPlayer();

@@ -19,5 +19,5 @@ add_executable(mvne_wet1
         worldcup23a1.cpp
         CompleteTeam.h
         CompleteTeam.cpp
-        main.cpp
+        main23a1.cpp
         List.h)
