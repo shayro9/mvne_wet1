@@ -29,7 +29,7 @@ StatusType world_cup_t::add_team(int teamId, int points)
         teams.insert(new_team);
     }
     catch (...)
-    {  //is it allowed?
+    {
         return StatusType::ALLOCATION_ERROR;
     }
 
@@ -567,26 +567,13 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
         }
     }
 
-
-
-
-
-
-
-
     return 1006;
 }
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
 
-    // TODO: Your code goes here
 
-    // Team *competing_teams {};
-    //  teams.tree2ArrayInOrder(competing_teams,isComplete);
-
-    // Team* minTeam = &teams.find(minTeamId)->data;
-    // Team* maxTeam = &teams.find(maxTeamId)->data;
     if ((minTeamId <0) || (maxTeamId<0) || (maxTeamId<minTeamId)){
         return StatusType::INVALID_INPUT;
     }
@@ -628,7 +615,6 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
     if (*maxComplete < *minComplete){
         return StatusType::FAILURE;
     }
-    //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
     List<CompleteTeam > list;
     CompleteTeam *first = new CompleteTeam(minComplete->getId(), minComplete->getScore());
     list.insertFront(*first);

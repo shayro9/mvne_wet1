@@ -29,7 +29,6 @@ private:
     int m_points;
     int m_goals;
     int m_cards;
-    int m_connectedPointers;
     LNode<CompleteTeam>* m_completeNode;
 
 };
