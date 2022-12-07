@@ -595,16 +595,27 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
         minComplete = &completeTeams.find(minTeamId)->data;
         minComplete = minComplete->getCompleteNode()->m_data;
     } else {
-        minComplete = &completeTeams.findMinBigger(minTeamId)->data;
-        minComplete = minComplete->getCompleteNode()->m_data;
+        if (&completeTeams.findMinBigger(minTeamId)->data){
+            minComplete = &completeTeams.findMinBigger(minTeamId)->data;
+            minComplete = minComplete->getCompleteNode()->m_data;
+
+        }
+        else{
+            return StatusType::FAILURE;
+        }
     }
     CompleteTeam *maxComplete;
     if (completeTeams.find(maxTeamId) != nullptr) {
         maxComplete = &completeTeams.find(maxTeamId)->data;
         maxComplete = maxComplete->getCompleteNode()->m_data;
     } else {
-        maxComplete = &completeTeams.findMaxSmaller(maxTeamId)->data;
-        maxComplete = maxComplete->getCompleteNode()->m_data;
+        if(&completeTeams.findMaxSmaller(maxTeamId)->data) {
+            maxComplete = &completeTeams.findMaxSmaller(maxTeamId)->data;
+            maxComplete = maxComplete->getCompleteNode()->m_data;
+        }
+        else{
+            return StatusType::FAILURE;
+        }
 
     }
     LNode<CompleteTeam > *minCompleteList = minComplete->getCompleteNode();
