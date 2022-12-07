@@ -20,6 +20,8 @@ public:
     Player* addPlayer(Player* player, PlayerRank* playerRank);
     void removePlayer(Player* player);
 
+    void nullTreePointers();
+
     int getId() const;
     int getPoints() const;
     int getGoals() const;

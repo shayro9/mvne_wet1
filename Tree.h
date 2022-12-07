@@ -9,7 +9,6 @@ struct node{
     T data;
     node* l;
     node* r;
-    node* parent;
 };
 
 template <class T>
@@ -25,15 +24,14 @@ public:
     node<T>* find(const T& t);
     void insert(T& t);
     void remove(const T& t);
+    void nullTree();
 
     node<T>* getMax();
     void setMax();
     node<T>* findMaxSmaller(const T& t);
     node<T>* findMinBigger(const T& t);
-    void merge(Tree<T>& t, int n, int m);
 
     void tree2ArrayInOrder(T * output, bool (*cond)(node<T>*));
-
     void tree2ArrayInOrder(T * output);
     void tree2IDArrayInOrder(int * output);
     void preOrder(void (*func)(node<T>*));
@@ -80,7 +78,7 @@ void Tree<T>::DestroyRecursive(node<T>* node)
             m_root = nullptr;
         if(node == m_max)
             m_max = nullptr;
-        delete(node);
+        delete(&node->data);
     }
 }
 
@@ -523,52 +521,14 @@ node<T>* Tree<T>::sortedArray2Tree(T *input, int start, int end) {
 }
 
 template<class T>
-void Tree<T>::merge(Tree<T> &t,const int n,const int m) {
-    try {
-        T *array1 = new T[n];
-        T *array2 = new T[m];
-        T *merged_array = new T[n+m];
-
-        int k = 0, j = 0;
-
-        this->tree2ArrayInOrder(array1);
-        t.tree2ArrayInOrder(array2);
-
-        while (k < n && j < m) {
-            if (array1[k] < array2[j]) {
-                merged_array[k + j] = array1[k];
-                k++;
-            } else {
-                merged_array[k + j] = array2[j];
-                j++;
-            }
-        }
-        if (k >= n)
-            for (; j < m; ++j) {
-                merged_array[k + j] = array2[j];
-            }
-        else
-            for (; k < n; ++k) {
-                merged_array[k + j] = array1[k];
-            }
-
-        t.DestroyRecursive(t.m_root);
-        DestroyRecursive(m_root);
-        node<T>* temp = sortedArray2Tree(merged_array, 0, k + j - 1);
-        delete[] array1;
-        delete[] array2;
-        delete[] merged_array;
-        m_root = temp;
-        setMax();
-    }
-    catch (...) {
-        throw std::bad_alloc();
-    }
+void Tree<T>::setMax() {
+    m_max = maxValueNode(m_root);
 }
 
 template<class T>
-void Tree<T>::setMax() {
-    m_max = maxValueNode(m_root);
+void Tree<T>::nullTree() {
+    m_root = nullptr;
+    m_max = nullptr;
 }
 
 #endif //MVNE_WET1_TREE_H

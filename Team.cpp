@@ -162,6 +162,10 @@ void Team::setId(int newId) {
     m_teamId = newId;
 }
 
+void Team::nullTreePointers() {
+    m_players.nullTree();
+    m_TeamPlayersRank.nullTree();
+}
 void UpdateGames(node<Player>* p, int gamePlayedBefore)
 {
 

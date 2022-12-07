@@ -415,13 +415,14 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
             new_complete_team->setCompleteTeamNode(completeTeamList.getLastAdded());
             completeTeams.insert(*new_complete_team);
-       //     completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
             new_team->setCompleteTeamPointer(&completeTeams.find(*new_complete_team)->data);
         }
 
         teams.remove(teamId1); //
         teams.remove(teamId2); //
         teams.insert(*new_team);
+        new_team->nullTreePointers();
+        delete new_team;
     }
     catch (const std::bad_alloc &) {
         return StatusType::ALLOCATION_ERROR;

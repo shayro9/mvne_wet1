@@ -52,10 +52,10 @@ List<T>::~List() {
     if(m_head) {
         LNode<T> *curr_node = m_head->m_next;
         while (curr_node) {
-            delete (curr_node->m_prev);
+            delete (&curr_node->m_prev->m_data);
             curr_node = curr_node->m_next;
         }
-        delete(m_tail);
+        delete(&m_tail->m_data);
     }
 }
 
