@@ -323,7 +323,7 @@ node<T> *Tree<T>::minValueNodeParent(node<T> *root) {
     if(root->l->l == nullptr)
         return root;
 
-    return minValueNode(root->l);
+    return minValueNodeParent(root->l);
 }
 
 template<class T>
