@@ -12,21 +12,11 @@
 
 world_cup_t::world_cup_t() : numOfPlayers(0), teams(Tree<Team>()), playersRank(Tree<PlayerRank>()), playersId(Tree<PlayerId>()),
                              completeTeams(Tree<CompleteTeam>()), playerRankList(List<PlayerRank>()), completeTeamList(List<CompleteTeam>())
-{
-	// TODO: Your code goes here
-}
-
-/*
-world_cup_t::~world_cup_t()
-{
-	// TODO: Your code goes here
-}
- */
+{}
 
 
 StatusType world_cup_t::add_team(int teamId, int points)
 {
-    // TODO: Your code goes here
     if ((teamId <= 0) || points < 0 ){
         return StatusType::INVALID_INPUT;
     }
@@ -48,7 +38,6 @@ StatusType world_cup_t::add_team(int teamId, int points)
 
 StatusType world_cup_t::remove_team(int teamId)
 {
-	// TODO: Your code goes here
     if (teamId <= 0){
         return StatusType::INVALID_INPUT;
     }
@@ -59,8 +48,6 @@ StatusType world_cup_t::remove_team(int teamId)
     }
     try
     {
-        //delete players trees in team
-        //unecessary because there are no players!!
         CompleteTeam *com_to_remove = &completeTeams.find(teamId)->data;
         if (com_to_remove != nullptr){
             completeTeamList.remove(com_to_remove->getCompleteNode());
@@ -69,19 +56,17 @@ StatusType world_cup_t::remove_team(int teamId)
 
         teams.remove(*to_remove);
     }
-    catch (const std::bad_alloc &)
+    catch (...)
     {
         return StatusType::ALLOCATION_ERROR;
     }
 
     return StatusType::SUCCESS;
-
 }
 
 StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
                                    int goals, int cards, bool goalKeeper)
 {
-	// TODO: Your code goes here
     if ((playerId <= 0) || (teamId <= 0) || (gamesPlayed < 0) || (goals < 0) || (cards < 0) ){
         return StatusType::INVALID_INPUT;
     }
@@ -148,7 +133,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             new_player_team->getCompleteTeamPointer()->updateStats(new_player_team->getPoints(), new_player_team->getGoals(), new_player_team->getCards());
         }
     }
-    catch (const std::bad_alloc &)
+    catch (...)
     {
         return StatusType::ALLOCATION_ERROR;
     }
@@ -157,7 +142,6 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
 StatusType world_cup_t::remove_player(int playerId)
 {
-	// TODO: Your code goes here
 
     if (playerId <= 0){
         return StatusType::INVALID_INPUT;
@@ -167,7 +151,6 @@ StatusType world_cup_t::remove_player(int playerId)
     if (currPlayer == nullptr){
         return StatusType::FAILURE;
     }
-
 
     bool is_goalkeeper = currPlayer->getPlayer()->isGoalKeeper();
     Team* currTeam = currPlayer->getPlayer()->getTeam();
@@ -184,7 +167,9 @@ StatusType world_cup_t::remove_player(int playerId)
         if (is_goalkeeper){
             currTeam->updateGoalkeepersNum(-1);
        }
-
+        if (currTeam->isComplete()){
+            currTeam->getCompleteTeamPointer()->updateStats(currTeam->getPoints(), currTeam->getGoals(), currTeam->getCards());
+        }
         node<CompleteTeam>* currComplete = completeTeams.find(*currTeam->getCompleteTeamPointer());
         if (!currTeam->isComplete() && currComplete){
             CompleteTeam temp_team = currComplete->data;
@@ -194,7 +179,7 @@ StatusType world_cup_t::remove_player(int playerId)
 
         numOfPlayers--;
     }
-    catch (const std::bad_alloc &)
+    catch (...)
     {
         return StatusType::ALLOCATION_ERROR;
     }
@@ -204,7 +189,6 @@ StatusType world_cup_t::remove_player(int playerId)
 StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
                                         int scoredGoals, int cardsReceived)
 {
-	// TODO: Your code goes here
     if(playerId <=0 || gamesPlayed < 0 || scoredGoals < 0 || cardsReceived < 0)
         return StatusType::INVALID_INPUT;
 
@@ -212,54 +196,64 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
     if(currPlayerId == nullptr)
         return StatusType::FAILURE;
 
-    Player* currPlayer = currPlayerId->data.getPlayer();
-    PlayerRank* outdated_player_rank = currPlayer->getPlayerRank();
 
-    currPlayer->updateStats(gamesPlayed,scoredGoals,cardsReceived);
-    currPlayer->getTeam()->updateStats(scoredGoals,cardsReceived, 0);
+    try {
+        Player *currPlayer = currPlayerId->data.getPlayer();
+        PlayerRank *outdated_player_rank = currPlayer->getPlayerRank();
 
-    PlayerRank* newPlayerRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
-    PlayerRank* newPlayerTeamRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
-    newPlayerTeamRank->setPlayer(currPlayer); //
-    Team* currTeam = currPlayer->getTeam();
+        currPlayer->updateStats(gamesPlayed, scoredGoals, cardsReceived);
+        currPlayer->getTeam()->updateStats(scoredGoals, cardsReceived, 0);
+        if (currPlayer->getTeam()->isComplete()) {
+            currPlayer->getTeam()->getCompleteTeamPointer()->updateStats(currPlayer->getTeam()->getPoints(),
+                                                                         currPlayer->getTeam()->getGoals(),
+                                                                         currPlayer->getTeam()->getCards());
+        }
 
-    playerRankList.remove(outdated_player_rank->getPlayerNode());
-    playersRank.remove(*outdated_player_rank);
-    currTeam->getPlayersRank().remove(*outdated_player_rank);
-    currPlayer->clearRankPointers();
+        PlayerRank *newPlayerRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
+        PlayerRank *newPlayerTeamRank = new PlayerRank(playerId, currPlayer->getGoals(), currPlayer->getCards());
+        newPlayerTeamRank->setPlayer(currPlayer);
+        Team *currTeam = currPlayer->getTeam();
 
-    playersRank.insert(*newPlayerRank);
-    node<PlayerRank>* added_node = playersRank.find(*newPlayerRank);
+        playerRankList.remove(outdated_player_rank->getPlayerNode());
+        playersRank.remove(*outdated_player_rank);
+        currTeam->getPlayersRank().remove(*outdated_player_rank);
+        currPlayer->clearRankPointers();
 
-    node<PlayerRank>* prevInList = playersRank.findMaxSmaller(*newPlayerRank);
-    if (prevInList != nullptr && playerRankList.getSize() > 0){
-        playerRankList.insertAfter(prevInList->data.getPlayerNode(), *newPlayerRank);
+        playersRank.insert(*newPlayerRank);
+        node<PlayerRank> *added_node = playersRank.find(*newPlayerRank);
+
+        node<PlayerRank> *prevInList = playersRank.findMaxSmaller(*newPlayerRank);
+        if (prevInList != nullptr && playerRankList.getSize() > 0) {
+            playerRankList.insertAfter(prevInList->data.getPlayerNode(), *newPlayerRank);
+        } else {
+            playerRankList.insertFront(*newPlayerRank); //if its the smallest one, creates one node list- should add insert before
+        }
+        newPlayerRank->setPlayerNode(playerRankList.getLastAdded());
+        added_node->data.setPlayerNode(playerRankList.getLastAdded());
+        currPlayer->setPlayerRank(newPlayerRank);
+
+        currTeam->getPlayersRank().insert(*newPlayerTeamRank);
+
+        currPlayer->setTeamPlayerRank(newPlayerTeamRank);
+
+        //delete(outdated_player_rank);
+        //delete(newPlayerRank);
     }
-    else{
-        playerRankList.insertFront(*newPlayerRank); //if its the smallest one, creates one node list- should add insert before
+    catch (...)
+    {
+        return StatusType::ALLOCATION_ERROR;
     }
-    newPlayerRank->setPlayerNode(playerRankList.getLastAdded());
-    added_node->data.setPlayerNode(playerRankList.getLastAdded());
-    currPlayer->setPlayerRank(newPlayerRank);
-
-    //PlayerRank* currTeamPlayerRank = currPlayer->getGroupPlayerRank();
-    currTeam->getPlayersRank().insert(*newPlayerTeamRank);
-
-    currPlayer->setTeamPlayerRank(newPlayerTeamRank);
-
-    //delete(outdated_player_rank);
-    //delete(newPlayerRank);
 
     return StatusType::SUCCESS;
 }
 
 StatusType world_cup_t::play_match(int teamId1, int teamId2)
 {
-	// TODO: Your code goes here
 
     if ((teamId1 <= 0) || (teamId2 <= 0) || (teamId1 == teamId2)){
         return StatusType::INVALID_INPUT;
     }
+
 
     Team* team1 = &teams.find(teamId1)->data;
     Team* team2 = &teams.find(teamId2)->data;
@@ -288,31 +282,36 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2)
     }
     team1->addGames(1);
     team2->addGames(1);
+
 	return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::get_num_played_games(int playerId)
 {
-	// TODO: Your code goes here
     if (playerId <= 0){
         return StatusType::INVALID_INPUT;
     }
     if (playersId.find(playerId) == nullptr){
         return StatusType::FAILURE;
     }
+    try {
+        PlayerId *currId = &playersId.find(playerId)->data;
+        Player *currPlayer = currId->getPlayer();
 
-    PlayerId* currId = &playersId.find(playerId)->data;
-    Player* currPlayer = currId->getPlayer();
+        int games_with_team = currPlayer->getTeam()->getGamesPlayed() - currPlayer->getGamesTeamPlayedBefore();
+        int games_alone = currPlayer->getGamesPlayed();
+        return games_with_team + games_alone;
 
-    int games_with_team = currPlayer->getTeam()->getGamesPlayed() - currPlayer->getGamesTeamPlayedBefore();
-    int games_alone = currPlayer->getGamesPlayed();
+    }
+    catch (...)
+    {
+        return StatusType::ALLOCATION_ERROR;
+    }
 
-	return games_with_team + games_alone;
 }
 
 output_t<int> world_cup_t::get_team_points(int teamId)
 {
-	// TODO: Your code goes here
 
     if (teamId <= 0){
         return StatusType::INVALID_INPUT;
@@ -423,7 +422,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         teams.remove(teamId2); //
         teams.insert(*new_team);
     }
-    catch (const std::bad_alloc &) {
+    catch (...) {
         return StatusType::ALLOCATION_ERROR;
     }
 	return StatusType::SUCCESS;
@@ -482,7 +481,6 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
 StatusType world_cup_t::get_all_players(int teamId, int *const output)
 {
 
-	// TODO: Your code goes here
     if ((output == nullptr) || (teamId == 0)){
         return StatusType::INVALID_INPUT;
     }
