@@ -36,6 +36,7 @@ public:
     PlayerRank* getGroupPlayerRank();
     Team* getTeam();
     void setTeam(Team* t, int gamesPlayed, int *games);
+    void setTeamPointer(Team* t);
 
     void updateStats(int games, int goals, int cards);
 

@@ -168,3 +168,7 @@ void Player::setPlayerId(PlayerId *id) {
     m_Id = id;
 }
 
+void Player::setTeamPointer(Team *t) {
+    m_team = t;
+}
+

@@ -166,6 +166,11 @@ void Team::nullTreePointers() {
     m_players.nullTree();
     m_TeamPlayersRank.nullTree();
 }
+
+void Team::UpdatePlayersTeamPointers() {
+    m_players.preOrder(UpdatePlayersTeam, this);
+}
+
 void UpdateGames(node<Player>* p, int gamePlayedBefore)
 {
 
@@ -173,4 +178,9 @@ void UpdateGames(node<Player>* p, int gamePlayedBefore)
 
     p->data.updateStats(games_with_team,0,0);
     p->data.setGamesTeamPlayedBefore(gamePlayedBefore);
+}
+
+void UpdatePlayersTeam(node<Player>* p, Team* team)
+{
+    p->data.setTeamPointer(team);
 }

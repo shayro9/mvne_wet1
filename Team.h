@@ -35,9 +35,9 @@ public:
     void addPoints(int amount);
     void addGames(int amount);
 
-
     Tree<Player>* getPlayers();
     Tree<PlayerRank>& getPlayersRank();
+    void UpdatePlayersTeamPointers();
 
     void setId(int newId);
 
@@ -67,6 +67,7 @@ private:
 };
 
 void UpdateGames(node<Player>* p, int gamePlayedBefore);
+void UpdatePlayersTeam(node<Player>* p, Team* team);
 
 bool operator!= (const Team&, const Team&);
 bool operator>= (const Team&, const Team&);
