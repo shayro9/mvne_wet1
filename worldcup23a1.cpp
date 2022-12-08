@@ -29,7 +29,7 @@ StatusType world_cup_t::add_team(int teamId, int points)
         teams.insert(new_team);
     }
     catch (...)
-    {  //is it allowed?
+    {
         return StatusType::ALLOCATION_ERROR;
     }
 
@@ -84,7 +84,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         PlayerRank* new_player_rank = new PlayerRank(playerId,goals,cards);
 
         PlayerRank* new_player_group_rank = new PlayerRank(playerId,goals,cards);
-        new_player_group_rank->setPlayer(new_player); //
+        new_player_group_rank->setPlayer(new_player);
 
         Team* new_player_team = &teams.find(teamId)->data;
         new_player->setTeam(new_player_team,new_player_team->getGamesPlayed(),new_player_team->getGamesPlayedPoint());
@@ -147,16 +147,21 @@ StatusType world_cup_t::remove_player(int playerId)
         return StatusType::INVALID_INPUT;
     }
 
-    PlayerId *currPlayer = &playersId.find(playerId)->data;
-    if (currPlayer == nullptr){
+  //  PlayerId *currPlayer = &playersId.find(playerId)->data;
+    if (!playersId.find(playerId)){
         return StatusType::FAILURE;
     }
 
-    bool is_goalkeeper = currPlayer->getPlayer()->isGoalKeeper();
-    Team* currTeam = currPlayer->getPlayer()->getTeam();
+   // bool is_goalkeeper = currPlayer->getPlayer()->isGoalKeeper();
+    //Team* currTeam = currPlayer->getPlayer()->getTeam();
 
     try
     {
+
+        PlayerId *currPlayer = &playersId.find(playerId)->data;
+        bool is_goalkeeper = currPlayer->getPlayer()->isGoalKeeper();
+        Team* currTeam = currPlayer->getPlayer()->getTeam();
+
         PlayerRank temp_rank = *currPlayer->getPlayer()->getPlayerRank();
         Player* temp_player = currPlayer->getPlayer();
         playerRankList.remove(temp_rank.getPlayerNode());
@@ -192,12 +197,13 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
     if(playerId <=0 || gamesPlayed < 0 || scoredGoals < 0 || cardsReceived < 0)
         return StatusType::INVALID_INPUT;
 
-    node<PlayerId>* currPlayerId = playersId.find(playerId);
-    if(currPlayerId == nullptr)
+
+    if(!playersId.find(playerId))
         return StatusType::FAILURE;
 
 
     try {
+        node<PlayerId>* currPlayerId = playersId.find(playerId);
         Player *currPlayer = currPlayerId->data.getPlayer();
         PlayerRank *outdated_player_rank = currPlayer->getPlayerRank();
 
@@ -255,33 +261,40 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2)
     }
 
 
-    Team* team1 = &teams.find(teamId1)->data;
-    Team* team2 = &teams.find(teamId2)->data;
+   // Team* team1 = &teams.find(teamId1)->data;
+   // Team* team2 = &teams.find(teamId2)->data;
 
-    if ((team1 == nullptr) || (team2 == nullptr)){
+    if (!teams.find(teamId1) || !teams.find(teamId2)){
         return StatusType::FAILURE;
     }
 
-    if (!team1->isComplete() || !team2->isComplete()){
+    if (!teams.find(teamId1)->data.isComplete() || !teams.find(teamId2)->data.isComplete()){
         return StatusType::FAILURE;
     }
 
-    int score1 = team1->getPoints() + team1->getGoals() - team1->getCards();
-    int score2 = team2->getPoints() + team2->getGoals() - team2->getCards();
-    if (score1 == score2){
-        team1->addPoints(DRAW);
-        team2->addPoints(DRAW);
+    try {
+        Team *team1 = &teams.find(teamId1)->data;
+        Team *team2 = &teams.find(teamId2)->data;
+
+        int score1 = team1->getPoints() + team1->getGoals() - team1->getCards();
+        int score2 = team2->getPoints() + team2->getGoals() - team2->getCards();
+        if (score1 == score2) {
+            team1->addPoints(DRAW);
+            team2->addPoints(DRAW);
+        } else if (score1 > score2) {
+            team1->addPoints(WIN);
+            team2->addPoints(LOSS);
+        } else {
+            team1->addPoints(LOSS);
+            team2->addPoints(WIN);
+        }
+        team1->addGames(1);
+        team2->addGames(1);
     }
-    else if (score1 > score2){
-        team1->addPoints(WIN);
-        team2->addPoints(LOSS);
+    catch (...)
+    {
+        return StatusType::ALLOCATION_ERROR;
     }
-    else{
-        team1->addPoints(LOSS);
-        team2->addPoints(WIN);
-    }
-    team1->addGames(1);
-    team2->addGames(1);
 
 	return StatusType::SUCCESS;
 }
@@ -317,17 +330,16 @@ output_t<int> world_cup_t::get_team_points(int teamId)
         return StatusType::INVALID_INPUT;
     }
 
-    Team* currTeam = &teams.find(teamId)->data;
-    if (currTeam == nullptr){
+   // Team* currTeam = &teams.find(teamId)->data;
+    if (!teams.find(teamId)){
         return StatusType::FAILURE;
     }
 
-	return currTeam->getPoints();
+	return teams.find(teamId)->data.getPoints();
 }
 
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 {
-	// TODO: Your code goes here
     if(teamId1 <= 0 || teamId2 <= 0 || newTeamId <= 0 || teamId2 == teamId1){
         return StatusType::INVALID_INPUT;
     }
@@ -448,6 +460,25 @@ output_t<int> world_cup_t::get_top_scorer(int teamId)
         }
     }
     if (teamId > 0){
+
+        if (!teams.find(teamId)){
+            return StatusType::FAILURE;
+        }
+        if (teams.find(teamId)->data.getPlayersNum() == 0){
+            return StatusType::FAILURE;
+        }
+        else{
+            try {
+                Team *currTeam = &teams.find(teamId)->data;
+                PlayerRank *maxPlayer = &currTeam->getPlayersRank().getMax()->data;
+                return maxPlayer->getId();
+            }
+            catch (...)
+            {
+                return StatusType::ALLOCATION_ERROR;
+            }
+        }
+        /*
         Team* currTeam = &teams.find(teamId)->data;
         if (currTeam == nullptr || currTeam->getPlayersNum() == 0){
             return StatusType::FAILURE;
@@ -455,7 +486,7 @@ output_t<int> world_cup_t::get_top_scorer(int teamId)
         else{
             PlayerRank* maxPlayer = &currTeam->getPlayersRank().getMax()->data;
             return maxPlayer->getId();
-        }
+        }*/
 
     }
 
@@ -472,12 +503,12 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
         return numOfPlayers;
     }
 
-    Team* team = &teams.find(teamId)->data;
-    if (team == nullptr){
+   //Team* team = &teams.find(teamId)->data;
+    if (!teams.find(teamId)){
         return StatusType::FAILURE;
     }
-
-    return team->getPlayersNum();
+    return teams.find(teamId)->data.getPlayersNum();
+   // return team->getPlayersNum();
 }
 
 StatusType world_cup_t::get_all_players(int teamId, int *const output)
@@ -488,11 +519,17 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
     }
 
     if (teamId > 0){
-        Team* currTeam = &teams.find(teamId)->data;
-        if (currTeam == nullptr || currTeam->getPlayersNum() == 0){
+       // Team* currTeam = &teams.find(teamId)->data;
+        if (!teams.find(teamId)){
             return StatusType::FAILURE;
         }
-        currTeam->getPlayersRank().tree2IDArrayInOrder(output);
+        if (teams.find(teamId)->data.getPlayersNum() == 0){
+            return StatusType::FAILURE;
+        }
+       // if (currTeam == nullptr || currTeam->getPlayersNum() == 0){
+      //      return StatusType::FAILURE;
+      //  }
+        teams.find(teamId)->data.getPlayersRank().tree2IDArrayInOrder(output);
     }
     else{
         if (numOfPlayers == 0){
@@ -514,81 +551,82 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
         return StatusType::FAILURE;
     }
     Team* currTeam = &teams.find(teamId)->data;
-    if (currTeam == nullptr){
+    if (!teams.find(teamId)){
+        return StatusType::FAILURE;
+    }
+    if (!teams.find(teamId)->data.getPlayers()->find(playerId)){
+        return StatusType::FAILURE;
+    }
+    if (teams.find(teamId)->data.getPlayers()->find(playerId)->data.getTeam()->getId() != teamId){
         return StatusType::FAILURE;
     }
 
-    Tree<Player>* currTree = currTeam->getPlayers();
-    Player* currPlayer = &currTree->find(playerId)->data;
-    if (!currPlayer){
-        return StatusType::FAILURE;
-    }
+    //Tree<Player>* currTree = currTeam->getPlayers();
+   // Player* currPlayer = &currTree->find(playerId)->data;
+    //if (!currPlayer){
+     //   return StatusType::FAILURE;
+    //}
 //     Player* currPlayer = &currTeam->getPlayers().find(playerId)->data;
      //PlayerId* currPlayerId = &playersId.find(playerId)->data; //complexity!!
      //Player* currPlayer = currPlayerId->getPlayer();
-    if (currPlayer->getTeam()->getId() != teamId){
-        return StatusType::FAILURE;
-    }
-    PlayerRank* currRank = currPlayer->getPlayerRank();
-    if (!currPlayer->getPlayerRank()->getPlayerNode()->m_prev) {
-        return currPlayer->getPlayerRank()->getPlayerNode()->m_next->m_data->getId();
-    }
-    PlayerRank *prevInList = currPlayer->getPlayerRank()->getPlayerNode()->m_prev->m_data;
-    if (!currPlayer->getPlayerRank()->getPlayerNode()->m_next){
-        return prevInList->getId();
-    }
-    PlayerRank* nextInList = currPlayer->getPlayerRank()->getPlayerNode()->m_next->m_data;
-    if (abs(prevInList->getGoals() - currRank->getGoals()) < abs(nextInList->getGoals() - currRank->getGoals())){
-        return prevInList->getId();
-    }
-    else if (abs(prevInList->getGoals() - currRank->getGoals()) > abs(nextInList->getGoals() - currRank->getGoals())){
-        return nextInList->getId();
-    }
-    else{
-        if (abs(prevInList->getCards() - currRank->getCards()) < (abs(nextInList->getCards() - currRank->getCards()))){
+   // if (currPlayer->getTeam()->getId() != teamId){
+   //     return StatusType::FAILURE;
+   // }
+
+    try {
+
+        Tree<Player> *currTree = currTeam->getPlayers();
+        Player *currPlayer = &currTree->find(playerId)->data;
+
+        PlayerRank *currRank = currPlayer->getPlayerRank();
+        if (!currPlayer->getPlayerRank()->getPlayerNode()->m_prev) {
+            return currPlayer->getPlayerRank()->getPlayerNode()->m_next->m_data->getId();
+        }
+        PlayerRank *prevInList = currPlayer->getPlayerRank()->getPlayerNode()->m_prev->m_data;
+        if (!currPlayer->getPlayerRank()->getPlayerNode()->m_next) {
             return prevInList->getId();
         }
-        else if (abs(prevInList->getCards() - currRank->getCards()) > (abs(nextInList->getCards() - currRank->getCards()))){
+        PlayerRank *nextInList = currPlayer->getPlayerRank()->getPlayerNode()->m_next->m_data;
+        if (abs(prevInList->getGoals() - currRank->getGoals()) < abs(nextInList->getGoals() - currRank->getGoals())) {
+            return prevInList->getId();
+        } else if (abs(prevInList->getGoals() - currRank->getGoals()) >
+                   abs(nextInList->getGoals() - currRank->getGoals())) {
             return nextInList->getId();
-        }
-        else{
-            if (abs(prevInList->getId() - currRank->getId()) < abs(nextInList->getId() - currRank->getId())){
+        } else {
+            if (abs(prevInList->getCards() - currRank->getCards()) <
+                (abs(nextInList->getCards() - currRank->getCards()))) {
                 return prevInList->getId();
-            }
-            else if (abs(prevInList->getId() - currRank->getId()) > abs(nextInList->getId() - currRank->getId())){
+            } else if (abs(prevInList->getCards() - currRank->getCards()) >
+                       (abs(nextInList->getCards() - currRank->getCards()))) {
                 return nextInList->getId();
-            }
-            else{
-                if (prevInList->getId() > nextInList->getId()){
+            } else {
+                if (abs(prevInList->getId() - currRank->getId()) < abs(nextInList->getId() - currRank->getId())) {
                     return prevInList->getId();
-                }
-                else{
+                } else if (abs(prevInList->getId() - currRank->getId()) >
+                           abs(nextInList->getId() - currRank->getId())) {
                     return nextInList->getId();
+                } else {
+                    if (prevInList->getId() > nextInList->getId()) {
+                        return prevInList->getId();
+                    } else {
+                        return nextInList->getId();
+                    }
                 }
             }
         }
     }
 
-
-
-
-
-
-
-
+    catch (...)
+    {
+        return StatusType::ALLOCATION_ERROR;
+    }
     return 1006;
 }
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
 
-    // TODO: Your code goes here
 
-    // Team *competing_teams {};
-    //  teams.tree2ArrayInOrder(competing_teams,isComplete);
-
-    // Team* minTeam = &teams.find(minTeamId)->data;
-    // Team* maxTeam = &teams.find(maxTeamId)->data;
     if ((minTeamId <0) || (maxTeamId<0) || (maxTeamId<minTeamId)){
         return StatusType::INVALID_INPUT;
     }
@@ -630,7 +668,6 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
     if (*maxComplete < *minComplete){
         return StatusType::FAILURE;
     }
-    //  List<CompleteTeam> list2 = List(*minCompleteList->m_data, *maxCompleteList->m_data);
     List<CompleteTeam > list;
     CompleteTeam *first = new CompleteTeam(minComplete->getId(), minComplete->getScore());
     list.insertFront(*first);

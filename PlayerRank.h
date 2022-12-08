@@ -43,7 +43,6 @@ private:
 
     Player* m_player;
 
-    //LinkedListNode<int>* m_playerRankNode;
 };
 
 bool operator!= (const PlayerRank&, const PlayerRank&);
