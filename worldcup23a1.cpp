@@ -445,8 +445,6 @@ output_t<int> world_cup_t::get_top_scorer(int teamId)
         }
         else {
             return playerRankList.getTail()->m_data->getId();
-            //PlayerRank *maxPlayer = &playersRank.getMax()->data;
-           // return maxPlayer->getId();
         }
     }
     if (teamId > 0){

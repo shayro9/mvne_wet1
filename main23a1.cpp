@@ -19,7 +19,7 @@ using namespace std;
 void print(string cmd, StatusType res);
 void print(string cmd, output_t<int> res);
 void query_get_all_players(string cmd, world_cup_t *obj, int teamID);
-/*
+
 int main()
 {
     cin >> std::boolalpha;
@@ -75,7 +75,6 @@ int main()
             print(op, obj->get_closest_player(d1, d2));
         } else if (!op.compare("knockout_winner")) {
             cin >> d1 >> d2;
-            //int x = obj->knockout_winner(d1, d2).ans();
             print(op, obj->knockout_winner(d1, d2));
         } else {
             cout << "Unknown command: " << op << endl;
@@ -135,82 +134,4 @@ void query_get_all_players(string cmd, world_cup_t *obj, int teamID)
 	    }
     }
     delete[] out_mem;
-}
-*/
-int main(){
-    world_cup_t *obj = new world_cup_t();
-
-    output_t<int> res1 = obj->knockout_winner(-1, 0);
-    //REQUIRE(res1.status() == StatusType::INVALID_INPUT);
-
-    output_t<int> res2 = obj->knockout_winner(-4, -1);
-    //REQUIRE(res2.status() == StatusType::INVALID_INPUT);
-
-    output_t<int> res3 = obj->knockout_winner(0, -1);
-    //REQUIRE(res3.status() == StatusType::INVALID_INPUT);
-
-    output_t<int> res4 = obj->knockout_winner(-1, -1);
-    //REQUIRE(res4.status() == StatusType::INVALID_INPUT);
-
-    output_t<int> res5 = obj->knockout_winner(10, 9);
-    //REQUIRE(res5.status() == StatusType::INVALID_INPUT);
-
-    output_t<int> res5andahalf = obj->knockout_winner(0, 1);
-  //  REQUIRE(res5andahalf.status() == StatusType::FAILURE);
-
-    StatusType res = obj->add_team(7, 10);
-  //  REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_team(9, 10);
-  //  REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(69, 7, 9, 1, 1, false);
-    //REQUIRE(res == StatusType::SUCCESS);
-
-    output_t<int> res6 = obj->knockout_winner(0, 10);
-    //REQUIRE(res6.status() == StatusType::FAILURE);
-
-    output_t<int> res7 = obj->knockout_winner(7, 7);
-   // REQUIRE(res7.status() == StatusType::FAILURE);
-
-    output_t<int> res8 = obj->knockout_winner(7, 9);
-    //REQUIRE(res8.status() == StatusType::FAILURE);
-/*
-    output_t<int> res9 = obj->knockout_winner(7, 10);
-    REQUIRE(res9.status() == StatusType::FAILURE);
-
-    output_t<int> res10 = obj->knockout_winner(6, 9);
-    REQUIRE(res10.status() == StatusType::FAILURE);
-
-    output_t<int> res11 = obj->knockout_winner(0, 1);
-    REQUIRE(res11.status() == StatusType::FAILURE);
-
-    res = obj->add_player(70, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(71, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(72, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(73, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(74, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(75, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(76, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(77, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(78, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(79, 7, 9, 1, 1, false);
-    REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(80, 7, 9, 1, 1, true);
-    REQUIRE(res == StatusType::SUCCESS);
-
-    output_t<int> res12 = obj->knockout_winner(0, 6);
-    REQUIRE(res12.status() == StatusType::FAILURE);
-
-    output_t<int> res13 = obj->knockout_winner(8, 9);
-    REQUIRE(res13.status() == StatusType::FAILURE);
-
-    delete obj;*/
 }
