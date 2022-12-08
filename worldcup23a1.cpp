@@ -380,8 +380,6 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         Tree<PlayerRank> merged_ranks = Tree<PlayerRank>(sortedArray2Tree(merged_rank_array,0,players1+players2 - 1));
         merged_players.inOrder(updatePlayerIdPointers,0);
 
-
-
         Team* new_team = new Team(newTeamId,points,goals,cards,players,games_played,goalKeepers,
                                   merged_players,merged_ranks);
 
@@ -422,6 +420,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         teams.remove(teamId1);
         teams.remove(teamId2);
         teams.insert(*new_team);
+        teams.find(*new_team)->data.UpdatePlayersTeamPointers();
         new_team->nullTreePointers();
         delete new_team;
         merged_ranks.nullTree();

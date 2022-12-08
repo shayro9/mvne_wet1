@@ -11,6 +11,8 @@ struct node{
     node* r;
 };
 
+class Team;
+
 template <class T>
 class Tree {
 public:
@@ -34,7 +36,7 @@ public:
     void tree2ArrayInOrder(T * output, bool (*cond)(node<T>*));
     void tree2ArrayInOrder(T * output);
     void tree2IDArrayInOrder(int * output);
-    void preOrder(void (*func)(node<T>*));
+    void preOrder(void (*func)(node<T>*,Team*),Team* team);
     void inOrder(void (*func)(node<T>*,int),int num);
     void postOrder(void (*func)(node<T>*));
 
@@ -58,7 +60,7 @@ private:
     node<T>* RL_rotate(node<T> *root);
     node<T>* LR_rotate(node<T> *root);
 
-    void preOrder(node<T>* root, void (*func)(node<T>*));
+    void preOrder(node<T>* root, void (*func)(node<T>*,Team*),Team* team);
     void inOrder(node<T>* root, void (*func)(node<T>*,int),int num);
     void postOrder(node<T>* root, void (*func)(node<T>*));
     int tree2ArrayInOrder_rec(node<T>* root, T *output, int index, bool (*cond)(node<T>*));
@@ -422,18 +424,18 @@ void Tree<T>::inOrder(void (*func)(node<T> *,int), int num) {
 }
 
 template<class T>
-void Tree<T>::preOrder(node<T> *root, void (*func)(node<T> *)) {
+void Tree<T>::preOrder(node<T> *root, void (*func)(node<T> *,Team*),Team* team) {
     if(root == nullptr)
         return;
 
-    func(root);
-    preOrder(root->l,func);
-    preOrder(root->r,func);
+    func(root,team);
+    preOrder(root->l,func,team);
+    preOrder(root->r,func,team);
 }
 
 template<class T>
-void Tree<T>::preOrder(void (*func)(node<T> *)) {
-    preOrder(m_root, func);
+void Tree<T>::preOrder(void (*func)(node<T> *,Team *),Team* team) {
+    preOrder(m_root, func,team);
 }
 
 template<class T>
