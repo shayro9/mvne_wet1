@@ -167,11 +167,15 @@ StatusType world_cup_t::remove_player(int playerId)
         if (currTeam->isComplete()){
             currTeam->getCompleteTeamPointer()->updateStats(currTeam->getPoints(), currTeam->getGoals(), currTeam->getCards());
         }
-        node<CompleteTeam>* currComplete = completeTeams.find(*currTeam->getCompleteTeamPointer());
+        CompleteTeam* temp = currTeam->getCompleteTeamPointer();
+        node<CompleteTeam>* currComplete = nullptr;
+        if(temp)
+             currComplete = completeTeams.find(*temp);
         if (!currTeam->isComplete() && currComplete){
             CompleteTeam temp_team = currComplete->data;
             completeTeamList.remove(temp_team.getCompleteNode());
             completeTeams.remove(*currTeam->getCompleteTeamPointer());
+            currTeam->setCompleteTeamPointer(nullptr);
         }
 
         numOfPlayers--;
@@ -411,6 +415,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
             completeTeams.find(*new_complete_team)->data.setCompleteTeamNode(completeTeamList.getLastAdded());
             new_team->setCompleteTeamPointer(&completeTeams.find(*new_complete_team)->data);
             delete (new_complete_team);
+        } else {
+            new_team->setCompleteTeamPointer(nullptr);
         }
 
         teams.remove(teamId1);
@@ -618,11 +624,11 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
         LNode<CompleteTeam> *minCompleteList = minComplete->getCompleteNode();
         LNode<CompleteTeam> *maxCompleteList = maxComplete->getCompleteNode();
         //LNode<CompleteTeam*>* iter = minCompleteList;
-        if (minTeamId == maxTeamId) {
-            return minTeamId;
-        }
         if (*maxComplete < *minComplete) {
             return StatusType::FAILURE;
+        }
+        if (minTeamId == maxTeamId) {
+            return minTeamId;
         }
         List<CompleteTeam> list;
         CompleteTeam *first = new CompleteTeam(minComplete->getId(), minComplete->getScore());
