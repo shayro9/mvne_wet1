@@ -393,8 +393,10 @@ node<T> *Tree<T>::removeNode(node<T> *root, const T &t) {
     while(h != new_h)
     {
         h = height(root);
-        if(root == m_root)
+        if(root == m_root) {
             m_root = balance(root);
+            root = m_root;
+        }
         else
             root = balance(root);
         new_h = height(root);
